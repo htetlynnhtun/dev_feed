@@ -1,13 +1,13 @@
 import 'package:dev_feed/constants.dart';
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
 import 'package:flutter/material.dart';
 
 class FeedItemView extends StatelessWidget {
-  final Post post;
+  final PostViewModel postViewModel;
 
   const FeedItemView({
     super.key,
-    required this.post,
+    required this.postViewModel,
   });
 
   @override
@@ -25,7 +25,7 @@ class FeedItemView extends StatelessWidget {
                 topRight: Radius.circular(12),
               ),
               child: Image.network(
-                post.coverImage ?? flutterImage,
+                postViewModel.coverImage ?? flutterImage,
                 fit: BoxFit.cover,
               ),
             ),
@@ -36,15 +36,15 @@ class FeedItemView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  post.title,
+                  postViewModel.title,
                   maxLines: 2,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Row(
                   children: [
-                    const Text('#webdev #career #speaking'),
+                    Text(postViewModel.tags),
                     const Spacer(),
-                    const Text('8 min read'),
+                    Text(postViewModel.readingTime),
                     const SizedBox(width: 8),
                     IconButton(
                       icon: const Icon(Icons.bookmark_border),
@@ -57,20 +57,20 @@ class FeedItemView extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          foregroundImage: NetworkImage(post.user.profileImage),
+                          foregroundImage: NetworkImage(postViewModel.userProfileImage),
                         ),
                         const SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(post.user.name),
-                            const Text('May 31'),
+                            Text(postViewModel.username),
+                            Text(postViewModel.postedAt),
                           ],
                         )
                       ],
                     ),
                     const Spacer(),
-                    Text('${post.likeCount} Likes'),
+                    Text(postViewModel.likeCountLabel),
                   ],
                 ),
               ],

@@ -59,7 +59,7 @@ class _FeedPageState extends State<FeedPage> {
                     }
                     return Padding(
                       padding: padding,
-                      child: FeedItemView(post: posts[index]),
+                      child: FeedItemView(postViewModel: posts[index]),
                     );
                   },
                 );
