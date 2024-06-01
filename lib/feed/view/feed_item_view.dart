@@ -1,8 +1,13 @@
+import 'package:dev_feed/constants.dart';
+import 'package:dev_feed/feed/model/model.dart';
 import 'package:flutter/material.dart';
 
 class FeedItemView extends StatelessWidget {
+  final Post post;
+
   const FeedItemView({
     super.key,
+    required this.post,
   });
 
   @override
@@ -14,16 +19,14 @@ class FeedItemView extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 260,
-            child: Image.network(
-              'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
-            ),
+            child: Image.network(post.coverImage ?? flutterImage),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Text(
-                  'OS Fundamentals 101: Process and Syscalls',
+                  post.title,
                   maxLines: 2,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
@@ -39,26 +42,25 @@ class FeedItemView extends StatelessWidget {
                     ),
                   ],
                 ),
-                const Row(
+                Row(
                   children: [
                     Row(
                       children: [
                         CircleAvatar(
-                          foregroundImage: NetworkImage(
-                              'https://storage.googleapis.com/cms-storage-bucket/780e0e64d323aad2cdd5.png'),
+                          foregroundImage: NetworkImage(post.user.profileImage),
                         ),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Username'),
-                            Text('May 31'),
+                            Text(post.user.name),
+                            const Text('May 31'),
                           ],
                         )
                       ],
                     ),
-                    Spacer(),
-                    Text('7 Likes'),
+                    const Spacer(),
+                    Text('${post.likeCount} Likes'),
                   ],
                 ),
               ],

@@ -7,9 +7,10 @@ part 'post.g.dart';
 @freezed
 class Post with _$Post {
   factory Post({
-    required String id,
+    required int id,
     required String title,
     required String description,
+    required String? coverImage,
     required List<String> tagList,
     required int readingTimeMinutes,
     required DateTime publishedAt,

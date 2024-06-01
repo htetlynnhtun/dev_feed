@@ -7,9 +7,10 @@ part of 'post.dart';
 // **************************************************************************
 
 _$PostImpl _$$PostImplFromJson(Map<String, dynamic> json) => _$PostImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       description: json['description'] as String,
+      coverImage: json['cover_image'] as String?,
       tagList:
           (json['tag_list'] as List<dynamic>).map((e) => e as String).toList(),
       readingTimeMinutes: (json['reading_time_minutes'] as num).toInt(),
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$PostImplToJson(_$PostImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'cover_image': instance.coverImage,
       'tag_list': instance.tagList,
       'reading_time_minutes': instance.readingTimeMinutes,
       'published_at': instance.publishedAt.toIso8601String(),

@@ -20,9 +20,10 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Post {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  String? get coverImage => throw _privateConstructorUsedError;
   List<String> get tagList => throw _privateConstructorUsedError;
   int get readingTimeMinutes => throw _privateConstructorUsedError;
   DateTime get publishedAt => throw _privateConstructorUsedError;
@@ -41,9 +42,10 @@ abstract class $PostCopyWith<$Res> {
       _$PostCopyWithImpl<$Res, Post>;
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String title,
       String description,
+      String? coverImage,
       List<String> tagList,
       int readingTimeMinutes,
       DateTime publishedAt,
@@ -69,6 +71,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? coverImage = freezed,
     Object? tagList = null,
     Object? readingTimeMinutes = null,
     Object? publishedAt = null,
@@ -79,7 +82,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -88,6 +91,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as String?,
       tagList: null == tagList
           ? _value.tagList
           : tagList // ignore: cast_nullable_to_non_nullable
@@ -128,9 +135,10 @@ abstract class _$$PostImplCopyWith<$Res> implements $PostCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String title,
       String description,
+      String? coverImage,
       List<String> tagList,
       int readingTimeMinutes,
       DateTime publishedAt,
@@ -154,6 +162,7 @@ class __$$PostImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = null,
+    Object? coverImage = freezed,
     Object? tagList = null,
     Object? readingTimeMinutes = null,
     Object? publishedAt = null,
@@ -164,7 +173,7 @@ class __$$PostImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -173,6 +182,10 @@ class __$$PostImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
+      coverImage: freezed == coverImage
+          ? _value.coverImage
+          : coverImage // ignore: cast_nullable_to_non_nullable
+              as String?,
       tagList: null == tagList
           ? _value._tagList
           : tagList // ignore: cast_nullable_to_non_nullable
@@ -204,6 +217,7 @@ class _$PostImpl implements _Post {
       {required this.id,
       required this.title,
       required this.description,
+      required this.coverImage,
       required final List<String> tagList,
       required this.readingTimeMinutes,
       required this.publishedAt,
@@ -215,11 +229,13 @@ class _$PostImpl implements _Post {
       _$$PostImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String title;
   @override
   final String description;
+  @override
+  final String? coverImage;
   final List<String> _tagList;
   @override
   List<String> get tagList {
@@ -240,7 +256,7 @@ class _$PostImpl implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, description: $description, tagList: $tagList, readingTimeMinutes: $readingTimeMinutes, publishedAt: $publishedAt, likeCount: $likeCount, user: $user)';
+    return 'Post(id: $id, title: $title, description: $description, coverImage: $coverImage, tagList: $tagList, readingTimeMinutes: $readingTimeMinutes, publishedAt: $publishedAt, likeCount: $likeCount, user: $user)';
   }
 
   @override
@@ -252,6 +268,8 @@ class _$PostImpl implements _Post {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.coverImage, coverImage) ||
+                other.coverImage == coverImage) &&
             const DeepCollectionEquality().equals(other._tagList, _tagList) &&
             (identical(other.readingTimeMinutes, readingTimeMinutes) ||
                 other.readingTimeMinutes == readingTimeMinutes) &&
@@ -269,6 +287,7 @@ class _$PostImpl implements _Post {
       id,
       title,
       description,
+      coverImage,
       const DeepCollectionEquality().hash(_tagList),
       readingTimeMinutes,
       publishedAt,
@@ -291,9 +310,10 @@ class _$PostImpl implements _Post {
 
 abstract class _Post implements Post {
   factory _Post(
-      {required final String id,
+      {required final int id,
       required final String title,
       required final String description,
+      required final String? coverImage,
       required final List<String> tagList,
       required final int readingTimeMinutes,
       required final DateTime publishedAt,
@@ -303,11 +323,13 @@ abstract class _Post implements Post {
   factory _Post.fromJson(Map<String, dynamic> json) = _$PostImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get title;
   @override
   String get description;
+  @override
+  String? get coverImage;
   @override
   List<String> get tagList;
   @override

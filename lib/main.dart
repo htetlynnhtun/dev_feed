@@ -1,4 +1,4 @@
-import 'package:dev_feed/feed/view/feed_page.dart';
+import 'package:dev_feed/feed_ui_composer.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,8 +10,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: FeedPage(),
+    return MaterialApp(
+      home: FeedUIComposer.feedPage(),
     );
   }
 }
