@@ -18,8 +18,17 @@ class FeedItemView extends StatelessWidget {
         children: [
           SizedBox(
             width: double.infinity,
-            height: 260,
-            child: Image.network(post.coverImage ?? flutterImage),
+            height: 200,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+              child: Image.network(
+                post.coverImage ?? flutterImage,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
