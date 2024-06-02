@@ -1,11 +1,11 @@
-import 'package:dev_feed/feed/api/remote_post_loader.dart';
-import 'package:dev_feed/feed/cache/local_post_loader.dart';
-import 'package:dev_feed/feed/cache/realm_post_store.dart';
-import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed_ui_composer.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
+
+import 'package:dev_feed/feed/api/api.dart';
+import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/feed_ui_composer.dart';
 
 void main() {
   final realmConfig = Configuration.local([
