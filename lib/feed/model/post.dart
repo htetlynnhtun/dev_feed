@@ -1,4 +1,4 @@
-import 'package:dev_feed/feed/model/user.dart';
+import 'package:dev_feed/shared/model/model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'post.freezed.dart';

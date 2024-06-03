@@ -1,6 +1,8 @@
+import 'package:realm/realm.dart' hide User;
+
 import 'package:dev_feed/feed/cache/post_store.dart';
 import 'package:dev_feed/feed/model/model.dart';
-import 'package:realm/realm.dart' hide User;
+import 'package:dev_feed/shared/model/model.dart';
 
 part 'realm_post_store.realm.dart';
 
