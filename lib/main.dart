@@ -1,10 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
+import 'package:dev_feed/app.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:realm/realm.dart';
+import 'package:realm/realm.dart' hide App;
 
 import 'package:dev_feed/feed/api/api.dart';
 import 'package:dev_feed/feed/cache/cache.dart';
@@ -67,26 +68,13 @@ void main() {
   );
 
   runApp(
-    MainApp(
+    App(
       home: FeedUIComposer.feedPage(
         postLoaderComposite,
         imageDataLoaderComposite,
-      ),
+      )
     ),
   );
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({
-    super.key,
-    required this.home,
-  });
-  final Widget home;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: home);
-  }
 }
 
 final class PostLoaderWithFallbackComposite implements PostLoader {
