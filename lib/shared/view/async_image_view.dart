@@ -1,10 +1,13 @@
-import 'package:dev_feed/feed/viewmodel/async_image_view_model.dart';
+import 'package:dev_feed/shared/viewmodel/async_image_view_model.dart';
 import 'package:flutter/material.dart';
 
 class AsyncImageView extends StatefulWidget {
+  final String imageUrl;
   final AsyncImageViewModelFactory viewModelFactory;
+
   const AsyncImageView({
     super.key,
+    required this.imageUrl,
     required this.viewModelFactory,
   });
 
@@ -17,7 +20,7 @@ class _AsyncImageWidgetState extends State<AsyncImageView> {
   @override
   void initState() {
     super.initState();
-    _viewModel = widget.viewModelFactory();
+    _viewModel = widget.viewModelFactory(widget.imageUrl);
     _viewModel.load();
   }
 

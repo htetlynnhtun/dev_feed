@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'async_image_view_model.freezed.dart';
 part 'async_image_view_state.dart';
 
-typedef AsyncImageViewModelFactory = AsyncImageViewModel Function();
+typedef AsyncImageViewModelFactory = AsyncImageViewModel Function(String url);
 
 class AsyncImageViewModel extends ValueNotifier<AsyncImageViewState> {
   final String _imageURL;

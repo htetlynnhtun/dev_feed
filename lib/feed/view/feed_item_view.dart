@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/feed/view/async_image_view.dart';
+import 'package:dev_feed/shared/view/view.dart';
 import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
 
 class FeedItemView extends StatelessWidget {
@@ -26,7 +26,8 @@ class FeedItemView extends StatelessWidget {
                 topRight: Radius.circular(12),
               ),
               child: AsyncImageView(
-                viewModelFactory: postViewModel.coverImageViewModelFactory,
+                imageUrl: postViewModel.coverImageUrl(),
+                viewModelFactory: postViewModel.asyncImageViewModelFactory,
               ),
             ),
           ),
@@ -60,8 +61,9 @@ class FeedItemView extends StatelessWidget {
                           height: 50,
                           child: ClipOval(
                             child: AsyncImageView(
+                              imageUrl: postViewModel.userProfileImageUrl,
                               viewModelFactory:
-                                  postViewModel.userImageViewModelFactory,
+                                  postViewModel.asyncImageViewModelFactory,
                             ),
                           ),
                         ),

@@ -1,17 +1,20 @@
+import 'package:dev_feed/constants.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed/viewmodel/async_image_view_model.dart';
+import 'package:dev_feed/shared/viewmodel/view_model.dart';
 
 class PostViewModel {
   final Post _post;
-  final AsyncImageViewModelFactory coverImageViewModelFactory;
-  final AsyncImageViewModelFactory userImageViewModelFactory;
+  final AsyncImageViewModelFactory asyncImageViewModelFactory;
+  // final AsyncImageViewModelFactory coverImageViewModelFactory;
+  // final AsyncImageViewModelFactory userImageViewModelFactory;
 
   PostViewModel({
     required Post post,
-    required this.coverImageViewModelFactory,
-    required this.userImageViewModelFactory,
+    // required this.coverImageViewModelFactory,
+    // required this.userImageViewModelFactory,
+    required this.asyncImageViewModelFactory,
   }) : _post = post;
 
   static final dateFormatter = DateFormat.yMMMd();
@@ -24,4 +27,9 @@ class PostViewModel {
   String get username => _post.user.name;
   String get postedAt => dateFormatter.format(_post.publishedAt);
   String get likeCountLabel => '${_post.likeCount} likes';
+  String get userProfileImageUrl => _post.user.profileImage;
+
+  String coverImageUrl() {
+    return _post.coverImage ?? flutterImage;
+  }
 }

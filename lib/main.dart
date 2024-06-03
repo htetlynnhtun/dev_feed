@@ -78,13 +78,13 @@ void main() {
           (id) => context.go('/posts/$id'),
         ),
         routes: [
-          GoRoute(
-            path: ':postId',
-            builder: (context, state) {
-              final postId = int.parse(state.pathParameters['postId']!);
-              return PostDetailUIComposer.detailPage(postId, 'title');
-            },
-          ),
+          // GoRoute(
+          //   path: ':postId',
+          //   builder: (context, state) {
+          //     final postId = int.parse(state.pathParameters['postId']!);
+          //     return PostDetailUIComposer.detailPage(postId, 'title');
+          //   },
+          // ),
         ],
       ),
     ],
