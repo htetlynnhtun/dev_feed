@@ -19,6 +19,10 @@ abstract class FeedUIComposer {
             imageURL: post.coverImage ?? flutterImage,
             dataLoader: dataLoader,
           ),
+          userImageViewModelFactory: () => AsyncImageViewModel(
+            imageURL: post.user.profileImage,
+            dataLoader: dataLoader,
+          ),
         ),
       );
     });

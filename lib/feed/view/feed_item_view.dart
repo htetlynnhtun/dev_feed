@@ -56,9 +56,14 @@ class FeedItemView extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          foregroundImage:
-                              NetworkImage(postViewModel.userProfileImage),
+                        SizedBox(
+                          height: 50,
+                          child: ClipOval(
+                            child: AsyncImageView(
+                              viewModelFactory:
+                                  postViewModel.userImageViewModelFactory,
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Column(

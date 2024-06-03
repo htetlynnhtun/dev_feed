@@ -6,10 +6,12 @@ import 'package:dev_feed/feed/viewmodel/async_image_view_model.dart';
 class PostViewModel {
   final Post _post;
   final AsyncImageViewModelFactory coverImageViewModelFactory;
+  final AsyncImageViewModelFactory userImageViewModelFactory;
 
   PostViewModel({
     required Post post,
     required this.coverImageViewModelFactory,
+    required this.userImageViewModelFactory,
   }) : _post = post;
 
   static final dateFormatter = DateFormat.yMMMd();
