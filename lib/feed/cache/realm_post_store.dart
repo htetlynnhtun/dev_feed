@@ -61,6 +61,7 @@ extension on Post {
         readingTimeMinutes,
         publishedAt,
         likeCount,
+        coverImage: coverImage,
         user: RealmUser(
           ObjectId(),
           user.name,
