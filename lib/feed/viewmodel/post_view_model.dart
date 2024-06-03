@@ -1,10 +1,16 @@
-import 'package:dev_feed/feed/model/model.dart';
 import 'package:intl/intl.dart';
+
+import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/feed/viewmodel/async_image_view_model.dart';
 
 class PostViewModel {
   final Post _post;
+  final AsyncImageViewModelFactory coverImageViewModelFactory;
 
-  PostViewModel(this._post);
+  PostViewModel({
+    required Post post,
+    required this.coverImageViewModelFactory,
+  }) : _post = post;
 
   static final dateFormatter = DateFormat.yMMMd();
 

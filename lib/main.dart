@@ -1,3 +1,5 @@
+import 'package:dev_feed/feed/api/remote_image_data_loader.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
@@ -30,9 +32,15 @@ void main() {
     fallback: localPostLoader,
   );
 
+  final dio = Dio();
+  final remoteImageDataLoader = RemoteImageDataLoader(dio);
+
   runApp(
     MainApp(
-      home: FeedUIComposer.feedPage(postLoaderComposite),
+      home: FeedUIComposer.feedPage(
+        postLoaderComposite,
+        remoteImageDataLoader,
+      ),
     ),
   );
 }

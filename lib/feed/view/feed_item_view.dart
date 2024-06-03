@@ -1,6 +1,7 @@
-import 'package:dev_feed/constants.dart';
-import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dev_feed/feed/view/async_image_view.dart';
+import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
 
 class FeedItemView extends StatelessWidget {
   final PostViewModel postViewModel;
@@ -24,9 +25,8 @@ class FeedItemView extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: Image.network(
-                postViewModel.coverImage ?? flutterImage,
-                fit: BoxFit.cover,
+              child: AsyncImageView(
+                viewModelFactory: postViewModel.coverImageViewModelFactory,
               ),
             ),
           ),
@@ -57,7 +57,8 @@ class FeedItemView extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          foregroundImage: NetworkImage(postViewModel.userProfileImage),
+                          foregroundImage:
+                              NetworkImage(postViewModel.userProfileImage),
                         ),
                         const SizedBox(width: 8),
                         Column(
