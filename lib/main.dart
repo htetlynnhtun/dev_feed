@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
-import 'package:dev_feed/feed/cache/realm_image_data_store.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -10,6 +9,7 @@ import 'package:realm/realm.dart';
 import 'package:dev_feed/feed/api/api.dart';
 import 'package:dev_feed/feed/api/remote_image_data_loader.dart';
 import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/feed/cache/realm_image_data_store.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed_ui_composer.dart';
 
@@ -42,6 +42,21 @@ void main() {
   final localImageDataLoader = LocalImageDataLoader(imageDataStore);
 
   final dio = Dio();
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      debugPrint('❔❔❔ Received reqeust for ${options.uri}');
+      handler.next(options);
+    },
+    onResponse: (response, handler) {
+      debugPrint('✅✅✅ Received response for ${response.realUri}');
+      handler.next(response);
+    },
+    onError: (error, handler) {
+      debugPrint(
+          '❗️❗️❗️ Error for ${error.requestOptions.uri}: ${error.message}');
+      handler.next(error);
+    },
+  ));
 
   final remoteImageDataLoader = RemoteImageDataLoader(dio);
 
@@ -135,7 +150,9 @@ final class ImageDataLoaderWithFallbackComposite implements ImageDataLoader {
           return loadOperation.value;
         }
       }(),
-      onCancel: loadOperation.cancel,
+      onCancel: () {
+        loadOperation.cancel();
+      },
     );
   }
 }
