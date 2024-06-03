@@ -9,22 +9,26 @@ abstract class FeedUIComposer {
   static FeedPage feedPage(
     PostLoader postLoader,
     ImageDataLoader dataLoader,
+    void Function(int id) onFeedItemSelected,
   ) {
-    return FeedPage(viewModelFactory: () {
-      return FeedViewModel(
-        loader: postLoader,
-        postViewModelFactory: (post) => PostViewModel(
-          post: post,
-          coverImageViewModelFactory: () => AsyncImageViewModel(
-            imageURL: post.coverImage ?? flutterImage,
-            dataLoader: dataLoader,
+    return FeedPage(
+      viewModelFactory: () {
+        return FeedViewModel(
+          loader: postLoader,
+          postViewModelFactory: (post) => PostViewModel(
+            post: post,
+            coverImageViewModelFactory: () => AsyncImageViewModel(
+              imageURL: post.coverImage ?? flutterImage,
+              dataLoader: dataLoader,
+            ),
+            userImageViewModelFactory: () => AsyncImageViewModel(
+              imageURL: post.user.profileImage,
+              dataLoader: dataLoader,
+            ),
           ),
-          userImageViewModelFactory: () => AsyncImageViewModel(
-            imageURL: post.user.profileImage,
-            dataLoader: dataLoader,
-          ),
-        ),
-      );
-    });
+        );
+      },
+      onFeedItemSelected: onFeedItemSelected,
+    );
   }
 }

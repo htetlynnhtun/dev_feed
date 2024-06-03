@@ -5,10 +5,12 @@ import 'package:dev_feed/feed/viewmodel/feed_view_model.dart';
 
 class FeedPage extends StatefulWidget {
   final FeedViewModel Function() viewModelFactory;
+  final void Function(int) onFeedItemSelected;
 
   const FeedPage({
     super.key,
     required this.viewModelFactory,
+    required this.onFeedItemSelected,
   });
 
   @override
@@ -57,9 +59,12 @@ class _FeedPageState extends State<FeedPage> {
                     if (isFirstItem) {
                       padding += const EdgeInsets.only(top: 16.0);
                     }
-                    return Padding(
-                      padding: padding,
-                      child: FeedItemView(postViewModel: posts[index]),
+                    return GestureDetector(
+                      onTap: () => widget.onFeedItemSelected(posts[index].id),
+                      child: Padding(
+                        padding: padding,
+                        child: FeedItemView(postViewModel: posts[index]),
+                      ),
                     );
                   },
                 );

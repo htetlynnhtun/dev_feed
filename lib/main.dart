@@ -1,9 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:async/async.dart';
-import 'package:dev_feed/app.dart';
+import 'package:dev_feed/post_detail_ui_composer.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart' hide App;
 
@@ -67,12 +67,33 @@ void main() {
     ),
   );
 
+  final router = GoRouter(
+    initialLocation: '/posts',
+    routes: [
+      GoRoute(
+        path: '/posts',
+        builder: (context, state) => FeedUIComposer.feedPage(
+          postLoaderComposite,
+          imageDataLoaderComposite,
+          (id) => context.go('/posts/$id'),
+        ),
+        routes: [
+          GoRoute(
+            path: ':postId',
+            builder: (context, state) {
+              final postId = int.parse(state.pathParameters['postId']!);
+              return PostDetailUIComposer.detailPage(postId, 'title');
+            },
+          ),
+        ],
+      ),
+    ],
+    debugLogDiagnostics: kDebugMode,
+  );
+
   runApp(
-    App(
-      home: FeedUIComposer.feedPage(
-        postLoaderComposite,
-        imageDataLoaderComposite,
-      )
+    MaterialApp.router(
+      routerConfig: router,
     ),
   );
 }
