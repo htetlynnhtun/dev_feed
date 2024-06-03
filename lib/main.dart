@@ -7,9 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
 
 import 'package:dev_feed/feed/api/api.dart';
-import 'package:dev_feed/feed/api/remote_image_data_loader.dart';
 import 'package:dev_feed/feed/cache/cache.dart';
-import 'package:dev_feed/feed/cache/realm_image_data_store.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed_ui_composer.dart';
 
