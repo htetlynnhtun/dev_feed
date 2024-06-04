@@ -1,5 +1,7 @@
-import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
 import 'package:flutter/material.dart';
+
+import 'package:dev_feed/post_detail/view/post_details_view.dart';
+import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
 
 class PostDetailPage extends StatefulWidget {
   final int postId;
@@ -22,13 +24,40 @@ class _PostDetailPageState extends State<PostDetailPage> {
   void initState() {
     super.initState();
     viewModel = widget.viewModelFactory();
+    viewModel.load();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(viewModel.postTitle),
+      appBar: AppBar(),
+      body: SafeArea(
+        child: ValueListenableBuilder(
+          valueListenable: viewModel,
+          builder: (context, value, child) {
+            switch (value) {
+              case Loading():
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+        
+              case Loaded(viewData: final viewData):
+                return PostDetailsView(viewData: viewData);
+        
+              case Failure(message: var message):
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: viewModel.load,
+                      icon: const Icon(Icons.refresh),
+                    ),
+                    Text(message),
+                  ],
+                );
+            }
+          },
+        ),
       ),
     );
   }
