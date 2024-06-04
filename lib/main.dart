@@ -1,6 +1,4 @@
 import 'package:async/async.dart';
-import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
-import 'package:dev_feed/post_detail_ui_composer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +8,10 @@ import 'package:realm/realm.dart' hide App;
 
 import 'package:dev_feed/feed/api/api.dart';
 import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/feed/feed_ui_composer.dart';
 import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed_ui_composer.dart';
+import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
+import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
 
 void main() {
   final realmConfig = Configuration.local([
