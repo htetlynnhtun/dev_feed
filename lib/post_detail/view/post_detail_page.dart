@@ -28,6 +28,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -40,10 +46,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-        
+
               case Loaded(viewData: final viewData):
                 return PostDetailsView(viewData: viewData);
-        
+
               case Failure(message: var message):
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

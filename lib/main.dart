@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail_ui_composer.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -67,6 +68,8 @@ void main() {
     ),
   );
 
+  final postDetailsLoader = RemotePostDetailsLoader(dio: dio);
+
   final router = GoRouter(
     initialLocation: '/posts',
     routes: [
@@ -84,6 +87,7 @@ void main() {
               final postId = int.parse(state.pathParameters['postId']!);
               return PostDetailUIComposer.detailPage(
                 postId,
+                postDetailsLoader,
                 imageDataLoaderComposite,
               );
             },
