@@ -8,12 +8,12 @@ import 'package:realm/realm.dart' hide App;
 import 'package:dev_feed/feed/api/api.dart';
 import 'package:dev_feed/feed/cache/cache.dart';
 import 'package:dev_feed/feed/feed_ui_composer.dart';
-import 'package:dev_feed/image_data_loader_cache_decorator.dart';
-import 'package:dev_feed/image_data_loader_with_fallback_composite.dart';
 import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
-import 'package:dev_feed/post_loader_cache_decorator.dart';
-import 'package:dev_feed/post_loader_with_fallback_composite.dart';
+import 'package:dev_feed/util/image_data_loader_cache_decorator.dart';
+import 'package:dev_feed/util/image_data_loader_with_fallback_composite.dart';
+import 'package:dev_feed/util/post_loader_cache_decorator.dart';
+import 'package:dev_feed/util/post_loader_with_fallback_composite.dart';
 
 void main() {
   final realmConfig = Configuration.local([
