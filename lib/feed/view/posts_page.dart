@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/feed/view/feed_item_view.dart';
-import 'package:dev_feed/feed/viewmodel/feed_view_model.dart';
+import 'package:dev_feed/feed/view/post_item_view.dart';
+import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
-class FeedPage extends StatefulWidget {
-  final FeedViewModel Function() viewModelFactory;
-  final void Function(int) onFeedItemSelected;
+class PostsPage extends StatefulWidget {
+  final PostsViewModel Function() viewModelFactory;
+  final void Function(int) onPostItemSelected;
 
-  const FeedPage({
+  const PostsPage({
     super.key,
     required this.viewModelFactory,
-    required this.onFeedItemSelected,
+    required this.onPostItemSelected,
   });
 
   @override
-  State<FeedPage> createState() => _FeedPageState();
+  State<PostsPage> createState() => _PostsPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
-  late final FeedViewModel viewModel;
+class _PostsPageState extends State<PostsPage> {
+  late final PostsViewModel viewModel;
 
   @override
   void initState() {
@@ -60,10 +60,10 @@ class _FeedPageState extends State<FeedPage> {
                       padding += const EdgeInsets.only(top: 16.0);
                     }
                     return GestureDetector(
-                      onTap: () => widget.onFeedItemSelected(posts[index].id),
+                      onTap: () => widget.onPostItemSelected(posts[index].id),
                       child: Padding(
                         padding: padding,
-                        child: FeedItemView(postViewModel: posts[index]),
+                        child: PostItemView(postViewModel: posts[index]),
                       ),
                     );
                   },

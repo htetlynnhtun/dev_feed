@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'feed_view_model.dart';
+part of 'posts_view_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,25 +15,25 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$FeedViewState {
+mixin _$PostsViewState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<PostViewModel> posts) loaded,
+    required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<PostViewModel> posts)? loaded,
+    TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<PostViewModel> posts)? loaded,
+    TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) =>
@@ -63,16 +63,16 @@ mixin _$FeedViewState {
 }
 
 /// @nodoc
-abstract class $FeedViewStateCopyWith<$Res> {
-  factory $FeedViewStateCopyWith(
-          FeedViewState value, $Res Function(FeedViewState) then) =
-      _$FeedViewStateCopyWithImpl<$Res, FeedViewState>;
+abstract class $PostsViewStateCopyWith<$Res> {
+  factory $PostsViewStateCopyWith(
+          PostsViewState value, $Res Function(PostsViewState) then) =
+      _$PostsViewStateCopyWithImpl<$Res, PostsViewState>;
 }
 
 /// @nodoc
-class _$FeedViewStateCopyWithImpl<$Res, $Val extends FeedViewState>
-    implements $FeedViewStateCopyWith<$Res> {
-  _$FeedViewStateCopyWithImpl(this._value, this._then);
+class _$PostsViewStateCopyWithImpl<$Res, $Val extends PostsViewState>
+    implements $PostsViewStateCopyWith<$Res> {
+  _$PostsViewStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -89,7 +89,7 @@ abstract class _$$LoadingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$FeedViewStateCopyWithImpl<$Res, _$LoadingImpl>
+    extends _$PostsViewStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
@@ -103,13 +103,13 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FeedViewState.loading()';
+    return 'PostsViewState.loading()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'FeedViewState.loading'));
+    properties.add(DiagnosticsProperty('type', 'PostsViewState.loading'));
   }
 
   @override
@@ -125,7 +125,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<PostViewModel> posts) loaded,
+    required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return loading();
@@ -135,7 +135,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<PostViewModel> posts)? loaded,
+    TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return loading?.call();
@@ -145,7 +145,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<PostViewModel> posts)? loaded,
+    TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -190,7 +190,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   }
 }
 
-abstract class Loading implements FeedViewState {
+abstract class Loading implements PostsViewState {
   const factory Loading() = _$LoadingImpl;
 }
 
@@ -200,12 +200,12 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<PostViewModel> posts});
+  $Res call({List<PostItemViewModel> posts});
 }
 
 /// @nodoc
 class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$FeedViewStateCopyWithImpl<$Res, _$LoadedImpl>
+    extends _$PostsViewStateCopyWithImpl<$Res, _$LoadedImpl>
     implements _$$LoadedImplCopyWith<$Res> {
   __$$LoadedImplCopyWithImpl(
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
@@ -220,7 +220,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
       null == posts
           ? _value._posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<PostViewModel>,
+              as List<PostItemViewModel>,
     ));
   }
 }
@@ -228,11 +228,11 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
-  const _$LoadedImpl(final List<PostViewModel> posts) : _posts = posts;
+  const _$LoadedImpl(final List<PostItemViewModel> posts) : _posts = posts;
 
-  final List<PostViewModel> _posts;
+  final List<PostItemViewModel> _posts;
   @override
-  List<PostViewModel> get posts {
+  List<PostItemViewModel> get posts {
     if (_posts is EqualUnmodifiableListView) return _posts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_posts);
@@ -240,14 +240,14 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FeedViewState.loaded(posts: $posts)';
+    return 'PostsViewState.loaded(posts: $posts)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'FeedViewState.loaded'))
+      ..add(DiagnosticsProperty('type', 'PostsViewState.loaded'))
       ..add(DiagnosticsProperty('posts', posts));
   }
 
@@ -273,7 +273,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<PostViewModel> posts) loaded,
+    required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return loaded(posts);
@@ -283,7 +283,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<PostViewModel> posts)? loaded,
+    TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return loaded?.call(posts);
@@ -293,7 +293,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<PostViewModel> posts)? loaded,
+    TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -338,10 +338,10 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   }
 }
 
-abstract class Loaded implements FeedViewState {
-  const factory Loaded(final List<PostViewModel> posts) = _$LoadedImpl;
+abstract class Loaded implements PostsViewState {
+  const factory Loaded(final List<PostItemViewModel> posts) = _$LoadedImpl;
 
-  List<PostViewModel> get posts;
+  List<PostItemViewModel> get posts;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -358,7 +358,7 @@ abstract class _$$failureImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$failureImplCopyWithImpl<$Res>
-    extends _$FeedViewStateCopyWithImpl<$Res, _$failureImpl>
+    extends _$PostsViewStateCopyWithImpl<$Res, _$failureImpl>
     implements _$$failureImplCopyWith<$Res> {
   __$$failureImplCopyWithImpl(
       _$failureImpl _value, $Res Function(_$failureImpl) _then)
@@ -388,14 +388,14 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FeedViewState.failure(message: $message)';
+    return 'PostsViewState.failure(message: $message)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'FeedViewState.failure'))
+      ..add(DiagnosticsProperty('type', 'PostsViewState.failure'))
       ..add(DiagnosticsProperty('message', message));
   }
 
@@ -420,7 +420,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<PostViewModel> posts) loaded,
+    required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return failure(message);
@@ -430,7 +430,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<PostViewModel> posts)? loaded,
+    TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return failure?.call(message);
@@ -440,7 +440,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<PostViewModel> posts)? loaded,
+    TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -485,7 +485,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   }
 }
 
-abstract class failure implements FeedViewState {
+abstract class failure implements PostsViewState {
   const factory failure(final String message) = _$failureImpl;
 
   String get message;

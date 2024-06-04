@@ -1,36 +1,36 @@
 import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
+import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'feed_view_model.freezed.dart';
-part 'feedviewstate.dart';
+part 'posts_view_model.freezed.dart';
+part 'posts_view_state.dart';
 
-final class FeedViewModel extends ValueNotifier<FeedViewState> {
+final class PostsViewModel extends ValueNotifier<PostsViewState> {
   final PostLoader _loader;
-  final PostViewModel Function(Post) postViewModelFactory;
+  final PostItemViewModel Function(Post) postViewModelFactory;
   var _isDisposed = false;
 
-  FeedViewModel({
+  PostsViewModel({
     required PostLoader loader,
     required this.postViewModelFactory,
   })  : _loader = loader,
-        super(const FeedViewState.loading());
+        super(const PostsViewState.loading());
 
   void load() async {
-    value = const FeedViewState.loading();
+    value = const PostsViewState.loading();
     try {
       final posts = await _loader.load();
-      value = FeedViewState.loaded(posts.map(postViewModelFactory).toList());
+      value = PostsViewState.loaded(posts.map(postViewModelFactory).toList());
     } on Exception catch (_) {
-      value = const FeedViewState.failure(
+      value = const PostsViewState.failure(
         'Please check your connection and try again',
       );
     }
   }
 
   @override
-  set value(FeedViewState newValue) {
+  set value(PostsViewState newValue) {
     if (_isDisposed) return;
     super.value = newValue;
   }

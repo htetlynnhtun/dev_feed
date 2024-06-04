@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/shared/viewmodel/view_model.dart';
 
-class PostViewModel {
+class PostItemViewModel {
   final Post _post;
   final AsyncImageViewModelFactory asyncImageViewModelFactory;
   // final AsyncImageViewModelFactory coverImageViewModelFactory;
   // final AsyncImageViewModelFactory userImageViewModelFactory;
 
-  PostViewModel({
+  PostItemViewModel({
     required Post post,
     // required this.coverImageViewModelFactory,
     // required this.userImageViewModelFactory,

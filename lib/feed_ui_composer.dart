@@ -1,20 +1,20 @@
 import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed/view/feed_page.dart';
-import 'package:dev_feed/feed/viewmodel/feed_view_model.dart';
-import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
+import 'package:dev_feed/feed/view/posts_page.dart';
+import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
+import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 import 'package:dev_feed/shared/viewmodel/view_model.dart';
 
 abstract class FeedUIComposer {
-  static FeedPage feedPage(
+  static PostsPage feedPage(
     PostLoader postLoader,
     ImageDataLoader dataLoader,
     void Function(int id) onFeedItemSelected,
   ) {
-    return FeedPage(
+    return PostsPage(
       viewModelFactory: () {
-        return FeedViewModel(
+        return PostsViewModel(
           loader: postLoader,
-          postViewModelFactory: (post) => PostViewModel(
+          postViewModelFactory: (post) => PostItemViewModel(
             post: post,
             asyncImageViewModelFactory: (url) => AsyncImageViewModel(
               imageURL: url,
@@ -23,7 +23,7 @@ abstract class FeedUIComposer {
           ),
         );
       },
-      onFeedItemSelected: onFeedItemSelected,
+      onPostItemSelected: onFeedItemSelected,
     );
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:dev_feed/shared/view/view.dart';
-import 'package:dev_feed/feed/viewmodel/post_view_model.dart';
+import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 
-class FeedItemView extends StatelessWidget {
-  final PostViewModel postViewModel;
+class PostItemView extends StatelessWidget {
+  final PostItemViewModel postViewModel;
 
-  const FeedItemView({
+  const PostItemView({
     super.key,
     required this.postViewModel,
   });
