@@ -16,7 +16,7 @@ void main() {
       verifyZeroInteractions(mockedStore);
     });
 
-    test('load messages sotre to retrieve', () {
+    test('load should trigger store retrieval', () {
       final mockedStore = MockPostStore();
       final sut = LocalPostLoader(postStore: mockedStore);
 
