@@ -11,10 +11,14 @@ import 'remote_post_loader_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
+  (RemotePostLoader, MockClient) makeSUT() {
+    final mockClient = MockClient();
+    return (RemotePostLoader(client: mockClient), mockClient);
+  }
+
   group('RemotePostLoader', () {
     test('load requests a get request to http client', () {
-      final mockClient = MockClient();
-      final sut = RemotePostLoader(client: mockClient);
+      final (sut, mockClient) = makeSUT();
 
       when(mockClient.get(any))
           .thenAnswer((_) async => http.Response('[]', 200));
@@ -24,8 +28,7 @@ void main() {
     });
 
     test('load throws a SocketException on network error', () {
-      final mockClient = MockClient();
-      final sut = RemotePostLoader(client: mockClient);
+      final (sut, mockClient) = makeSUT();
 
       when(mockClient.get(any)).thenThrow(
         const SocketException('Failed to connect'),
