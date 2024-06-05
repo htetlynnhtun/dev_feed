@@ -3,13 +3,12 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:dev_feed/feed/cache/cache.dart';
-import 'package:dev_feed/feed/model/model.dart';
 
 import 'local_post_loader_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PostStore>()])
 void main() {
-  (MockPostStore, PostLoader) makeSUT() {
+  (MockPostStore, LocalPostLoader) makeSUT() {
     final mockedStore = MockPostStore();
     final sut = LocalPostLoader(postStore: mockedStore);
     return (mockedStore, sut);
