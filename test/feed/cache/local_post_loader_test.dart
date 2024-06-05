@@ -7,7 +7,7 @@ import 'local_post_loader_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PostStore>()])
 void main() {
-  group('LocalPostLoader', () {
+  group('LocalPostLoader:', () {
     test('does not message store on init', () {
       final mockedStore = MockPostStore();
 
@@ -23,6 +23,15 @@ void main() {
       sut.load();
 
       verify(mockedStore.retrieve()).called(1);
+    });
+
+    test('load fails on retrieval error', () {
+      final mockedStore = MockPostStore();
+      final sut = LocalPostLoader(postStore: mockedStore);
+      final retrievalError = Exception('Retrieval error');
+      when(mockedStore.retrieve()).thenThrow(retrievalError);
+
+      expect(() => sut.load(), throwsA(retrievalError));
     });
   });
 }
