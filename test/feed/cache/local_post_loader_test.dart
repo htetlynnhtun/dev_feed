@@ -13,7 +13,7 @@ void main() {
 
       LocalPostLoader(postStore: mockedStore);
 
-      verifyNoMoreInteractions(mockedStore);
+      verifyZeroInteractions(mockedStore);
     });
 
     test('load messages sotre to retrieve', () {
