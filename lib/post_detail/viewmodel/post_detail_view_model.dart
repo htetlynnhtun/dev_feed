@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intl/intl.dart';
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
+import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
 import 'package:dev_feed/post_detail/model/model.dart';
-import 'package:dev_feed/shared/viewmodel/view_model.dart';
 import 'package:dev_feed/util/constants.dart';
 
 part 'post_detail_view_model.freezed.dart';

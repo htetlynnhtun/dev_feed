@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:dev_feed/feed/cache/image_data_store.dart';
+import 'package:dev_feed/async_image/cache/image_data_store.dart';
 import 'package:realm/realm.dart';
 
 part 'realm_image_data_store.realm.dart';

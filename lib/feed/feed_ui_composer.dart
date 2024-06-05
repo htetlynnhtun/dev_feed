@@ -1,8 +1,9 @@
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
+import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed/view/posts_page.dart';
-import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
-import 'package:dev_feed/shared/viewmodel/view_model.dart';
+import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
 abstract class FeedUIComposer {
   static PostsPage feedPage(

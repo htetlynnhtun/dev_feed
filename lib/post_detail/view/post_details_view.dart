@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:dev_feed/async_image/view/async_image_view.dart';
 import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
-import 'package:dev_feed/shared/view/view.dart';
 
 class PostDetailsView extends StatelessWidget {
   final PostDetailViewData viewData;

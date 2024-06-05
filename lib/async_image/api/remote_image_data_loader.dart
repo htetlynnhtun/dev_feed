@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
-import 'package:dev_feed/feed/model/model.dart';
 import 'package:dio/dio.dart';
+
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
 
 class RemoteImageDataLoader implements ImageDataLoader {
   final Dio _dio;

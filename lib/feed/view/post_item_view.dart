@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/shared/view/view.dart';
+import 'package:dev_feed/async_image/view/async_image_view.dart';
 import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 
 class PostItemView extends StatelessWidget {

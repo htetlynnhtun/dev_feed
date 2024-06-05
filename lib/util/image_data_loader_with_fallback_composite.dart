@@ -1,7 +1,7 @@
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
 
 final class ImageDataLoaderWithFallbackComposite implements ImageDataLoader {
   final ImageDataLoader primary;

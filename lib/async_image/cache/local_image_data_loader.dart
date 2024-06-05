@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
-import 'package:dev_feed/feed/cache/image_data_store.dart';
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/async_image/cache/image_data_store.dart';
+import 'package:dev_feed/async_image/model/image_data_cache.dart';
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
 
 final class LocalImageDataLoader implements ImageDataLoader, ImageDataCache {
   final ImageDataStore store;

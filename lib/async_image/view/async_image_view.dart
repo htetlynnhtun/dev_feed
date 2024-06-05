@@ -1,4 +1,4 @@
-import 'package:dev_feed/shared/viewmodel/async_image_view_model.dart';
+import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
 import 'package:flutter/material.dart';
 
 class AsyncImageView extends StatefulWidget {

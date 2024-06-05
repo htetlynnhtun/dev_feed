@@ -1,7 +1,8 @@
 import 'package:async/async.dart';
-import 'package:dev_feed/feed/model/model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'package:dev_feed/async_image/model/image_data_loader.dart';
 
 part 'async_image_view_model.freezed.dart';
 part 'async_image_view_state.dart';
