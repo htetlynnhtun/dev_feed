@@ -15,10 +15,8 @@ final class RemotePostLoader implements PostLoader {
   @override
   Future<List<Post>> load() async {
     final response = await _client.get(_url);
-    return Isolate.run(() {
-      final parsed = (jsonDecode(response.body) as List).cast<JsonData>();
-      return parsed.map((json) => Post.fromJson(json)).toList();
-    });
+    final parsed = (jsonDecode(response.body) as List).cast<JsonData>();
+    return parsed.map((json) => Post.fromJson(json)).toList();
   }
 }
 
