@@ -6,7 +6,7 @@ import 'package:dev_feed/feed/cache/cache.dart';
 import 'package:dev_feed/feed/model/model.dart';
 
 import '../../helpers.dart';
-import 'local_post_loader_test.mocks.dart';
+import 'load_posts_from_cache_use_case_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PostStore>()])
 void main() {

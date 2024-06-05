@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 import 'package:dev_feed/feed/api/api.dart';
 
 import '../../helpers.dart';
-import 'remote_post_loader_test.mocks.dart';
+import 'load_posts_from_api_use_case_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
