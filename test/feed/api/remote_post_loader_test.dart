@@ -20,14 +20,14 @@ void main() {
   }
 
   group('RemotePostLoader', () {
-    test('load requests a get request to http client', () {
+    test('load makes a GET request with correct url to http client', () {
       final (sut, mockClient) = makeSUT();
 
       when(mockClient.get(any))
           .thenAnswer((_) async => http.Response('[]', 200));
       sut.load();
 
-      verify(mockClient.get(any)).called(1);
+      verify(mockClient.get(RemotePostLoader.url)).called(1);
     });
 
     test('load throws a SocketException on network error', () {
