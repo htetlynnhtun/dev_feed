@@ -50,5 +50,16 @@ void main() {
       verify(mockedStore.deleteCachedPosts()).called(1);
       verify(mockedStore.insert(posts)).called(1);
     });
+
+    test('save fails on deletion error', () {
+      final (mockedStore, sut) = makeSUT();
+      final deletionError = Exception('deletion error');
+      when(mockedStore.deleteCachedPosts()).thenThrow(deletionError);
+
+      expect(
+        () => sut.save([makePost(id: 1)]),
+        throwsA((deletionError)),
+      );
+    });
   });
 }
