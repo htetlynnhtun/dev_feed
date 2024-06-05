@@ -1,11 +1,11 @@
-import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/shared/model/model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/feed/model/model.dart';
 
+import '../../helpers.dart';
 import 'local_post_loader_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<PostStore>()])
@@ -59,18 +59,4 @@ void main() {
       expect(sut.load(), completion(posts));
     });
   });
-}
-
-Post makePost({required int id}) {
-  return Post(
-    id: id,
-    title: 'title',
-    description: 'description',
-    coverImage: 'coverImage',
-    tagList: ['a', 'b'],
-    readingTimeMinutes: 1,
-    publishedAt: DateTime.now(),
-    likeCount: 1,
-    user: User(name: 'name', profileImage: 'image.com'),
-  );
 }
