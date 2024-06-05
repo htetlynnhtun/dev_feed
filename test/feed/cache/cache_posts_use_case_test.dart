@@ -61,5 +61,16 @@ void main() {
         throwsA((deletionError)),
       );
     });
+
+    test('save fails on insertion error', () {
+      final (mockedStore, sut) = makeSUT();
+      final insertionError = Exception('Insertion error');
+      when(mockedStore.insert(any)).thenThrow(insertionError);
+
+      expect(
+        () => sut.save([makePost(id: 1)]),
+        throwsA((insertionError)),
+      );
+    });
   });
 }
