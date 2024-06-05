@@ -1,4 +1,5 @@
 import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/shared/model/model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -46,5 +47,30 @@ void main() {
 
       expect(sut.load(), completion(emptyPosts));
     });
+
+    test('load delivers cached posts on retrieval success', () {
+      final (mockedStore, sut) = makeSUT();
+      final posts = [
+        makePost(id: 1),
+        makePost(id: 2),
+      ];
+      when(mockedStore.retrieve()).thenAnswer((_) async => posts);
+
+      expect(sut.load(), completion(posts));
+    });
   });
+}
+
+Post makePost({required int id}) {
+  return Post(
+    id: id,
+    title: 'title',
+    description: 'description',
+    coverImage: 'coverImage',
+    tagList: ['a', 'b'],
+    readingTimeMinutes: 1,
+    publishedAt: DateTime.now(),
+    likeCount: 1,
+    user: User(name: 'name', profileImage: 'image.com'),
+  );
 }
