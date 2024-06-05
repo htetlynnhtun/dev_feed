@@ -26,10 +26,6 @@ import 'package:mockito/mockito.dart' as _i1;
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockPostStore extends _i1.Mock implements _i2.PostStore {
-  MockPostStore() {
-    _i1.throwOnMissingStub(this);
-  }
-
   @override
   _i3.Future<void> deleteCachedPosts() => (super.noSuchMethod(
         Invocation.method(
@@ -57,5 +53,7 @@ class MockPostStore extends _i1.Mock implements _i2.PostStore {
           [],
         ),
         returnValue: _i3.Future<List<_i4.Post>>.value(<_i4.Post>[]),
+        returnValueForMissingStub:
+            _i3.Future<List<_i4.Post>>.value(<_i4.Post>[]),
       ) as _i3.Future<List<_i4.Post>>);
 }

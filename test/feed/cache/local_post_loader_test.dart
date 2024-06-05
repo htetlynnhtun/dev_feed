@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import 'local_post_loader_test.mocks.dart';
 
-@GenerateMocks([PostStore])
+@GenerateNiceMocks([MockSpec<PostStore>()])
 void main() {
   group('LocalPostLoader', () {
     test('does not message store on init', () {
@@ -14,6 +14,15 @@ void main() {
       LocalPostLoader(postStore: mockedStore);
 
       verifyNoMoreInteractions(mockedStore);
+    });
+
+    test('load messages sotre to retrieve', () {
+      final mockedStore = MockPostStore();
+      final sut = LocalPostLoader(postStore: mockedStore);
+
+      sut.load();
+
+      verify(mockedStore.retrieve()).called(1);
     });
   });
 }
