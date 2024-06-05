@@ -1,3 +1,4 @@
+import 'package:dev_feed/feed/model/model.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -36,6 +37,14 @@ void main() {
       when(mockedStore.retrieve()).thenThrow(retrievalError);
 
       expect(() => sut.load(), throwsA(retrievalError));
+    });
+
+    test('load delivers no posts on empty cache', () {
+      final (mockedStore, sut) = makeSUT();
+      final emptyPosts = <Post>[];
+      when(mockedStore.retrieve()).thenAnswer((_) async => emptyPosts);
+
+      expect(sut.load(), completion(emptyPosts));
     });
   });
 }
