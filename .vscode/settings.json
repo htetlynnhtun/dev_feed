@@ -8,7 +8,8 @@
     "**/Thumbs.db": true,
     "**/*.realm.dart": true,
     "**/*.g.dart": true,
-    "**/*.freezed.dart": true
+    "**/*.freezed.dart": true,
+    "**/*.mocks.dart": true,
   },
   "explorerExclude.backup": {}
 }
