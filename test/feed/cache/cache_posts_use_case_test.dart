@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -40,6 +39,16 @@ void main() {
         verify(mockedStore.deleteCachedPosts()).called(1);
         verify(mockedStore.insert(any)).called(0);
       }).ignore();
+    });
+
+    test('save requests new cache insertion on successful deletion', () async {
+      final (mockedStore, sut) = makeSUT();
+      final posts = [makePost(id: 1)];
+
+      await sut.save(posts);
+
+      verify(mockedStore.deleteCachedPosts()).called(1);
+      verify(mockedStore.insert(posts)).called(1);
     });
   });
 }
