@@ -36,5 +36,14 @@ void main() {
 
       expect(sut.load(), throwsA(isA<SocketException>()));
     });
+
+    test('load throws a FormatException on invalid JSON', () {
+      final (sut, mockClient) = makeSUT();
+
+      when(mockClient.get(any))
+          .thenAnswer((_) async => http.Response('invalid JSON', 200));
+
+      expect(sut.load(), throwsA(isA<FormatException>()));
+    });
   });
 }
