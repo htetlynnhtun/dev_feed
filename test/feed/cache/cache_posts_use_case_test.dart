@@ -72,5 +72,11 @@ void main() {
         throwsA((insertionError)),
       );
     });
+
+    test('save success on successful cache insertion', () {
+      final (_, sut) = makeSUT();
+
+      expect(() => sut.save([makePost(id: 1)]), returnsNormally);
+    });
   });
 }
