@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -28,6 +29,17 @@ void main() {
       sut.save([makePost(id: 1)]);
 
       verify(mockedStore.deleteCachedPosts()).called(1);
+    });
+
+    test('save does not request cache insertion on deletion error', () async {
+      final (mockedStore, sut) = makeSUT();
+      when(mockedStore.deleteCachedPosts())
+          .thenThrow(Exception('deletion error'));
+
+      sut.save([makePost(id: 1)]).whenComplete(() {
+        verify(mockedStore.deleteCachedPosts()).called(1);
+        verify(mockedStore.insert(any)).called(0);
+      }).ignore();
     });
   });
 }
