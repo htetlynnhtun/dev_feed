@@ -73,10 +73,14 @@ void main() {
       );
     });
 
-    test('save success on successful cache insertion', () {
+    test('save succeeds on successful cache insertion', () async {
       final (_, sut) = makeSUT();
 
-      expect(() => sut.save([makePost(id: 1)]), returnsNormally);
+      try {
+        await sut.save([makePost(id: 1)]);
+      } catch (e) {
+        fail('Expected to succeed, but found exception: $e');
+      }
     });
   });
 }
