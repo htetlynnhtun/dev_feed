@@ -15,14 +15,14 @@ void main() {
     return (mockedStore, sut);
   }
 
-  group('LocalPostLoader:', () {
-    test('does not message store on init', () {
+  group('LocalPostLoader', () {
+    test('.new() does not message store', () {
       final (mockedStore, _) = makeSUT();
 
       verifyZeroInteractions(mockedStore);
     });
 
-    test('save requests cache deletion', () {
+    test('.save() requests cache deletion', () {
       final (mockedStore, sut) = makeSUT();
 
       sut.save([makePost(id: 1)]);
@@ -30,7 +30,7 @@ void main() {
       verify(mockedStore.deleteCachedPosts()).called(1);
     });
 
-    test('save does not request cache insertion on deletion error', () async {
+    test('.save() does not request cache insertion on deletion error', () async {
       final (mockedStore, sut) = makeSUT();
       when(mockedStore.deleteCachedPosts())
           .thenThrow(Exception('deletion error'));
@@ -41,7 +41,7 @@ void main() {
       }).ignore();
     });
 
-    test('save requests new cache insertion on successful deletion', () async {
+    test('.save() requests new cache insertion on successful deletion', () async {
       final (mockedStore, sut) = makeSUT();
       final posts = [makePost(id: 1)];
 
@@ -51,7 +51,7 @@ void main() {
       verify(mockedStore.insert(posts)).called(1);
     });
 
-    test('save fails on deletion error', () {
+    test('.save() fails on deletion error', () {
       final (mockedStore, sut) = makeSUT();
       final deletionError = Exception('deletion error');
       when(mockedStore.deleteCachedPosts()).thenThrow(deletionError);
@@ -62,7 +62,7 @@ void main() {
       );
     });
 
-    test('save fails on insertion error', () {
+    test('.save() fails on insertion error', () {
       final (mockedStore, sut) = makeSUT();
       final insertionError = Exception('Insertion error');
       when(mockedStore.insert(any)).thenThrow(insertionError);
@@ -73,7 +73,7 @@ void main() {
       );
     });
 
-    test('save succeeds on successful cache insertion', () async {
+    test('.save() succeeds on successful cache insertion', () async {
       final (_, sut) = makeSUT();
 
       try {
