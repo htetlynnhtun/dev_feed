@@ -1,0 +1,2 @@
+reporter: github
+allow_test_randomization: true
