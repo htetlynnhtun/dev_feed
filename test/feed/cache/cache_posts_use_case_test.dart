@@ -22,15 +22,16 @@ void main() {
       verifyZeroInteractions(mockedStore);
     });
 
-    test('.save() requests cache deletion', () {
+    test('.save() requests cache deletion', () async {
       final (mockedStore, sut) = makeSUT();
 
-      sut.save([makePost(id: 1)]);
+      await sut.save([makePost(id: 1)]);
 
       verify(mockedStore.deleteCachedPosts()).called(1);
     });
 
-    test('.save() does not request cache insertion on deletion error', () async {
+    test('.save() does not request cache insertion on deletion error',
+        () async {
       final (mockedStore, sut) = makeSUT();
       when(mockedStore.deleteCachedPosts())
           .thenThrow(Exception('deletion error'));
@@ -41,7 +42,8 @@ void main() {
       }).ignore();
     });
 
-    test('.save() requests new cache insertion on successful deletion', () async {
+    test('.save() requests new cache insertion on successful deletion',
+        () async {
       final (mockedStore, sut) = makeSUT();
       final posts = [makePost(id: 1)];
 
@@ -57,7 +59,7 @@ void main() {
       when(mockedStore.deleteCachedPosts()).thenThrow(deletionError);
 
       expect(
-        () => sut.save([makePost(id: 1)]),
+        sut.save([makePost(id: 1)]),
         throwsA((deletionError)),
       );
     });
@@ -68,7 +70,7 @@ void main() {
       when(mockedStore.insert(any)).thenThrow(insertionError);
 
       expect(
-        () => sut.save([makePost(id: 1)]),
+        sut.save([makePost(id: 1)]),
         throwsA((insertionError)),
       );
     });
