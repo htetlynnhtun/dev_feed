@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:realm/realm.dart' hide User;
 
 import 'package:dev_feed/feed/cache/post_store.dart';
@@ -11,27 +13,53 @@ class RealmPostStore implements PostStore {
 
   RealmPostStore({required this.realm});
 
+  var _lastOperation = Future.value();
+
   @override
-  Future<void> deleteCachedPosts() async {
-    await realm.writeAsync(() {
-      realm.deleteAll<RealmPost>();
+  Future<void> deleteCachedPosts() {
+    return _chainOperation(() async {
+      await realm.writeAsync(() {
+        realm.deleteAll<RealmPost>();
+      });
     });
   }
 
   @override
   Future<void> insert(List<Post> posts) async {
-    await realm.writeAsync(() {
-      realm.deleteAll<RealmPost>();
-      realm.addAll(posts.map(
-        (e) => e._toRealmModel(),
-      ));
+    return _chainOperation(() async {
+      await realm.writeAsync(() {
+        realm.deleteAll<RealmPost>();
+        realm.addAll(posts.map(
+          (e) => e._toRealmModel(),
+        ));
+      });
     });
   }
 
   @override
   Future<List<Post>> retrieve() async {
-    final result = realm.all<RealmPost>();
-    return result.map((e) => e._toDomain()).toList();
+    return _chainOperationWithResult(() async {
+      final result = realm.all<RealmPost>();
+      return result.map((e) => e._toDomain()).toList();
+    });
+  }
+
+  Future<void> _chainOperation(Future<void> Function() operation) {
+    _lastOperation = _lastOperation.then((_) => operation());
+    return _lastOperation;
+  }
+
+  Future<T> _chainOperationWithResult<T>(Future<T> Function() operation) {
+    final completer = Completer<T>();
+    _lastOperation = _lastOperation.then((_) async {
+      try {
+        final result = await operation();
+        completer.complete(result);
+      } catch (error) {
+        completer.completeError(error);
+      }
+    });
+    return completer.future;
   }
 }
 

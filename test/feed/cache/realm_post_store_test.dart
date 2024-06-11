@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dev_feed/feed/cache/cache.dart';
 import 'package:realm/realm.dart';
 import 'package:test/test.dart';
@@ -91,6 +93,33 @@ void main() {
 
         expect(posts.length, 0);
       });
+    });
+
+    test('side effects run serially', () async {
+      final sut = makeSUT();
+      final completedOperationsInOrder = <int>[];
+
+      final operation1 = Completer();
+      sut.insert(uniquePosts()).then((_) {
+        completedOperationsInOrder.add(1);
+        operation1.complete();
+      });
+      final operation2 = Completer();
+      sut.deleteCachedPosts().then((_) {
+        completedOperationsInOrder.add(2);
+        operation2.complete();
+      });
+      final operation3 = Completer();
+      sut.insert(uniquePosts()).then((_) {
+        completedOperationsInOrder.add(3);
+        operation3.complete();
+      });
+      await Future.wait([operation1, operation2, operation3].map((e) => e.future));
+
+      expect(
+        completedOperationsInOrder,
+        [1, 2, 3],
+      );
     });
   });
 }
