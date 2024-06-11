@@ -5,19 +5,18 @@ import 'package:realm/realm.dart' hide User;
 import 'package:dev_feed/feed/cache/post_store.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/shared/model/model.dart';
+import 'package:dev_feed/util/serial_operation_queue_mixin.dart';
 
 part 'realm_post_store.realm.dart';
 
-class RealmPostStore implements PostStore {
+class RealmPostStore with SerialOperationQueueMixin implements PostStore {
   final Realm realm;
 
   RealmPostStore({required this.realm});
 
-  var _lastOperation = Future.value();
-
   @override
   Future<void> deleteCachedPosts() {
-    return _chainOperation(() async {
+    return addOperation(() async {
       await realm.writeAsync(() {
         realm.deleteAll<RealmPost>();
       });
@@ -26,7 +25,7 @@ class RealmPostStore implements PostStore {
 
   @override
   Future<void> insert(List<Post> posts) async {
-    return _chainOperation(() async {
+    return addOperation(() async {
       await realm.writeAsync(() {
         realm.deleteAll<RealmPost>();
         realm.addAll(posts.map(
@@ -38,28 +37,10 @@ class RealmPostStore implements PostStore {
 
   @override
   Future<List<Post>> retrieve() async {
-    return _chainOperationWithResult(() async {
+    return addOperationWithResult(() async {
       final result = realm.all<RealmPost>();
       return result.map((e) => e._toDomain()).toList();
     });
-  }
-
-  Future<void> _chainOperation(Future<void> Function() operation) {
-    _lastOperation = _lastOperation.then((_) => operation());
-    return _lastOperation;
-  }
-
-  Future<T> _chainOperationWithResult<T>(Future<T> Function() operation) {
-    final completer = Completer<T>();
-    _lastOperation = _lastOperation.then((_) async {
-      try {
-        final result = await operation();
-        completer.complete(result);
-      } catch (error) {
-        completer.completeError(error);
-      }
-    });
-    return completer.future;
   }
 }
 
