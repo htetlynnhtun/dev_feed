@@ -45,3 +45,7 @@ app.*.map.json
 coverage/
 
 test/play_test.dart
+
+default.realm.management
+default.realm.lock
+default.realm.note
