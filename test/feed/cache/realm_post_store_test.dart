@@ -61,6 +61,23 @@ void main() {
         expect(fistRetrievedPosts, insertedPosts);
         expect(lastRetrievedPosts, insertedPosts);
       });
+
+      test('overrides previously inserted cache', () async {
+        final sut = makeSUT();
+
+        await sut.insert([
+          makePost(id: 1),
+          makePost(id: 2),
+        ]);
+        final lastInsertedPosts = [
+          makePost(id: 9),
+          makePost(id: 99),
+        ];
+        await sut.insert(lastInsertedPosts);
+        final cachedPosts = await sut.retrieve();
+
+        expect(cachedPosts, lastInsertedPosts);
+      });
     });
   });
 }

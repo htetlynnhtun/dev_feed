@@ -21,6 +21,7 @@ class RealmPostStore implements PostStore {
   @override
   Future<void> insert(List<Post> posts) async {
     await realm.writeAsync(() {
+      realm.deleteAll<RealmPost>();
       realm.addAll(posts.map(
         (e) => e._toRealmModel(),
       ));
