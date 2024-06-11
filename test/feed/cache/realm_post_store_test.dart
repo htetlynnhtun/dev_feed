@@ -3,15 +3,19 @@ import 'package:realm/realm.dart';
 import 'package:test/test.dart';
 
 void main() {
+  RealmPostStore makeSUT() {
+    final realm = Realm(Configuration.inMemory([
+      RealmPost.schema,
+      RealmUser.schema,
+    ]));
+    addTearDown(() => realm.close());
+    return RealmPostStore(realm: realm);
+  }
+
   group('RealmPostStore', () {
     group('.retrieve()', () {
       test('delivers empty posts on empty cache', () async {
-        final realm = Realm(Configuration.inMemory([
-          RealmPost.schema,
-          RealmUser.schema,
-        ]));
-        addTearDown(() => realm.close());
-        final sut = RealmPostStore(realm: realm);
+        RealmPostStore sut = makeSUT();
 
         final posts = await sut.retrieve();
 
@@ -19,12 +23,7 @@ void main() {
       });
 
       test('has no side effects on empty cache', () async {
-        final realm = Realm(Configuration.inMemory([
-          RealmPost.schema,
-          RealmUser.schema,
-        ]));
-        addTearDown(() => realm.close());
-        final sut = RealmPostStore(realm: realm);
+        final sut = makeSUT();
 
         final firstPosts = await sut.retrieve();
         final lastPosts = await sut.retrieve();
