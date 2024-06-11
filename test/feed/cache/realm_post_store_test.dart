@@ -79,5 +79,17 @@ void main() {
         expect(cachedPosts, lastInsertedPosts);
       });
     });
+
+    group('.delete()', () {
+      test('has no side effects on empty cache', () async {
+        final sut = makeSUT();
+
+        await sut.deleteCachedPosts();
+
+        final posts = await sut.retrieve();
+
+        expect(posts.length, 0);
+      });
+    });
   });
 }
