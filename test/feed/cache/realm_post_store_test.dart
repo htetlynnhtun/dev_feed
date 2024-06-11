@@ -90,6 +90,21 @@ void main() {
 
         expect(posts.length, 0);
       });
+
+      test('empties previously inserted cache', () async {
+        final sut = makeSUT();
+
+        await sut.insert([
+          makePost(id: 1),
+          makePost(id: 2),
+        ]);
+
+        await sut.deleteCachedPosts();
+
+        final posts = await sut.retrieve();
+
+        expect(posts.length, 0);
+      });
     });
   });
 }
