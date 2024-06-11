@@ -37,10 +37,7 @@ void main() {
       test('delivers found posts on non-empty cache', () async {
         final sut = makeSUT();
 
-        final insertedPosts = [
-          makePost(id: 1),
-          makePost(id: 2),
-        ];
+        final insertedPosts = uniquePosts();
         await sut.insert(insertedPosts);
         final retrievedPosts = await sut.retrieve();
 
@@ -50,10 +47,7 @@ void main() {
       test('has no side effects on non-empty cache', () async {
         final sut = makeSUT();
 
-        final insertedPosts = [
-          makePost(id: 1),
-          makePost(id: 2),
-        ];
+        final insertedPosts = uniquePosts();
         await sut.insert(insertedPosts);
         final fistRetrievedPosts = await sut.retrieve();
         final lastRetrievedPosts = await sut.retrieve();
@@ -65,10 +59,7 @@ void main() {
       test('overrides previously inserted cache', () async {
         final sut = makeSUT();
 
-        await sut.insert([
-          makePost(id: 1),
-          makePost(id: 2),
-        ]);
+        await sut.insert(uniquePosts());
         final lastInsertedPosts = [
           makePost(id: 9),
           makePost(id: 99),
@@ -94,13 +85,8 @@ void main() {
       test('empties previously inserted cache', () async {
         final sut = makeSUT();
 
-        await sut.insert([
-          makePost(id: 1),
-          makePost(id: 2),
-        ]);
-
+        await sut.insert(uniquePosts());
         await sut.deleteCachedPosts();
-
         final posts = await sut.retrieve();
 
         expect(posts.length, 0);

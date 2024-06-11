@@ -14,3 +14,10 @@ Post makePost({required int id}) {
     user: User(name: 'name', profileImage: 'image.com'),
   );
 }
+
+List<Post> uniquePosts() {
+  return [
+    makePost(id: 1),
+    makePost(id: 2),
+  ];
+}
