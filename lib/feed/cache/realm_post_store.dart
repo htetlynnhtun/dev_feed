@@ -22,7 +22,7 @@ class RealmPostStore implements PostStore {
   Future<void> insert(List<Post> posts) async {
     await realm.writeAsync(() {
       realm.addAll(posts.map(
-        (e) => e._toDomain(),
+        (e) => e._toRealmModel(),
       ));
     });
   }
@@ -56,13 +56,14 @@ class _RealmUser {
 }
 
 extension on Post {
-  RealmPost _toDomain() => RealmPost(
+  RealmPost _toRealmModel() => RealmPost(
         id,
         title,
         description,
         readingTimeMinutes,
         publishedAt,
         likeCount,
+        tagList: tagList,
         coverImage: coverImage,
         user: RealmUser(
           ObjectId(),
@@ -80,7 +81,7 @@ extension on RealmPost {
         coverImage: coverImage,
         tagList: tagList,
         readingTimeMinutes: readingTimeMinutes,
-        publishedAt: publishedAt,
+        publishedAt: publishedAt.toLocal(),
         likeCount: likeCount,
         user: user!._toDomain(),
       );
