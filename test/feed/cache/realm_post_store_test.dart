@@ -46,6 +46,21 @@ void main() {
 
         expect(retrievedPosts, insertedPosts);
       });
+
+      test('has no side effects on non-empty cache', () async {
+        final sut = makeSUT();
+
+        final insertedPosts = [
+          makePost(id: 1),
+          makePost(id: 2),
+        ];
+        await sut.insert(insertedPosts);
+        final fistRetrievedPosts = await sut.retrieve();
+        final lastRetrievedPosts = await sut.retrieve();
+
+        expect(fistRetrievedPosts, insertedPosts);
+        expect(lastRetrievedPosts, insertedPosts);
+      });
     });
   });
 }
