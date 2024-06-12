@@ -14,14 +14,18 @@ abstract class FeedUIComposer {
     return PostsPage(
       viewModelFactory: () {
         return PostsViewModel(
-          loader: postLoader,
-          postViewModelFactory: (post) => PostItemViewModel(
-            post: post,
-            asyncImageViewModelFactory: (url) => AsyncImageViewModel(
-              imageURL: url,
-              dataLoader: dataLoader,
-            ),
-          ),
+          loader: () async {
+            final posts = await postLoader.load();
+            return posts
+                .map((post) => PostItemViewModel(
+                      post: post,
+                      asyncImageViewModelFactory: (url) => AsyncImageViewModel(
+                        imageURL: url,
+                        dataLoader: dataLoader,
+                      ),
+                    ))
+                .toList();
+          },
         );
       },
       onPostItemSelected: onFeedItemSelected,
