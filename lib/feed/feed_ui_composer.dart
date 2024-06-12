@@ -26,14 +26,15 @@ abstract class FeedUIComposer {
 
   static List<PostItemViewModel> _adapt(
       List<Post> posts, ImageDataLoader dataLoader) {
-    return posts
-        .map((post) => PostItemViewModel(
-              post: post,
-              asyncImageViewModelFactory: (url) => AsyncImageViewModel(
-                imageURL: url,
-                dataLoader: dataLoader,
-              ),
-            ))
-        .toList();
+    asyncImageViewModelFactory(url) => AsyncImageViewModel(
+          imageURL: url,
+          dataLoader: dataLoader,
+        );
+    return posts.map((post) {
+      return PostItemViewModel(
+        post: post,
+        asyncImageViewModelFactory: asyncImageViewModelFactory,
+      );
+    }).toList();
   }
 }
