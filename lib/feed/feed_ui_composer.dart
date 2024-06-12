@@ -16,19 +16,24 @@ abstract class FeedUIComposer {
         return PostsViewModel(
           loader: () async {
             final posts = await postLoader.load();
-            return posts
-                .map((post) => PostItemViewModel(
-                      post: post,
-                      asyncImageViewModelFactory: (url) => AsyncImageViewModel(
-                        imageURL: url,
-                        dataLoader: dataLoader,
-                      ),
-                    ))
-                .toList();
+            return _adapt(posts, dataLoader);
           },
         );
       },
       onPostItemSelected: onFeedItemSelected,
     );
+  }
+
+  static List<PostItemViewModel> _adapt(
+      List<Post> posts, ImageDataLoader dataLoader) {
+    return posts
+        .map((post) => PostItemViewModel(
+              post: post,
+              asyncImageViewModelFactory: (url) => AsyncImageViewModel(
+                imageURL: url,
+                dataLoader: dataLoader,
+              ),
+            ))
+        .toList();
   }
 }
