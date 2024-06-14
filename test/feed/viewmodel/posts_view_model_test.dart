@@ -23,7 +23,7 @@ void main() {
     test('has correct initial state', () {
       final (sut, _) = makeSUT();
 
-      expect(sut.value, const PostsViewState.loading());
+      expect(sut.value, const PostsViewState.idle());
     });
 
     test('does not message loader on init', () {

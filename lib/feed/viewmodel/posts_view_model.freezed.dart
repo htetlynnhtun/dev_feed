@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PostsViewState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() idle,
     required TResult Function() loading,
     required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
@@ -25,6 +26,7 @@ mixin _$PostsViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
     TResult? Function()? loading,
     TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
@@ -32,6 +34,7 @@ mixin _$PostsViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
     TResult Function()? loading,
     TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
@@ -40,6 +43,7 @@ mixin _$PostsViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
     required TResult Function(failure value) failure,
@@ -47,6 +51,7 @@ mixin _$PostsViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
     TResult? Function(failure value)? failure,
@@ -54,6 +59,7 @@ mixin _$PostsViewState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
     TResult Function(failure value)? failure,
@@ -78,6 +84,125 @@ class _$PostsViewStateCopyWithImpl<$Res, $Val extends PostsViewState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$IdleImplCopyWith<$Res> {
+  factory _$$IdleImplCopyWith(
+          _$IdleImpl value, $Res Function(_$IdleImpl) then) =
+      __$$IdleImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$IdleImplCopyWithImpl<$Res>
+    extends _$PostsViewStateCopyWithImpl<$Res, _$IdleImpl>
+    implements _$$IdleImplCopyWith<$Res> {
+  __$$IdleImplCopyWithImpl(_$IdleImpl _value, $Res Function(_$IdleImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$IdleImpl with DiagnosticableTreeMixin implements Idle {
+  const _$IdleImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'PostsViewState.idle()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'PostsViewState.idle'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$IdleImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() idle,
+    required TResult Function() loading,
+    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(String message) failure,
+  }) {
+    return idle();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
+    TResult? Function()? loading,
+    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(String message)? failure,
+  }) {
+    return idle?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
+    TResult Function()? loading,
+    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(String message)? failure,
+    required TResult orElse(),
+  }) {
+    if (idle != null) {
+      return idle();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Idle value) idle,
+    required TResult Function(Loading value) loading,
+    required TResult Function(Loaded value) loaded,
+    required TResult Function(failure value) failure,
+  }) {
+    return idle(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Idle value)? idle,
+    TResult? Function(Loading value)? loading,
+    TResult? Function(Loaded value)? loaded,
+    TResult? Function(failure value)? failure,
+  }) {
+    return idle?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Idle value)? idle,
+    TResult Function(Loading value)? loading,
+    TResult Function(Loaded value)? loaded,
+    TResult Function(failure value)? failure,
+    required TResult orElse(),
+  }) {
+    if (idle != null) {
+      return idle(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Idle implements PostsViewState {
+  const factory Idle() = _$IdleImpl;
 }
 
 /// @nodoc
@@ -124,6 +249,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() idle,
     required TResult Function() loading,
     required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
@@ -134,6 +260,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
     TResult? Function()? loading,
     TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
@@ -144,6 +271,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
     TResult Function()? loading,
     TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
@@ -158,6 +286,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
     required TResult Function(failure value) failure,
@@ -168,6 +297,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
     TResult? Function(failure value)? failure,
@@ -178,6 +308,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
     TResult Function(failure value)? failure,
@@ -272,6 +403,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() idle,
     required TResult Function() loading,
     required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
@@ -282,6 +414,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
     TResult? Function()? loading,
     TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
@@ -292,6 +425,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
     TResult Function()? loading,
     TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
@@ -306,6 +440,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
     required TResult Function(failure value) failure,
@@ -316,6 +451,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
     TResult? Function(failure value)? failure,
@@ -326,6 +462,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
     TResult Function(failure value)? failure,
@@ -419,6 +556,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() idle,
     required TResult Function() loading,
     required TResult Function(List<PostItemViewModel> posts) loaded,
     required TResult Function(String message) failure,
@@ -429,6 +567,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? idle,
     TResult? Function()? loading,
     TResult? Function(List<PostItemViewModel> posts)? loaded,
     TResult? Function(String message)? failure,
@@ -439,6 +578,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? idle,
     TResult Function()? loading,
     TResult Function(List<PostItemViewModel> posts)? loaded,
     TResult Function(String message)? failure,
@@ -453,6 +593,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
     required TResult Function(failure value) failure,
@@ -463,6 +604,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
     TResult? Function(failure value)? failure,
@@ -473,6 +615,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
     TResult Function(failure value)? failure,

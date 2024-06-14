@@ -15,9 +15,9 @@ final class PostsViewModel extends ValueNotifier<PostsViewState> {
   PostsViewModel({
     required PostItemsLoader loader,
   })  : _loader = loader,
-        super(const PostsViewState.loading());
+        super(const PostsViewState.idle());
 
-  void load() async {
+  Future<void> load() async {
     value = const PostsViewState.loading();
     try {
       final posts = await _loader();
