@@ -1,4 +1,5 @@
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
@@ -18,6 +19,13 @@ void main() {
       final sut = PostsViewModel(loader: mockedItemsLoader.load);
 
       expect(sut.value, const PostsViewState.loading());
+    });
+
+    test('does not message loader on init', () {
+      final mockedItemsLoader = MockItemsLoader();
+      final _ = PostsViewModel(loader: mockedItemsLoader.load);
+
+      verifyZeroInteractions(mockedItemsLoader);
     });
   });
 }
