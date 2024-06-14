@@ -13,17 +13,21 @@ abstract class ItemsLoader {
 
 @GenerateNiceMocks([MockSpec<ItemsLoader>()])
 void main() {
+  (PostsViewModel, MockItemsLoader) makeSUT() {
+    final mockedItemsLoader = MockItemsLoader();
+    final sut = PostsViewModel(loader: mockedItemsLoader.load);
+    return (sut, mockedItemsLoader);
+  }
+
   group('PostsViewModel', () {
     test('has correct initial state', () {
-      final mockedItemsLoader = MockItemsLoader();
-      final sut = PostsViewModel(loader: mockedItemsLoader.load);
+      final (sut, _) = makeSUT();
 
       expect(sut.value, const PostsViewState.loading());
     });
 
     test('does not message loader on init', () {
-      final mockedItemsLoader = MockItemsLoader();
-      final _ = PostsViewModel(loader: mockedItemsLoader.load);
+      final (_, mockedItemsLoader) = makeSUT();
 
       verifyZeroInteractions(mockedItemsLoader);
     });
