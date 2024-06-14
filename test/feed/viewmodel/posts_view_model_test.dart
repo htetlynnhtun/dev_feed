@@ -31,5 +31,22 @@ void main() {
 
       verifyZeroInteractions(mockedItemsLoader);
     });
+
+    test('.load() notifies [loading, failure] on loader failure', () async {
+      final (sut, mockedItemsLoader) = makeSUT();
+      when(mockedItemsLoader.load()).thenThrow(Exception('Failed to load'));
+      final notifiedStates = <PostsViewState>[];
+      sut.addListener(() {
+        notifiedStates.add(sut.value);
+      });
+
+      await sut.load();
+
+      expect(notifiedStates, [
+        const PostsViewState.loading(),
+        const PostsViewState.failure(
+            'Please check your connection and try again'),
+      ]);
+    });
   });
 }
