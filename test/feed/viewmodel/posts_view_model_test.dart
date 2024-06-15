@@ -5,6 +5,7 @@ import 'package:test/test.dart';
 import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
+import '../../helpers.dart';
 import 'posts_view_model_test.mocks.dart';
 
 abstract class ItemsLoader {
@@ -32,21 +33,19 @@ void main() {
       verifyZeroInteractions(mockedItemsLoader);
     });
 
-    test('.load() notifies [loading, failure] on loader failure', () async {
-      final (sut, mockedItemsLoader) = makeSUT();
-      when(mockedItemsLoader.load()).thenThrow(Exception('Failed to load'));
-      final notifiedStates = <PostsViewState>[];
-      sut.addListener(() {
-        notifiedStates.add(sut.value);
-      });
-
-      await sut.load();
-
-      expect(notifiedStates, [
+    valueNotifierTest(
+      '.load() notifies [loading, failure] on loader failure',
+      arrange: () {
+        final mockedItemsLoader = MockItemsLoader();
+        when(mockedItemsLoader.load()).thenThrow(Exception('Failed to load'));
+        return PostsViewModel(loader: mockedItemsLoader.load);
+      },
+      act: (notifier) => notifier.load(),
+      expectedValues: [
         const PostsViewState.loading(),
         const PostsViewState.failure(
             'Please check your connection and try again'),
-      ]);
-    });
+      ],
+    );
   });
 }
