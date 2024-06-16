@@ -47,5 +47,22 @@ void main() {
             'Please check your connection and try again'),
       ],
     );
+
+    valueNotifierTest(
+      '.load() notifies [loading, loaded] on loader success',
+      arrange: () {
+        final mockedItemsLoader = MockItemsLoader();
+
+        // TODO: Feel something's wrong, just to test PostsViewModel, need to mock PostItemViewModel
+        when(mockedItemsLoader.load())
+            .thenAnswer((_) async => uniquePosts().mapToViewModels());
+        return PostsViewModel(loader: mockedItemsLoader.load);
+      },
+      act: (notifier) => notifier.load(),
+      expectedValues: [
+        const PostsViewState.loading(),
+        const PostsViewState.loaded(expectedPostItemViewModels),
+      ],
+    );
   });
 }
