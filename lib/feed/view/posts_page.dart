@@ -41,6 +41,7 @@ class _PostsPageState extends State<PostsPage> {
           valueListenable: viewModel,
           builder: (context, value, child) {
             switch (value) {
+              case Idle():
               case Loading():
                 return const Center(
                   child: CircularProgressIndicator(),
