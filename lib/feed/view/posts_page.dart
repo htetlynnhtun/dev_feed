@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/feed/view/post_item_view.dart';
+import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
 class PostsPage extends StatefulWidget {
   final PostsViewModel Function() viewModelFactory;
-  final void Function(int) onPostItemSelected;
+  final Widget Function(BuildContext context, Post viewModel) postItemView;
 
   const PostsPage({
     super.key,
     required this.viewModelFactory,
-    required this.onPostItemSelected,
+    required this.postItemView,
   });
 
   @override
@@ -60,12 +60,9 @@ class _PostsPageState extends State<PostsPage> {
                     if (isFirstItem) {
                       padding += const EdgeInsets.only(top: 16.0);
                     }
-                    return GestureDetector(
-                      onTap: () => widget.onPostItemSelected(posts[index].id),
-                      child: Padding(
-                        padding: padding,
-                        child: PostItemView(postViewModel: posts[index]),
-                      ),
+                    return Padding(
+                      padding: padding,
+                      child: widget.postItemView(context, posts[index]),
                     );
                   },
                 );
@@ -77,5 +74,19 @@ class _PostsPageState extends State<PostsPage> {
         ),
       ),
     );
+  }
+}
+
+class DummyPostItem extends StatelessWidget {
+  final String title;
+  const DummyPostItem({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    print('===> DummyPostItem.build()');
+    return Text(title);
   }
 }

@@ -20,7 +20,7 @@ mixin _$PostsViewState {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function() loading,
-    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(List<Post> posts) loaded,
     required TResult Function(String message) failure,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$PostsViewState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function()? loading,
-    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(List<Post> posts)? loaded,
     TResult? Function(String message)? failure,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$PostsViewState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function()? loading,
-    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(List<Post> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) =>
@@ -131,7 +131,7 @@ class _$IdleImpl with DiagnosticableTreeMixin implements Idle {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function() loading,
-    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(List<Post> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return idle();
@@ -142,7 +142,7 @@ class _$IdleImpl with DiagnosticableTreeMixin implements Idle {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function()? loading,
-    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(List<Post> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return idle?.call();
@@ -153,7 +153,7 @@ class _$IdleImpl with DiagnosticableTreeMixin implements Idle {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function()? loading,
-    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(List<Post> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -251,7 +251,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function() loading,
-    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(List<Post> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return loading();
@@ -262,7 +262,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function()? loading,
-    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(List<Post> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return loading?.call();
@@ -273,7 +273,7 @@ class _$LoadingImpl with DiagnosticableTreeMixin implements Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function()? loading,
-    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(List<Post> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -331,7 +331,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<PostItemViewModel> posts});
+  $Res call({List<Post> posts});
 }
 
 /// @nodoc
@@ -351,7 +351,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
       null == posts
           ? _value._posts
           : posts // ignore: cast_nullable_to_non_nullable
-              as List<PostItemViewModel>,
+              as List<Post>,
     ));
   }
 }
@@ -359,11 +359,11 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
-  const _$LoadedImpl(final List<PostItemViewModel> posts) : _posts = posts;
+  const _$LoadedImpl(final List<Post> posts) : _posts = posts;
 
-  final List<PostItemViewModel> _posts;
+  final List<Post> _posts;
   @override
-  List<PostItemViewModel> get posts {
+  List<Post> get posts {
     if (_posts is EqualUnmodifiableListView) return _posts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_posts);
@@ -405,7 +405,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function() loading,
-    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(List<Post> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return loaded(posts);
@@ -416,7 +416,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function()? loading,
-    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(List<Post> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return loaded?.call(posts);
@@ -427,7 +427,7 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function()? loading,
-    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(List<Post> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
@@ -476,9 +476,9 @@ class _$LoadedImpl with DiagnosticableTreeMixin implements Loaded {
 }
 
 abstract class Loaded implements PostsViewState {
-  const factory Loaded(final List<PostItemViewModel> posts) = _$LoadedImpl;
+  const factory Loaded(final List<Post> posts) = _$LoadedImpl;
 
-  List<PostItemViewModel> get posts;
+  List<Post> get posts;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -558,7 +558,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
     required TResult Function() loading,
-    required TResult Function(List<PostItemViewModel> posts) loaded,
+    required TResult Function(List<Post> posts) loaded,
     required TResult Function(String message) failure,
   }) {
     return failure(message);
@@ -569,7 +569,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? idle,
     TResult? Function()? loading,
-    TResult? Function(List<PostItemViewModel> posts)? loaded,
+    TResult? Function(List<Post> posts)? loaded,
     TResult? Function(String message)? failure,
   }) {
     return failure?.call(message);
@@ -580,7 +580,7 @@ class _$failureImpl with DiagnosticableTreeMixin implements failure {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? idle,
     TResult Function()? loading,
-    TResult Function(List<PostItemViewModel> posts)? loaded,
+    TResult Function(List<Post> posts)? loaded,
     TResult Function(String message)? failure,
     required TResult orElse(),
   }) {
