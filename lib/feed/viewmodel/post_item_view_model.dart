@@ -1,21 +1,12 @@
 import 'package:intl/intl.dart';
 
-import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/util/constants.dart';
 
 class PostItemViewModel {
   final Post _post;
-  final AsyncImageViewModelFactory asyncImageViewModelFactory;
-  // final AsyncImageViewModelFactory coverImageViewModelFactory;
-  // final AsyncImageViewModelFactory userImageViewModelFactory;
 
-  PostItemViewModel({
-    required Post post,
-    // required this.coverImageViewModelFactory,
-    // required this.userImageViewModelFactory,
-    required this.asyncImageViewModelFactory,
-  }) : _post = post;
+  PostItemViewModel(this._post);
 
   static final dateFormatter = DateFormat.yMMMd();
 

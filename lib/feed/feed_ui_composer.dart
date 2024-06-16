@@ -1,4 +1,5 @@
 import 'package:dev_feed/async_image/model/image_data_loader.dart';
+import 'package:dev_feed/async_image/view/async_image_view.dart';
 import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
 import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed/view/post_item_view.dart';
@@ -19,14 +20,15 @@ abstract class FeedUIComposer {
         );
       },
       postItemView: (context, post) => PostItemView(
-        postViewModel: PostItemViewModel(
-          post: post,
-          asyncImageViewModelFactory: (url) => AsyncImageViewModel(
+        postViewModel: PostItemViewModel(post),
+        onTap: onFeedItemSelected,
+        asyncImageView: (context, url) => AsyncImageView(
+          imageUrl: url,
+          viewModelFactory: (url) => AsyncImageViewModel(
             imageURL: url,
             dataLoader: dataLoader,
           ),
         ),
-        onTap: onFeedItemSelected,
       ),
     );
   }

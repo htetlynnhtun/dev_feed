@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/async_image/view/async_image_view.dart';
 import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
 
 class PostItemView extends StatelessWidget {
   final PostItemViewModel postViewModel;
   final Function(int id) onTap;
+  final Widget Function(BuildContext context, String url) asyncImageView;
 
   const PostItemView({
     super.key,
     required this.postViewModel,
     required this.onTap,
+    required this.asyncImageView,
   });
 
   @override
@@ -30,9 +31,9 @@ class PostItemView extends StatelessWidget {
                   topLeft: Radius.circular(12),
                   topRight: Radius.circular(12),
                 ),
-                child: AsyncImageView(
-                  imageUrl: postViewModel.coverImageUrl(),
-                  viewModelFactory: postViewModel.asyncImageViewModelFactory,
+                child: asyncImageView(
+                  context,
+                  postViewModel.coverImageUrl(),
                 ),
               ),
             ),
@@ -65,10 +66,9 @@ class PostItemView extends StatelessWidget {
                           SizedBox(
                             height: 50,
                             child: ClipOval(
-                              child: AsyncImageView(
-                                imageUrl: postViewModel.userProfileImageUrl,
-                                viewModelFactory:
-                                    postViewModel.asyncImageViewModelFactory,
+                              child: asyncImageView(
+                                context,
+                                postViewModel.userProfileImageUrl,
                               ),
                             ),
                           ),
