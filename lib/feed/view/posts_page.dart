@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/feed/view/posts_failure_view.dart';
+import 'package:dev_feed/feed/view/posts_loading_view.dart';
 import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
 class PostsPage extends StatefulWidget {
   final PostsViewModel Function() viewModelFactory;
-  final Widget Function(BuildContext context, Post viewModel) postItemView;
+  final Widget Function(BuildContext context, List<Post> posts) loadedView;
 
   const PostsPage({
     super.key,
     required this.viewModelFactory,
-    required this.postItemView,
+    required this.loadedView,
   });
 
   @override
@@ -44,49 +46,23 @@ class _PostsPageState extends State<PostsPage> {
               case Idle():
               case Loading():
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: PostsLoadingView(),
                 );
 
               case Loaded(posts: var posts):
-                return ListView.builder(
-                  itemCount: posts.length,
-                  itemBuilder: (context, index) {
-                    final isFirstItem = index == 0;
-                    var padding = const EdgeInsets.only(
-                      left: 16,
-                      right: 16,
-                      bottom: 16,
-                    );
-                    if (isFirstItem) {
-                      padding += const EdgeInsets.only(top: 16.0);
-                    }
-                    return Padding(
-                      padding: padding,
-                      child: widget.postItemView(context, posts[index]),
-                    );
-                  },
-                );
+                return widget.loadedView(context, posts);
 
               case failure(message: var message):
-                return Center(child: Text(message));
+                return Center(
+                  child: PostsFailureView(
+                    message: message,
+                    onTapRetry: viewModel.load,
+                  ),
+                );
             }
           },
         ),
       ),
     );
-  }
-}
-
-class DummyPostItem extends StatelessWidget {
-  final String title;
-  const DummyPostItem({
-    super.key,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    print('===> DummyPostItem.build()');
-    return Text(title);
   }
 }
