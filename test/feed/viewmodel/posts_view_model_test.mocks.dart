@@ -5,10 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart' as _i4;
+import 'package:dev_feed/feed/model/post.dart' as _i4;
+import 'package:dev_feed/feed/model/post_loader.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-
-import 'posts_view_model_test.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,20 +22,18 @@ import 'posts_view_model_test.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-/// A class which mocks [ItemsLoader].
+/// A class which mocks [PostLoader].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockItemsLoader extends _i1.Mock implements _i2.ItemsLoader {
+class MockPostLoader extends _i1.Mock implements _i2.PostLoader {
   @override
-  _i3.Future<List<_i4.PostItemViewModel>> load() => (super.noSuchMethod(
+  _i3.Future<List<_i4.Post>> load() => (super.noSuchMethod(
         Invocation.method(
           #load,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.PostItemViewModel>>.value(
-            <_i4.PostItemViewModel>[]),
+        returnValue: _i3.Future<List<_i4.Post>>.value(<_i4.Post>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.PostItemViewModel>>.value(
-                <_i4.PostItemViewModel>[]),
-      ) as _i3.Future<List<_i4.PostItemViewModel>>);
+            _i3.Future<List<_i4.Post>>.value(<_i4.Post>[]),
+      ) as _i3.Future<List<_i4.Post>>);
 }

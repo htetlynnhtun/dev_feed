@@ -2,22 +2,20 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
+import 'package:dev_feed/feed/model/model.dart';
 import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
 
 import '../../helpers.dart';
 import 'posts_view_model_test.mocks.dart';
 
-abstract class ItemsLoader {
-  Future<List<PostItemViewModel>> load();
-}
-
-@GenerateNiceMocks([MockSpec<ItemsLoader>()])
+@GenerateNiceMocks([MockSpec<PostLoader>()])
 void main() {
-  (PostsViewModel, MockItemsLoader) makeSUT() {
-    final mockedItemsLoader = MockItemsLoader();
-    final sut = PostsViewModel(loader: mockedItemsLoader.load);
-    return (sut, mockedItemsLoader);
+  final posts = uniquePosts();
+  
+  (PostsViewModel, MockPostLoader) makeSUT() {
+    final mockedPostLoader = MockPostLoader();
+    final sut = PostsViewModel(loader: mockedPostLoader);
+    return (sut, mockedPostLoader);
   }
 
   group('PostsViewModel', () {
@@ -36,9 +34,9 @@ void main() {
     valueNotifierTest(
       '.load() notifies [loading, failure] on loader failure',
       arrange: () {
-        final mockedItemsLoader = MockItemsLoader();
-        when(mockedItemsLoader.load()).thenThrow(Exception('Failed to load'));
-        return PostsViewModel(loader: mockedItemsLoader.load);
+        final mockedPostLoader = MockPostLoader();
+        when(mockedPostLoader.load()).thenThrow(Exception('Failed to load'));
+        return PostsViewModel(loader: mockedPostLoader);
       },
       act: (notifier) => notifier.load(),
       expectedValues: [
@@ -51,17 +49,14 @@ void main() {
     valueNotifierTest(
       '.load() notifies [loading, loaded] on loader success',
       arrange: () {
-        final mockedItemsLoader = MockItemsLoader();
-
-        // TODO: Feel something's wrong, just to test PostsViewModel, need to mock PostItemViewModel
-        when(mockedItemsLoader.load())
-            .thenAnswer((_) async => uniquePosts().mapToViewModels());
-        return PostsViewModel(loader: mockedItemsLoader.load);
+        final mockedPostLoader = MockPostLoader();
+        when(mockedPostLoader.load()).thenAnswer((_) async => posts);
+        return PostsViewModel(loader: mockedPostLoader);
       },
       act: (notifier) => notifier.load(),
       expectedValues: [
         const PostsViewState.loading(),
-        const PostsViewState.loaded(expectedPostItemViewModels),
+        PostsViewState.loaded(posts),
       ],
     );
   });
