@@ -16,6 +16,7 @@ class PostsFailureView extends StatelessWidget {
       children: [
         Text(message),
         IconButton.filled(
+          key: const ValueKey('retry-load-post-button'),
           onPressed: onTapRetry,
           icon: const Icon(Icons.refresh),
         ),

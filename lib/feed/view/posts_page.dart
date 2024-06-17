@@ -55,6 +55,7 @@ class _PostsPageState extends State<PostsPage> {
               case failure(message: var message):
                 return Center(
                   child: PostsFailureView(
+                    key: const ValueKey('post-failure-view'),
                     message: message,
                     onTapRetry: viewModel.load,
                   ),
