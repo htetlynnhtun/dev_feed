@@ -12,7 +12,7 @@ abstract class FeedUIComposer {
   static PostsPage feedPage(
     PostLoader postLoader,
     ImageDataLoader dataLoader,
-    void Function(int id) onFeedItemSelected,
+    void Function(int id) onPostItemSelected,
   ) {
     return PostsPage(
       viewModelFactory: () {
@@ -24,7 +24,7 @@ abstract class FeedUIComposer {
         posts: posts,
         itemView: (context, post) => PostItemView(
           postViewModel: PostItemViewModel(post),
-          onTap: onFeedItemSelected,
+          onTap: onPostItemSelected,
           asyncImageView: (context, url) => AsyncImageView(
             imageUrl: url,
             viewModelFactory: (url) => AsyncImageViewModel(
