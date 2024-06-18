@@ -46,7 +46,9 @@ class _PostsPageState extends State<PostsPage> {
               case Idle():
               case Loading():
                 return const Center(
-                  child: PostsLoadingView(),
+                  child: PostsLoadingView(
+                    key: ValueKey('post-loading-view'),
+                  ),
                 );
 
               case Loaded(posts: var posts):

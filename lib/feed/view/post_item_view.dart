@@ -16,7 +16,6 @@ class PostItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('===> PostItemView.build()');
     return GestureDetector(
       onTap: () => onTap(postViewModel.id),
       child: Card(

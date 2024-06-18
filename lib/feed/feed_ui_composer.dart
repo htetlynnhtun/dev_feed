@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:dev_feed/async_image/model/image_data_loader.dart';
 import 'package:dev_feed/async_image/view/async_image_view.dart';
 import 'package:dev_feed/async_image/viewmodel/async_image_view_model.dart';
@@ -21,6 +23,7 @@ abstract class FeedUIComposer {
         );
       },
       loadedView: (context, posts) => PostsListView(
+        key: const ValueKey('post-loaded-view'),
         posts: posts,
         itemView: (context, post) => PostItemView(
           postViewModel: PostItemViewModel(post),
