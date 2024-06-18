@@ -26,6 +26,7 @@ abstract class FeedUIComposer {
         key: const ValueKey('post-loaded-view'),
         posts: posts,
         itemView: (context, post) => PostItemView(
+          key: ValueKey(post.id),
           postViewModel: PostItemViewModel(post),
           onTap: onPostItemSelected,
           asyncImageView: (context, url) => AsyncImageView(

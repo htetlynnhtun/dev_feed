@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:async/async.dart';
+import 'package:dev_feed/feed/view/post_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -91,6 +92,37 @@ void main() {
       postLoaderSpy.completeLoading(at: 1);
       await tester.pump();
       expect(find.byKey(const ValueKey('post-loading-view')), findsNothing);
+    });
+
+    testWidgets('loading completion renders successfully loaded posts',
+        (tester) async {
+      final postLoaderSpy = PostLoaderSpy();
+      final dataLoader = MockImageDataLoader();
+      final selectionHandler = MockPostSelectionHandler();
+      final sut = MaterialApp(
+        home: FeedUIComposer.feedPage(
+          postLoaderSpy,
+          dataLoader,
+          selectionHandler.onSelected,
+        ),
+      );
+      final result = [
+        makePost(id: 0),
+        makePost(id: 1),
+        makePost(id: 2),
+        makePost(id: 3),
+      ];
+      when(dataLoader.load(any))
+          .thenReturn(CancelableOperation.fromFuture(createRedImage(1, 1)));
+
+      await tester.pumpWidget(sut);
+      expect(find.byType(PostItemView), findsNothing);
+
+      postLoaderSpy.completeLoading(result: result, at: 0);
+      await tester.pump();
+      for (final post in result) {
+        await tester.scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
+      }
     });
   });
 }
