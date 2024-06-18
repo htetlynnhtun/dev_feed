@@ -39,7 +39,7 @@ void main() {
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
+      await tester.tap(widgetWithKey('retry-load-post-button'));
 
       expect(postLoaderSpy.loadCallCount, 2);
     });
@@ -49,19 +49,19 @@ void main() {
       final (sut, postLoaderSpy, _) = makeSUT();
 
       await tester.render(sut);
-      expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
+      expect(widgetWithKey('post-loading-view'), findsOneWidget);
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      expect(find.byKey(const ValueKey('post-loading-view')), findsNothing);
+      expect(widgetWithKey('post-loading-view'), findsNothing);
 
       await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
       await tester.rebuildIfNeeded();
-      expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
+      expect(widgetWithKey('post-loading-view'), findsOneWidget);
 
       postLoaderSpy.completeLoading(at: 1);
       await tester.rebuildIfNeeded();
-      expect(find.byKey(const ValueKey('post-loading-view')), findsNothing);
+      expect(widgetWithKey('post-loading-view'), findsNothing);
     });
 
     testWidgets('loading completion renders successfully loaded posts',
@@ -75,7 +75,7 @@ void main() {
       ];
 
       await tester.render(sut);
-      expect(find.byType(PostItemView), findsNothing);
+      expect(widgetOfType(PostItemView), findsNothing);
 
       postLoaderSpy.completeLoading(result: posts, at: 0);
       await tester.rebuildIfNeeded();
@@ -83,6 +83,9 @@ void main() {
     });
   });
 }
+
+Finder widgetWithKey<T>(T key) => find.byKey(ValueKey(key));
+Finder widgetOfType(Type type) => find.byType(type);
 
 extension on WidgetTester {
   Future<void> render(Widget sut) => pumpWidget(sut);
