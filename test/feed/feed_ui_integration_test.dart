@@ -35,7 +35,7 @@ void main() {
     testWidgets('load posts actions request posts from loader', (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
-      await tester.pumpWidget(sut);
+      await tester.render(sut);
 
       postLoaderSpy.completeLoadingWithException();
       await tester.pump();
@@ -48,7 +48,7 @@ void main() {
         (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
-      await tester.pumpWidget(sut);
+      await tester.render(sut);
       expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
 
       postLoaderSpy.completeLoadingWithException();
@@ -74,7 +74,7 @@ void main() {
         makePost(id: 3),
       ];
 
-      await tester.pumpWidget(sut);
+      await tester.render(sut);
       expect(find.byType(PostItemView), findsNothing);
 
       postLoaderSpy.completeLoading(result: result, at: 0);
@@ -84,6 +84,12 @@ void main() {
       }
     });
   });
+}
+
+extension on WidgetTester {
+  Future<void> render(Widget sut) async {
+    await pumpWidget(sut);
+  }
 }
 
 class ImageDataLoaderStub implements ImageDataLoader {
