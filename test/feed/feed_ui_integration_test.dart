@@ -67,7 +67,7 @@ void main() {
     testWidgets('loading completion renders successfully loaded posts',
         (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
-      final result = [
+      final posts = [
         makePost(id: 0),
         makePost(id: 1),
         makePost(id: 2),
@@ -77,11 +77,9 @@ void main() {
       await tester.render(sut);
       expect(find.byType(PostItemView), findsNothing);
 
-      postLoaderSpy.completeLoading(result: result, at: 0);
+      postLoaderSpy.completeLoading(result: posts, at: 0);
       await tester.rebuildIfNeeded();
-      for (final post in result) {
-        await tester.scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
-      }
+      await tester.verifyRendering(posts);
     });
   });
 }
@@ -90,6 +88,12 @@ extension on WidgetTester {
   Future<void> render(Widget sut) => pumpWidget(sut);
 
   Future<void> rebuildIfNeeded() => pump();
+
+  Future<void> verifyRendering(List<Post> posts) async {
+    for (final post in posts) {
+      await scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
+    }
+  }
 }
 
 class ImageDataLoaderStub implements ImageDataLoader {
