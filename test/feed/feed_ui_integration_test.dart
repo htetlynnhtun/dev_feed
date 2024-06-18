@@ -169,6 +169,44 @@ void main() {
         reason: '''Expected image url requests for second posts''',
       );
     });
+
+    testWidgets(
+        'post item view cancel loading images when not being rendered anymore',
+        (tester) async {
+      tester.view.physicalSize = const Size(1500, 1);
+      final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
+      final posts = <Post>[];
+      for (var i = 0; i < 20; i++) {
+        posts.add(makePost(
+          id: i,
+          coverImage: "https://image-$i.com",
+          profileImage: "https://profile-$i.com",
+        ));
+      }
+
+      await tester.render(sut);
+      loaderSpy.completeLoading(result: posts);
+      await tester.rebuildIfNeeded();
+
+      // post at 0 is automatically visible
+
+      var lastVisiblePostIndex = 1;
+      await tester.simulatePostVisible(posts[lastVisiblePostIndex]);
+
+      // scroll to lastVisiblePost index + 2 indexed post to
+      // make first 2 posts out of list view cache extent
+      await tester.simulatePostVisible(posts[lastVisiblePostIndex + 2]);
+      expect(
+        imageDataLoaderSpy.cancelledImageURLs,
+        [
+          posts[0].coverImage,
+          posts[0].user.profileImage,
+          posts[1].coverImage,
+          posts[1].user.profileImage,
+        ],
+        reason: '''Expected cancel image url requests for first 2 posts''',
+      );
+    });
   });
 }
 
@@ -210,6 +248,7 @@ class ImageDataLoaderSpy implements ImageDataLoader {
   final _cancelledImageURLs = <String>[];
 
   List<String> get loadedImageUrl => _imageRequests.map((e) => e.$1).toList();
+  List<String> get cancelledImageURLs => _cancelledImageURLs;
 
   @override
   CancelableOperation<Uint8List> load(Uri url) {
