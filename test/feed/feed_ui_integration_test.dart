@@ -112,6 +112,25 @@ void main() {
           reason:
               '''Expect post selection for post id: ${post2.id}, ${post1.id}''');
     });
+
+    testWidgets(
+        'loading completion renders failure message on failure until next reload',
+        (tester) async {
+      final (sut, loaderSpy, _) = makeSUT();
+
+      await tester.render(sut);
+
+      await tester.rebuildIfNeeded();
+      expect(sut.failureView, findsNothing);
+
+      loaderSpy.completeLoadingWithException();
+      await tester.rebuildIfNeeded();
+      expect(sut.failureView, findsOneWidget);
+
+      await tester.simulateUserInitiatedPostReload();
+      await tester.rebuildIfNeeded();
+      expect(sut.failureView, findsNothing);
+    });
   });
 }
 
@@ -120,6 +139,7 @@ void main() {
 extension on PostsPage {
   Finder get loadingIndicator => widgetWithKey('post-loading-view');
   Finder get postItemView => widgetOfType(PostItemView);
+  Finder get failureView => widgetWithKey('post-failure-view');
 }
 
 Finder widgetWithKey<T>(T key) => find.byKey(ValueKey(key));
