@@ -18,16 +18,20 @@ abstract class PostSelectionHandler {
   void onSelected(int id);
 }
 
+typedef PostItemSelectionHandler = void Function(int id);
+
 void main() {
   group('FeedUIIntegrationTest', () {
-    (PostsPage, PostLoaderSpy, ImageDataLoaderStub) makeSUT() {
+    (PostsPage, PostLoaderSpy, ImageDataLoaderStub) makeSUT({
+      PostItemSelectionHandler? handler,
+    }) {
       final postLoader = PostLoaderSpy();
       final dataLoader = ImageDataLoaderStub();
 
       final sut = FeedUIComposer.feedPage(
         postLoader,
         dataLoader,
-        (_) {},
+        handler ?? (_) {},
       );
 
       return (sut, postLoader, dataLoader);
@@ -88,6 +92,26 @@ void main() {
       await tester.rebuildIfNeeded();
       await tester.verifyRendering(posts);
     });
+
+    testWidgets('post item selection notifies handler', (tester) async {
+      final selectedPosts = <int>[];
+      final (sut, postLoaderSpy, _) = makeSUT(handler: selectedPosts.add);
+      final post1 = makePost(id: 1);
+      final post2 = makePost(id: 2);
+
+      await tester.render(sut);
+      postLoaderSpy.completeLoading(result: [post2, post1]);
+      await tester.rebuildIfNeeded();
+
+      await tester.simulatePostItemSelection(post2);
+      expect(selectedPosts, [post2.id],
+          reason: 'Expect post selection for post id: ${post2.id}');
+
+      await tester.simulatePostItemSelection(post1);
+      expect(selectedPosts, [post2.id, post1.id],
+          reason:
+              '''Expect post selection for post id: ${post2.id}, ${post1.id}''');
+    });
   });
 }
 
@@ -114,6 +138,9 @@ extension on WidgetTester {
 
   Future<void> simulateUserInitiatedPostReload() =>
       tap(widgetWithKey('retry-load-post-button'));
+
+  Future<void> simulatePostItemSelection(Post post) =>
+      tap(widgetWithKey(post.id));
 }
 
 class ImageDataLoaderStub implements ImageDataLoader {
