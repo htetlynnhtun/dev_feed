@@ -38,7 +38,7 @@ void main() {
       await tester.render(sut);
 
       postLoaderSpy.completeLoadingWithException();
-      await tester.pump();
+      await tester.rebuildIfNeeded();
       await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
 
       expect(postLoaderSpy.loadCallCount, 2);
@@ -52,15 +52,15 @@ void main() {
       expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
 
       postLoaderSpy.completeLoadingWithException();
-      await tester.pump();
+      await tester.rebuildIfNeeded();
       expect(find.byKey(const ValueKey('post-loading-view')), findsNothing);
 
       await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
-      await tester.pump();
+      await tester.rebuildIfNeeded();
       expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
 
       postLoaderSpy.completeLoading(at: 1);
-      await tester.pump();
+      await tester.rebuildIfNeeded();
       expect(find.byKey(const ValueKey('post-loading-view')), findsNothing);
     });
 
@@ -78,7 +78,7 @@ void main() {
       expect(find.byType(PostItemView), findsNothing);
 
       postLoaderSpy.completeLoading(result: result, at: 0);
-      await tester.pump();
+      await tester.rebuildIfNeeded();
       for (final post in result) {
         await tester.scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
       }
@@ -87,9 +87,9 @@ void main() {
 }
 
 extension on WidgetTester {
-  Future<void> render(Widget sut) async {
-    await pumpWidget(sut);
-  }
+  Future<void> render(Widget sut) => pumpWidget(sut);
+
+  Future<void> rebuildIfNeeded() => pump();
 }
 
 class ImageDataLoaderStub implements ImageDataLoader {
