@@ -35,13 +35,18 @@ void main() {
     testWidgets('load posts actions request posts from loader', (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
+      expect(postLoaderSpy.loadCallCount, 0,
+          reason: 'Expected no loading requests before UI is rendered',);
+
       await tester.render(sut);
+      expect(postLoaderSpy.loadCallCount, 1,
+          reason: 'Expected 1 loading request once UI is rendered');
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
       await tester.tap(widgetWithKey('retry-load-post-button'));
-
-      expect(postLoaderSpy.loadCallCount, 2);
+      expect(postLoaderSpy.loadCallCount, 2,
+          reason: 'Expected another loading requests once user initiates a load');
     });
 
     testWidgets('loading indicator is visible while loading posts',
