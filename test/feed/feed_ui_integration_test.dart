@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:async/async.dart';
 import 'package:dev_feed/feed/view/post_item_view.dart';
+import 'package:dev_feed/feed/view/posts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +20,7 @@ abstract class PostSelectionHandler {
 
 void main() {
   group('FeedUIIntegrationTest', () {
-    (MaterialApp, PostLoaderSpy, ImageDataLoaderStub) makeSUT() {
+    (PostsPage, PostLoaderSpy, ImageDataLoaderStub) makeSUT() {
       final postLoader = PostLoaderSpy();
       final dataLoader = ImageDataLoaderStub();
 
@@ -29,14 +30,14 @@ void main() {
         (_) {},
       );
 
-      return (MaterialApp(home: sut), postLoader, dataLoader);
+      return (sut, postLoader, dataLoader);
     }
 
     testWidgets('load posts actions request posts from loader', (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
       expect(postLoaderSpy.loadCallCount, 0,
-          reason: 'Expected no loading requests before UI is rendered',);
+          reason: 'Expected no loading requests before UI is rendered');
 
       await tester.render(sut);
       expect(postLoaderSpy.loadCallCount, 1,
@@ -44,9 +45,10 @@ void main() {
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      await tester.tap(widgetWithKey('retry-load-post-button'));
+      await tester.simulateUserInitiatedPostReload();
       expect(postLoaderSpy.loadCallCount, 2,
-          reason: 'Expected another loading requests once user initiates a load');
+          reason:
+              '''Expected another loading requests once user initiates a load''');
     });
 
     testWidgets('loading indicator is visible while loading posts',
@@ -54,19 +56,19 @@ void main() {
       final (sut, postLoaderSpy, _) = makeSUT();
 
       await tester.render(sut);
-      expect(widgetWithKey('post-loading-view'), findsOneWidget);
+      expect(sut.loadingIndicator, findsOneWidget);
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      expect(widgetWithKey('post-loading-view'), findsNothing);
+      expect(sut.loadingIndicator, findsNothing);
 
       await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
       await tester.rebuildIfNeeded();
-      expect(widgetWithKey('post-loading-view'), findsOneWidget);
+      expect(sut.loadingIndicator, findsOneWidget);
 
       postLoaderSpy.completeLoading(at: 1);
       await tester.rebuildIfNeeded();
-      expect(widgetWithKey('post-loading-view'), findsNothing);
+      expect(sut.loadingIndicator, findsNothing);
     });
 
     testWidgets('loading completion renders successfully loaded posts',
@@ -80,7 +82,7 @@ void main() {
       ];
 
       await tester.render(sut);
-      expect(widgetOfType(PostItemView), findsNothing);
+      expect(sut.postItemView, findsNothing);
 
       postLoaderSpy.completeLoading(result: posts, at: 0);
       await tester.rebuildIfNeeded();
@@ -89,11 +91,18 @@ void main() {
   });
 }
 
+// ========================= Helpers =========================
+
+extension on PostsPage {
+  Finder get loadingIndicator => widgetWithKey('post-loading-view');
+  Finder get postItemView => widgetOfType(PostItemView);
+}
+
 Finder widgetWithKey<T>(T key) => find.byKey(ValueKey(key));
 Finder widgetOfType(Type type) => find.byType(type);
 
 extension on WidgetTester {
-  Future<void> render(Widget sut) => pumpWidget(sut);
+  Future<void> render(Widget sut) => pumpWidget(MaterialApp(home: sut));
 
   Future<void> rebuildIfNeeded() => pump();
 
@@ -102,6 +111,9 @@ extension on WidgetTester {
       await scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
     }
   }
+
+  Future<void> simulateUserInitiatedPostReload() =>
+      tap(widgetWithKey('retry-load-post-button'));
 }
 
 class ImageDataLoaderStub implements ImageDataLoader {
