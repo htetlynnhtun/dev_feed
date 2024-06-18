@@ -6,20 +6,12 @@ import 'package:async/async.dart';
 import 'package:dev_feed/feed/view/post_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 
 import 'package:dev_feed/async_image/model/image_data_loader.dart';
 import 'package:dev_feed/feed/feed_ui_composer.dart';
 import 'package:dev_feed/feed/model/model.dart';
 
 import '../helpers.dart';
-@GenerateNiceMocks([
-  MockSpec<PostLoader>(),
-  MockSpec<ImageDataLoader>(),
-  MockSpec<PostSelectionHandler>(),
-])
-import 'feed_ui_integration_test.mocks.dart';
 
 abstract class PostSelectionHandler {
   void onSelected(int id);
@@ -27,56 +19,34 @@ abstract class PostSelectionHandler {
 
 void main() {
   group('FeedUIIntegrationTest', () {
-    (MaterialApp, MockPostLoader) makeSUT() {
-      final postLoader = MockPostLoader();
-      final dataLoader = MockImageDataLoader();
-      final selectionHandler = MockPostSelectionHandler();
+    (MaterialApp, PostLoaderSpy, ImageDataLoaderStub) makeSUT() {
+      final postLoader = PostLoaderSpy();
+      final dataLoader = ImageDataLoaderStub();
+
       final sut = FeedUIComposer.feedPage(
         postLoader,
         dataLoader,
-        selectionHandler.onSelected,
+        (_) {},
       );
 
-      return (MaterialApp(home: sut), postLoader);
+      return (MaterialApp(home: sut), postLoader, dataLoader);
     }
 
     testWidgets('load posts actions request posts from loader', (tester) async {
-      final (sut, postLoader) = makeSUT();
-      final mockedResponses = [
-        Exception('fail to load'),
-        uniquePosts(),
-      ];
-      when(postLoader.load()).thenAnswer((_) async {
-        final response = mockedResponses.removeAt(0);
-        if (response is List<Post>) {
-          return response;
-        } else {
-          throw response;
-        }
-      });
+      final (sut, postLoaderSpy, _) = makeSUT();
 
       await tester.pumpWidget(sut);
 
+      postLoaderSpy.completeLoadingWithException();
       await tester.pump();
       await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
 
-      verify(postLoader.load()).called(2);
+      expect(postLoaderSpy.loadCallCount, 2);
     });
 
     testWidgets('loading indicator is visible while loading posts',
         (tester) async {
-      final postLoaderSpy = PostLoaderSpy();
-      final dataLoader = MockImageDataLoader();
-      final selectionHandler = MockPostSelectionHandler();
-      final sut = MaterialApp(
-        home: FeedUIComposer.feedPage(
-          postLoaderSpy,
-          dataLoader,
-          selectionHandler.onSelected,
-        ),
-      );
-      when(dataLoader.load(any))
-          .thenReturn(CancelableOperation.fromFuture(createRedImage(1, 1)));
+      final (sut, postLoaderSpy, _) = makeSUT();
 
       await tester.pumpWidget(sut);
       expect(find.byKey(const ValueKey('post-loading-view')), findsOneWidget);
@@ -96,24 +66,13 @@ void main() {
 
     testWidgets('loading completion renders successfully loaded posts',
         (tester) async {
-      final postLoaderSpy = PostLoaderSpy();
-      final dataLoader = MockImageDataLoader();
-      final selectionHandler = MockPostSelectionHandler();
-      final sut = MaterialApp(
-        home: FeedUIComposer.feedPage(
-          postLoaderSpy,
-          dataLoader,
-          selectionHandler.onSelected,
-        ),
-      );
+      final (sut, postLoaderSpy, _) = makeSUT();
       final result = [
         makePost(id: 0),
         makePost(id: 1),
         makePost(id: 2),
         makePost(id: 3),
       ];
-      when(dataLoader.load(any))
-          .thenReturn(CancelableOperation.fromFuture(createRedImage(1, 1)));
 
       await tester.pumpWidget(sut);
       expect(find.byType(PostItemView), findsNothing);
@@ -127,22 +86,31 @@ void main() {
   });
 }
 
+class ImageDataLoaderStub implements ImageDataLoader {
+  @override
+  CancelableOperation<Uint8List> load(Uri url) {
+    return CancelableOperation.fromFuture(createRedImage(1, 1));
+  }
+}
+
 class PostLoaderSpy implements PostLoader {
-  List<Completer<List<Post>>> messages = [];
+  final List<Completer<List<Post>>> _messages = [];
+
+  int get loadCallCount => _messages.length;
 
   @override
   Future<List<Post>> load() {
     final completer = Completer<List<Post>>();
-    messages.add(completer);
+    _messages.add(completer);
     return completer.future;
   }
 
   void completeLoading({List<Post> result = const [], int at = 0}) {
-    messages[at].complete(result);
+    _messages[at].complete(result);
   }
 
   void completeLoadingWithException({int at = 0}) {
-    messages[at].completeError(Exception('any'));
+    _messages[at].completeError(Exception('any'));
   }
 }
 
