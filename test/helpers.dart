@@ -26,17 +26,21 @@ void valueNotifierTest<Notifier extends ValueNotifier<Value>, Value>(
   });
 }
 
-Post makePost({required int id}) {
+Post makePost({
+  required int id,
+  String? coverImage,
+  String? profileImage,
+}) {
   return Post(
     id: id,
     title: 'title',
     description: 'description',
-    coverImage: 'coverImage',
+    coverImage: coverImage,
     tagList: ['a', 'b'],
     readingTimeMinutes: 1,
     publishedAt: DateTime.now(),
     likeCount: 1,
-    user: User(name: 'name', profileImage: 'image.com'),
+    user: User(name: 'name', profileImage: profileImage ?? 'image.com'),
   );
 }
 

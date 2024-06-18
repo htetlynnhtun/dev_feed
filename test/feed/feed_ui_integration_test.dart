@@ -22,11 +22,11 @@ typedef PostItemSelectionHandler = void Function(int id);
 
 void main() {
   group('FeedUIIntegrationTest', () {
-    (PostsPage, PostLoaderSpy, ImageDataLoaderStub) makeSUT({
+    (PostsPage, PostLoaderSpy, ImageDataLoaderSpy) makeSUT({
       PostItemSelectionHandler? handler,
     }) {
       final postLoader = PostLoaderSpy();
-      final dataLoader = ImageDataLoaderStub();
+      final dataLoader = ImageDataLoaderSpy();
 
       final sut = FeedUIComposer.feedPage(
         postLoader,
@@ -131,6 +131,44 @@ void main() {
       await tester.rebuildIfNeeded();
       expect(sut.failureView, findsNothing);
     });
+
+    testWidgets('post item view loads image urls when rendered',
+        (tester) async {
+      tester.view.physicalSize = const Size(1500, 1);
+      final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
+      final post1 = makePost(
+        id: 1,
+        coverImage: "https://image-1.com",
+        profileImage: "https://profile-1.com",
+      );
+      final post2 = makePost(
+        id: 2,
+        coverImage: "https://image-2.com",
+        profileImage: "https://profile-2.com",
+      );
+
+      await tester.render(sut);
+      loaderSpy.completeLoading(result: [post1, post2]);
+      await tester.rebuildIfNeeded();
+
+      expect(
+        imageDataLoaderSpy.loadedImageUrl,
+        [post1.coverImage, post1.user.profileImage],
+        reason: '''Expected image url requests for first posts''',
+      );
+
+      await tester.simulatePostVisible(post2);
+      expect(
+        imageDataLoaderSpy.loadedImageUrl,
+        [
+          post1.coverImage,
+          post1.user.profileImage,
+          post2.coverImage,
+          post2.user.profileImage,
+        ],
+        reason: '''Expected image url requests for second posts''',
+      );
+    });
   });
 }
 
@@ -156,6 +194,10 @@ extension on WidgetTester {
     }
   }
 
+  Future<void> simulatePostVisible(Post post) async {
+    await scrollUntilVisible(widgetWithKey(post.id), 500);
+  }
+
   Future<void> simulateUserInitiatedPostReload() =>
       tap(widgetWithKey('retry-load-post-button'));
 
@@ -163,10 +205,28 @@ extension on WidgetTester {
       tap(widgetWithKey(post.id));
 }
 
-class ImageDataLoaderStub implements ImageDataLoader {
+class ImageDataLoaderSpy implements ImageDataLoader {
+  final _imageRequests = <(String, Completer<Uint8List>)>[];
+  final _cancelledImageURLs = <String>[];
+
+  List<String> get loadedImageUrl => _imageRequests.map((e) => e.$1).toList();
+
   @override
   CancelableOperation<Uint8List> load(Uri url) {
-    return CancelableOperation.fromFuture(createRedImage(1, 1));
+    final urlString = url.toString();
+    final completer = Completer<Uint8List>();
+    _imageRequests.add((urlString, completer));
+    return CancelableOperation.fromFuture(
+      completer.future,
+      onCancel: () {
+        _cancelledImageURLs.add(urlString);
+        completer.completeError('Operation cancelled');
+      },
+    );
+  }
+
+  void completImageLoading({required Uint8List data, required int at}) {
+    _imageRequests[at].$2.complete(data);
   }
 }
 
@@ -215,4 +275,22 @@ Future<Uint8List> createRedImage(int width, int height) async {
   final img = await picture.toImage(width, height);
   final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
   return byteData!.buffer.asUint8List();
+}
+
+void ignoreOverflowErrors(
+  FlutterErrorDetails details, {
+  bool forceReport = false,
+}) {
+  bool ifIsOverflowError = false;
+  var exception = details.exception;
+  if (exception is FlutterError) {
+    ifIsOverflowError = !exception.diagnostics.any(
+      (e) => e.value.toString().startsWith("A RenderFlex overflowed by"),
+    );
+  }
+  if (ifIsOverflowError) {
+    debugPrint('Ignored Overflow Error');
+  } else {
+    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
+  }
 }
