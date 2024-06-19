@@ -5,14 +5,14 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:async/async.dart';
-import 'package:dev_feed/feed/view/post_item_view.dart';
-import 'package:dev_feed/feed/view/posts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:dev_feed/async_image/model/image_data_loader.dart';
 import 'package:dev_feed/feed/feed_ui_composer.dart';
 import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/feed/view/post_item_view.dart';
+import 'package:dev_feed/feed/view/posts_page.dart';
 
 import '../helpers.dart';
 
@@ -42,19 +42,27 @@ void main() async {
     testWidgets('load posts actions request posts from loader', (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
-      expect(postLoaderSpy.loadCallCount, 0,
-          reason: 'Expected no loading requests before UI is rendered');
+      expect(
+        postLoaderSpy.loadCallCount,
+        0,
+        reason: 'Expected no loading requests before UI is rendered',
+      );
 
       await tester.render(sut);
-      expect(postLoaderSpy.loadCallCount, 1,
-          reason: 'Expected 1 loading request once UI is rendered');
+      expect(
+        postLoaderSpy.loadCallCount,
+        1,
+        reason: 'Expected 1 loading request once UI is rendered',
+      );
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
       await tester.simulateUserInitiatedPostReload();
-      expect(postLoaderSpy.loadCallCount, 2,
-          reason:
-              '''Expected another loading requests once user initiates a load''');
+      expect(
+        postLoaderSpy.loadCallCount,
+        2,
+        reason: 'Expected another loading requests once user initiates a load',
+      );
     });
 
     testWidgets('loading indicator is visible while loading posts',
@@ -62,19 +70,37 @@ void main() async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
       await tester.render(sut);
-      expect(sut.loadingIndicator, findsOneWidget);
+      expect(
+        sut.loadingIndicator,
+        findsOneWidget,
+        reason: 'Expected loading indicator while loading posts',
+      );
 
       postLoaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      expect(sut.loadingIndicator, findsNothing);
+      expect(
+        sut.loadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading indicator once loading posts is completed with failure',
+      );
 
-      await tester.tap(find.byKey(const ValueKey('retry-load-post-button')));
+      await tester.simulateUserInitiatedPostReload();
       await tester.rebuildIfNeeded();
-      expect(sut.loadingIndicator, findsOneWidget);
+      expect(
+        sut.loadingIndicator,
+        findsOneWidget,
+        reason: 'Expected loading indicator once user initiates post reload',
+      );
 
       postLoaderSpy.completeLoading(at: 1);
       await tester.rebuildIfNeeded();
-      expect(sut.loadingIndicator, findsNothing);
+      expect(
+        sut.loadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading inidcator once loading posts is completed successfully',
+      );
     });
 
     testWidgets('loading completion renders successfully loaded posts',
@@ -88,7 +114,11 @@ void main() async {
       ];
 
       await tester.render(sut);
-      expect(sut.postItemView, findsNothing);
+      expect(
+        sut.postItemView,
+        findsNothing,
+        reason: 'Expected no post items while loading posts',
+      );
 
       postLoaderSpy.completeLoading(result: posts, at: 0);
       await tester.rebuildIfNeeded();
@@ -106,13 +136,18 @@ void main() async {
       await tester.rebuildIfNeeded();
 
       await tester.simulatePostItemSelection(post2);
-      expect(selectedPosts, [post2.id],
-          reason: 'Expect post selection for post id: ${post2.id}');
+      expect(
+        selectedPosts,
+        [post2.id],
+        reason: 'Expected post selection for post id: ${post2.id}',
+      );
 
       await tester.simulatePostItemSelection(post1);
-      expect(selectedPosts, [post2.id, post1.id],
-          reason:
-              '''Expect post selection for post id: ${post2.id}, ${post1.id}''');
+      expect(
+        selectedPosts,
+        [post2.id, post1.id],
+        reason: 'Expected post selection for post id: ${post2.id}, ${post1.id}',
+      );
     });
 
     testWidgets(
@@ -123,15 +158,28 @@ void main() async {
       await tester.render(sut);
 
       await tester.rebuildIfNeeded();
-      expect(sut.failureView, findsNothing);
+      expect(
+        sut.failureView,
+        findsNothing,
+        reason: 'Expected no failure view while loading',
+      );
 
       loaderSpy.completeLoadingWithException();
       await tester.rebuildIfNeeded();
-      expect(sut.failureView, findsOneWidget);
+      expect(
+        sut.failureView,
+        findsOneWidget,
+        reason:
+            'Expected failure view once post loading is completed with failrue',
+      );
 
       await tester.simulateUserInitiatedPostReload();
       await tester.rebuildIfNeeded();
-      expect(sut.failureView, findsNothing);
+      expect(
+        sut.failureView,
+        findsNothing,
+        reason: 'Expected no failure view once user initiated post reload',
+      );
     });
 
     testWidgets('post item view loads image urls when rendered',
@@ -156,7 +204,7 @@ void main() async {
       expect(
         imageDataLoaderSpy.loadedImageUrl,
         [post1.coverImage, post1.user.profileImage],
-        reason: '''Expected image url requests for first posts''',
+        reason: 'Expected image url requests for first posts',
       );
 
       await tester.simulatePostVisible(post2);
@@ -168,7 +216,7 @@ void main() async {
           post2.coverImage,
           post2.user.profileImage,
         ],
-        reason: '''Expected image url requests for second posts''',
+        reason: 'Expected image url requests for second posts',
       );
     });
 
@@ -192,7 +240,6 @@ void main() async {
       await tester.rebuildIfNeeded();
 
       // post at 0 is automatically visible
-
       var lastVisiblePostIndex = 1;
       await tester.simulatePostVisible(posts[lastVisiblePostIndex]);
 
@@ -207,7 +254,7 @@ void main() async {
           posts[1].coverImage,
           posts[1].user.profileImage,
         ],
-        reason: '''Expected cancel image url requests for first 2 posts''',
+        reason: 'Expected cancel image url requests for first 2 posts',
       );
     });
 
