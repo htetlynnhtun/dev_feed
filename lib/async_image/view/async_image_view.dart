@@ -48,6 +48,7 @@ class _AsyncImageWidgetState extends State<AsyncImageView> {
               ),
             ),
           Loaded(data: var bytes) => Image.memory(
+              key: ValueKey(bytes),
               bytes,
               fit: BoxFit.cover,
             ),

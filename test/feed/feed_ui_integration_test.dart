@@ -330,6 +330,62 @@ void main() async {
             'Expected loading indicator for second post cover image on retry action',
       );
     });
+
+    testWidgets('renders post item cover image loaded from url',
+        (tester) async {
+      final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
+      final post0 = makePost(id: 0, coverImage: 'https://image-0.com');
+      final post1 = makePost(id: 1, coverImage: 'https://image-1.com');
+
+      await tester.pumpWidget(MaterialApp(home: sut));
+      loaderSpy.completeLoading(result: [post0, post1]);
+      await tester.pump();
+
+      await tester.simulatePostVisible(post1);
+      final firstImageData = await tester.runAsync(() => createRedImage(1, 1));
+      final secondImageData = await tester.runAsync(() => createRedImage(2, 2));
+
+      expect(
+        sut.imageWithData(firstImageData!),
+        findsNothing,
+        reason: 'Expected no image while image data is loading',
+      );
+      expect(
+        sut.imageWithData(secondImageData!),
+        findsNothing,
+        reason: 'Expected no image while image data is loading',
+      );
+
+      imageDataLoaderSpy.completImageLoading(data: firstImageData, at: 0);
+      await tester.pump();
+      expect(
+        sut.imageWithData(firstImageData),
+        findsOne,
+        reason:
+            'Expected image for first image once first image loading is completed',
+      );
+      expect(
+        sut.imageWithData(secondImageData),
+        findsNothing,
+        reason:
+            'Expected no image state change for second image once first image loading is completed',
+      );
+
+      imageDataLoaderSpy.completImageLoading(data: secondImageData, at: 1);
+      await tester.pump();
+      expect(
+        sut.imageWithData(firstImageData),
+        findsOne,
+        reason:
+            'Expected no image state change for first image once second image loading is completed',
+      );
+      expect(
+        sut.imageWithData(secondImageData),
+        findsOne,
+        reason:
+            'Expected image for second image once second image loading is completed',
+      );
+    });
   });
 }
 
@@ -339,6 +395,8 @@ extension on PostsPage {
   Finder get loadingIndicator => widgetWithKey('post-loading-view');
   Finder get postItemView => widgetOfType(PostItemView);
   Finder get failureView => widgetWithKey('post-failure-view');
+
+  Finder imageWithData(Uint8List data) => widgetWithKey(data);
 
   Finder coverImageLoadingIndicatorOf(Post post) => find.descendant(
         of: widgetWithKey(post.coverImage!),
