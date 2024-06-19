@@ -243,6 +243,7 @@ void main() async {
       var lastVisiblePostIndex = 1;
       await tester.simulatePostVisible(posts[lastVisiblePostIndex]);
 
+      // TODO: This test is fragile, Depending on the post item widget height to make it not visible and disposed.
       // scroll to lastVisiblePost index + 2 indexed post to
       // make first 2 posts out of list view cache extent
       await tester.simulatePostVisible(posts[lastVisiblePostIndex + 2]);
