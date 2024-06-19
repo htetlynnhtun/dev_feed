@@ -269,23 +269,14 @@ void main() async {
       loaderSpy.completeLoading(result: [post0, post1]);
       await tester.pump();
 
-      final post0CoverImageLoadingIndicator = find.descendant(
-        of: widgetWithKey(post0.coverImage!),
-        matching: widgetOfType(CircularProgressIndicator),
-      );
-      final post1CoverImage = widgetWithKey(post1.coverImage!);
-      final post1CoverImageLoadingIndicator = find.descendant(
-        of: post1CoverImage,
-        matching: widgetOfType(CircularProgressIndicator),
-      );
       expect(
-        post0CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post0),
         findsOne,
         reason:
             'Expected loading indicator for first post cover image while loading first cover image',
       );
       expect(
-        post1CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post1),
         findsOne,
         reason:
             'Expected loading indicator for second post cover image while loading second cover image',
@@ -296,13 +287,13 @@ void main() async {
       imageDataLoaderSpy.completImageLoading(data: firstCoverImageData!, at: 0);
       await tester.pump();
       expect(
-        post0CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post0),
         findsNothing,
         reason:
             'Expected no loading indicator for first post cover image once first cover image loaded',
       );
       expect(
-        post1CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post1),
         findsOne,
         reason:
             'Expected no loading indicator state change for second post cover image once first cover image loaded',
@@ -311,31 +302,28 @@ void main() async {
       imageDataLoaderSpy.completeImageLoadingWithException(at: 2);
       await tester.pump();
       expect(
-        post0CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post0),
         findsNothing,
         reason:
             'Expected no loading indicator state change for first post cover image once loading second cover image is failed',
       );
       expect(
-        post1CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post1),
         findsNothing,
         reason:
             'Expected no loading indicator for second post cover image once second cover image loading failed',
       );
 
-      await tester.tap(find.descendant(
-        of: post1CoverImage,
-        matching: widgetWithKey('retry-button'),
-      ));
+      await tester.tap(sut.coverImageRetryButtonOf(post1));
       await tester.pump();
       expect(
-        post0CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post0),
         findsNothing,
         reason:
             'Expected no loading indicator state change for first post cover image once loading second cover image is failed',
       );
       expect(
-        post1CoverImageLoadingIndicator,
+        sut.coverImageLoadingIndicatorOf(post1),
         findsOne,
         reason:
             'Expected loading indicator for second post cover image on retry action',
@@ -350,6 +338,16 @@ extension on PostsPage {
   Finder get loadingIndicator => widgetWithKey('post-loading-view');
   Finder get postItemView => widgetOfType(PostItemView);
   Finder get failureView => widgetWithKey('post-failure-view');
+
+  Finder coverImageLoadingIndicatorOf(Post post) => find.descendant(
+        of: widgetWithKey(post.coverImage!),
+        matching: widgetOfType(CircularProgressIndicator),
+      );
+
+  Finder coverImageRetryButtonOf(Post post) => find.descendant(
+        of: widgetWithKey(post.coverImage!),
+        matching: widgetWithKey('retry-button'),
+      );
 }
 
 Finder widgetWithKey<T extends Object>(T key) => find.byKey(ValueKey(key));
