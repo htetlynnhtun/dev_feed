@@ -29,8 +29,8 @@ class AsyncImageViewModel extends ValueNotifier<AsyncImageViewState> {
       _dataLoadingOperation = _dataLoader.load(Uri.parse(_imageURL));
       final imageData = await _dataLoadingOperation!.value;
       value = AsyncImageViewState.loaded(imageData);
-    } on String catch (message) {
-      value = AsyncImageViewState.failure(message);
+    }  catch (e) {
+      value = AsyncImageViewState.failure(e.toString());
     }
   }
 

@@ -22,7 +22,7 @@ abstract class PostSelectionHandler {
 
 typedef PostItemSelectionHandler = void Function(int id);
 
-void main() {
+void main() async {
   group('FeedUIIntegrationTest', () {
     (PostsPage, PostLoaderSpy, ImageDataLoaderSpy) makeSUT({
       PostItemSelectionHandler? handler,
@@ -176,6 +176,7 @@ void main() {
         'post item view cancel loading images when not being rendered anymore',
         (tester) async {
       tester.view.physicalSize = const Size(1500, 1);
+      addTearDown(tester.view.resetPhysicalSize);
       final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
       final posts = <Post>[];
       for (var i = 0; i < 20; i++) {
@@ -209,6 +210,90 @@ void main() {
         reason: '''Expected cancel image url requests for first 2 posts''',
       );
     });
+
+    testWidgets(
+        'post item cover image loading indicator is visible while loading image data',
+        (tester) async {
+      final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
+      final post0 = makePost(id: 0, coverImage: 'https://image-0.com');
+      final post1 = makePost(id: 1, coverImage: 'https://image-1.com');
+
+      await tester.render(sut);
+      loaderSpy.completeLoading(result: [post0, post1]);
+      await tester.rebuildIfNeeded();
+
+      final post0CoverImageLoadingIndicator = find.descendant(
+        of: widgetWithKey(post0.coverImage!),
+        matching: widgetOfType(CircularProgressIndicator),
+      );
+      final post1CoverImage = widgetWithKey(post1.coverImage!);
+      final post1CoverImageLoadingIndicator = find.descendant(
+        of: post1CoverImage,
+        matching: widgetOfType(CircularProgressIndicator),
+      );
+      expect(
+        post0CoverImageLoadingIndicator,
+        findsOne,
+        reason:
+            'Expected loading indicator for first post cover image while loading first cover image',
+      );
+      expect(
+        post1CoverImageLoadingIndicator,
+        findsOne,
+        reason:
+            'Expected loading indicator for second post cover image while loading second cover image',
+      );
+
+      final firstCoverImageData =
+          await tester.runAsync(() => createRedImage(1, 1));
+      imageDataLoaderSpy.completImageLoading(data: firstCoverImageData!, at: 0);
+      await tester.rebuildIfNeeded();
+      expect(
+        post0CoverImageLoadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading indicator for first post cover image once first cover image loaded',
+      );
+      expect(
+        post1CoverImageLoadingIndicator,
+        findsOne,
+        reason:
+            'Expected no loading indicator state change for second post cover image once first cover image loaded',
+      );
+
+      imageDataLoaderSpy.completeImageLoadingWithException(at: 2);
+      await tester.rebuildIfNeeded();
+      expect(
+        post0CoverImageLoadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading indicator state change for first post cover image once loading second cover image is failed',
+      );
+      expect(
+        post1CoverImageLoadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading indicator for second post cover image once second cover image loading failed',
+      );
+
+      await tester.tap(find.descendant(
+        of: post1CoverImage,
+        matching: widgetWithKey('retry-button'),
+      ));
+      await tester.rebuildIfNeeded();
+      expect(
+        post0CoverImageLoadingIndicator,
+        findsNothing,
+        reason:
+            'Expected no loading indicator state change for first post cover image once loading second cover image is failed',
+      );
+      expect(
+        post1CoverImageLoadingIndicator,
+        findsOne,
+        reason:
+            'Expected loading indicator for second post cover image on retry action',
+      );
+    });
   });
 }
 
@@ -220,7 +305,7 @@ extension on PostsPage {
   Finder get failureView => widgetWithKey('post-failure-view');
 }
 
-Finder widgetWithKey<T>(T key) => find.byKey(ValueKey(key));
+Finder widgetWithKey<T extends Object>(T key) => find.byKey(ValueKey(key));
 Finder widgetOfType(Type type) => find.byType(type);
 
 extension on WidgetTester {
@@ -268,6 +353,10 @@ class ImageDataLoaderSpy implements ImageDataLoader {
 
   void completImageLoading({required Uint8List data, required int at}) {
     _imageRequests[at].$2.complete(data);
+  }
+
+  void completeImageLoadingWithException({required int at}) {
+    _imageRequests[at].$2.completeError(Exception('any'));
   }
 }
 

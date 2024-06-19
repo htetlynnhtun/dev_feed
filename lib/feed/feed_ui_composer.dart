@@ -30,6 +30,7 @@ abstract class FeedUIComposer {
           postViewModel: PostItemViewModel(post),
           onTap: onPostItemSelected,
           asyncImageView: (context, url) => AsyncImageView(
+            key: ValueKey(url),
             imageUrl: url,
             viewModelFactory: (url) => AsyncImageViewModel(
               imageURL: url,

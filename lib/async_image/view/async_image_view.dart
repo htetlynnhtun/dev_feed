@@ -57,6 +57,7 @@ class _AsyncImageWidgetState extends State<AsyncImageView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
+                    key: const ValueKey('retry-button'),
                     onPressed: _viewModel.load,
                     icon: Icon(
                       Icons.refresh,
