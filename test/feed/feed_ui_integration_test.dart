@@ -406,21 +406,3 @@ Future<Uint8List> createRedImage(int width, int height) async {
   final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
   return byteData!.buffer.asUint8List();
 }
-
-void ignoreOverflowErrors(
-  FlutterErrorDetails details, {
-  bool forceReport = false,
-}) {
-  bool ifIsOverflowError = false;
-  var exception = details.exception;
-  if (exception is FlutterError) {
-    ifIsOverflowError = !exception.diagnostics.any(
-      (e) => e.value.toString().startsWith("A RenderFlex overflowed by"),
-    );
-  }
-  if (ifIsOverflowError) {
-    debugPrint('Ignored Overflow Error');
-  } else {
-    FlutterError.dumpErrorToConsole(details, forceReport: forceReport);
-  }
-}
