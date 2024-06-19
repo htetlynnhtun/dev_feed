@@ -48,7 +48,7 @@ void main() async {
         reason: 'Expected no loading requests before UI is rendered',
       );
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       expect(
         postLoaderSpy.loadCallCount,
         1,
@@ -56,7 +56,7 @@ void main() async {
       );
 
       postLoaderSpy.completeLoadingWithException();
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       await tester.simulateUserInitiatedPostReload();
       expect(
         postLoaderSpy.loadCallCount,
@@ -69,7 +69,7 @@ void main() async {
         (tester) async {
       final (sut, postLoaderSpy, _) = makeSUT();
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       expect(
         sut.loadingIndicator,
         findsOneWidget,
@@ -77,7 +77,7 @@ void main() async {
       );
 
       postLoaderSpy.completeLoadingWithException();
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.loadingIndicator,
         findsNothing,
@@ -86,7 +86,7 @@ void main() async {
       );
 
       await tester.simulateUserInitiatedPostReload();
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.loadingIndicator,
         findsOneWidget,
@@ -94,7 +94,7 @@ void main() async {
       );
 
       postLoaderSpy.completeLoading(at: 1);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.loadingIndicator,
         findsNothing,
@@ -113,7 +113,7 @@ void main() async {
         makePost(id: 3),
       ];
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       expect(
         sut.postItemView,
         findsNothing,
@@ -121,7 +121,7 @@ void main() async {
       );
 
       postLoaderSpy.completeLoading(result: posts, at: 0);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       await tester.verifyRendering(posts);
     });
 
@@ -131,9 +131,9 @@ void main() async {
       final post1 = makePost(id: 1);
       final post2 = makePost(id: 2);
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       postLoaderSpy.completeLoading(result: [post2, post1]);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
 
       await tester.simulatePostItemSelection(post2);
       expect(
@@ -155,9 +155,9 @@ void main() async {
         (tester) async {
       final (sut, loaderSpy, _) = makeSUT();
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
 
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.failureView,
         findsNothing,
@@ -165,7 +165,7 @@ void main() async {
       );
 
       loaderSpy.completeLoadingWithException();
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.failureView,
         findsOneWidget,
@@ -174,7 +174,7 @@ void main() async {
       );
 
       await tester.simulateUserInitiatedPostReload();
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         sut.failureView,
         findsNothing,
@@ -197,9 +197,9 @@ void main() async {
         profileImage: "https://profile-2.com",
       );
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       loaderSpy.completeLoading(result: [post1, post2]);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
 
       expect(
         imageDataLoaderSpy.loadedImageUrl,
@@ -235,9 +235,9 @@ void main() async {
         ));
       }
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       loaderSpy.completeLoading(result: posts);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
 
       // post at 0 is automatically visible
       var lastVisiblePostIndex = 1;
@@ -265,9 +265,9 @@ void main() async {
       final post0 = makePost(id: 0, coverImage: 'https://image-0.com');
       final post1 = makePost(id: 1, coverImage: 'https://image-1.com');
 
-      await tester.render(sut);
+      await tester.pumpWidget(MaterialApp(home: sut));
       loaderSpy.completeLoading(result: [post0, post1]);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
 
       final post0CoverImageLoadingIndicator = find.descendant(
         of: widgetWithKey(post0.coverImage!),
@@ -294,7 +294,7 @@ void main() async {
       final firstCoverImageData =
           await tester.runAsync(() => createRedImage(1, 1));
       imageDataLoaderSpy.completImageLoading(data: firstCoverImageData!, at: 0);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         post0CoverImageLoadingIndicator,
         findsNothing,
@@ -309,7 +309,7 @@ void main() async {
       );
 
       imageDataLoaderSpy.completeImageLoadingWithException(at: 2);
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         post0CoverImageLoadingIndicator,
         findsNothing,
@@ -327,7 +327,7 @@ void main() async {
         of: post1CoverImage,
         matching: widgetWithKey('retry-button'),
       ));
-      await tester.rebuildIfNeeded();
+      await tester.pump();
       expect(
         post0CoverImageLoadingIndicator,
         findsNothing,
@@ -356,10 +356,6 @@ Finder widgetWithKey<T extends Object>(T key) => find.byKey(ValueKey(key));
 Finder widgetOfType(Type type) => find.byType(type);
 
 extension on WidgetTester {
-  Future<void> render(Widget sut) => pumpWidget(MaterialApp(home: sut));
-
-  Future<void> rebuildIfNeeded() => pump();
-
   Future<void> verifyRendering(List<Post> posts) async {
     for (final post in posts) {
       await scrollUntilVisible(find.byKey(ValueKey(post.id)), 500);
