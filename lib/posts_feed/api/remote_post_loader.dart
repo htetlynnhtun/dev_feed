@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:http/http.dart' as http;
 
 final class RemotePostLoader implements PostLoader {

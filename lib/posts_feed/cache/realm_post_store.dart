@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:realm/realm.dart' hide User;
 
-import 'package:dev_feed/feed/cache/post_store.dart';
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/cache/post_store.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/shared/model/model.dart';
 import 'package:dev_feed/util/serial_operation_queue_mixin.dart';
 

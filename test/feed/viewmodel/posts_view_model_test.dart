@@ -2,8 +2,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
+import 'package:dev_feed/posts_feed/viewmodel/posts_view_model.dart';
 
 import '../../helpers.dart';
 import 'posts_view_model_test.mocks.dart';

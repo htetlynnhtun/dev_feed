@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:dev_feed/feed/api/api.dart';
+import 'package:dev_feed/posts_feed/api/api.dart';
 
 import '../../helpers.dart';
 import 'load_posts_from_api_use_case_test.mocks.dart';

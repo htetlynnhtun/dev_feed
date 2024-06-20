@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/feed/model/model.dart';
-import 'package:dev_feed/feed/view/posts_failure_view.dart';
-import 'package:dev_feed/feed/view/posts_loading_view.dart';
-import 'package:dev_feed/feed/viewmodel/posts_view_model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
+import 'package:dev_feed/posts_feed/view/posts_failure_view.dart';
+import 'package:dev_feed/posts_feed/view/posts_loading_view.dart';
+import 'package:dev_feed/posts_feed/viewmodel/posts_view_model.dart';
 
 class PostsPage extends StatefulWidget {
   final PostsViewModel Function() viewModelFactory;

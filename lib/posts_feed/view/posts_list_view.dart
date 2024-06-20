@@ -1,4 +1,4 @@
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:flutter/material.dart';
 
 class PostsListView extends StatelessWidget {

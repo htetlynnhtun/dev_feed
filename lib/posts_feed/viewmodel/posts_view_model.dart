@@ -1,8 +1,8 @@
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
+import 'package:dev_feed/posts_feed/viewmodel/post_item_view_model.dart';
 
 part 'posts_view_model.freezed.dart';
 part 'posts_view_state.dart';

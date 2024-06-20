@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/util/constants.dart';
 
 class PostItemViewModel {

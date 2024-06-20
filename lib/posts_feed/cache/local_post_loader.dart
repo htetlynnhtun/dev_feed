@@ -1,5 +1,5 @@
-import 'package:dev_feed/feed/cache/post_store.dart';
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/cache/post_store.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 
 final class LocalPostLoader implements PostLoader, PostCache {
   final PostStore _postStore;

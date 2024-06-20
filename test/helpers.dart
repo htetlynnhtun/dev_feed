@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:test/test.dart' as test;
 
-import 'package:dev_feed/feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/shared/model/model.dart';
 
 @isTest

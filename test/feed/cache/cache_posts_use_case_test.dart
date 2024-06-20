@@ -2,7 +2,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/posts_feed/cache/cache.dart';
 
 import '../../helpers.dart';
 import 'cache_posts_use_case_test.mocks.dart';

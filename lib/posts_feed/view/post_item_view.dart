@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:dev_feed/feed/viewmodel/post_item_view_model.dart';
+import 'package:dev_feed/posts_feed/viewmodel/post_item_view_model.dart';
 
 class PostItemView extends StatelessWidget {
   final PostItemViewModel postViewModel;

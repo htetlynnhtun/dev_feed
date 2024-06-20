@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dev_feed/feed/cache/cache.dart';
+import 'package:dev_feed/posts_feed/cache/cache.dart';
 import 'package:realm/realm.dart';
 import 'package:test/test.dart';
 
