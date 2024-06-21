@@ -1,6 +1,9 @@
 name: CI to run tests
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -21,6 +24,9 @@ jobs:
 
       - run: flutter --version
 
+      - name: Install lcov
+        run: sudo apt-get install lcov
+
       - name: Setup dependencies
         run: flutter pub get
 
@@ -30,16 +36,14 @@ jobs:
       - name: Run tests
         run: flutter test --coverage
 
-      - name: Coverage Report
+      - name: Coverage
         run: |
           lcov --remove coverage/lcov.info '*.realm.dart' '*.g.dart' '*.freezed.dart' -o coverage/lcov.info
           echo "Filter out coverage for generated codes."
-          genhtml coverage/lcov.info -o coverage/html
-          echo "Coverage Report generated"
       
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v4.3.3
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
         with:
-          name: coverage-report
-          path: coverage
+          files: coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
 
