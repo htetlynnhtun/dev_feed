@@ -1,9 +1,6 @@
 name: CI to run tests
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
