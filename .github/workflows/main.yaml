@@ -1,0 +1,23 @@
+name: CI to run tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4.1.7
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: ../../pubspec.yaml
+      - run: flutter --version
+      - name: Setup dependencies
+        run: flutter pub get
+      - name: run tests
+        run: flutter test
