@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dev_feed/bookmark/model/bookmark.dart';
 import 'package:dev_feed/bookmark/model/bookmark_creator.dart';
 import 'package:dev_feed/posts_feed/model/post.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../helpers.dart';
 
@@ -11,12 +14,14 @@ part 'bookmark_item_view_model_test.freezed.dart';
 
 void main() {
   (BookmarkItemVeiwModel, BookmarkSpy, Post) makeSUT() {
+    final bookmarkStream = BehaviorSubject<List<Bookmark>>();
     final post = makePost(id: 7);
     final bookmarkSpy = BookmarkSpy();
     final sut = BookmarkItemVeiwModel(
       post: post,
       bookmarkCreator: bookmarkSpy,
       bookmarkDeleter: bookmarkSpy,
+      bookmarkStream: bookmarkStream,
     );
     return (sut, bookmarkSpy, post);
   }
@@ -54,6 +59,15 @@ void main() {
       ]);
     },
   );
+
+  valueNotifierTest(
+    'BookmarkItemViewModel notifies [bookmarked] when '
+    'the post is bookmarked',
+    arrange: () => makeSUT().$1,
+    act: (sut) => sut.bookmark(),
+    expectedValues: [const BookmarkItemViewState.bookmarked()],
+    skip: 'TODO: implement BookmarkStore first'
+  );
 }
 
 @freezed
@@ -80,12 +94,22 @@ class BookmarkItemVeiwModel extends ValueNotifier<BookmarkItemViewState> {
   final BookmarkCreator bookmarkCreator;
   final BookmarkDeleter bookmarkDeleter;
   final Post post;
+  late final StreamSubscription _subscription;
 
-  BookmarkItemVeiwModel(
-      {required this.post,
-      required this.bookmarkCreator,
-      required this.bookmarkDeleter})
-      : super(const BookmarkItemViewState.pending());
+  BookmarkItemVeiwModel({
+    required this.post,
+    required this.bookmarkCreator,
+    required this.bookmarkDeleter,
+    required Stream<List<Bookmark>> bookmarkStream,
+  }) : super(const BookmarkItemViewState.pending()) {
+    _subscription = bookmarkStream.listen((bookmarks) {
+      final isBookmarked =
+          bookmarks.any((bookmark) => bookmark.post.id == post.id);
+      if (isBookmarked) {
+        value = const BookmarkItemViewState.bookmarked();
+      }
+    });
+  }
 
   void bookmark() {
     bookmarkCreator.createWith(post);
