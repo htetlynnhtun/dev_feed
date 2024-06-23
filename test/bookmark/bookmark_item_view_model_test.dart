@@ -10,11 +10,18 @@ import '../helpers.dart';
 part 'bookmark_item_view_model_test.freezed.dart';
 
 void main() {
-  test('BookmarkItemVeiwModel has correct initial state of pending', () {
+  (BookmarkItemVeiwModel, BookmarkSpy, Post) makeSUT() {
+    final post = makePost(id: 7);
+    final bookmarkSpy = BookmarkSpy();
     final sut = BookmarkItemVeiwModel(
-      post: makePost(id: 7),
-      bookmarkCreator: BookmarkSpy(),
+      post: post,
+      bookmarkCreator: bookmarkSpy,
     );
+    return (sut, bookmarkSpy, post);
+  }
+
+  test('BookmarkItemVeiwModel has correct initial state of pending', () {
+    final (sut, _, _) = makeSUT();
 
     expect(sut.value, const BookmarkItemViewState.pending());
   });
@@ -23,12 +30,7 @@ void main() {
     'BookmarkItemViewModel .bookmark() requests '
     'creation of a bookmark for the post',
     () {
-      final post = makePost(id: 7);
-      final bookmarkSpy = BookmarkSpy();
-      final sut = BookmarkItemVeiwModel(
-        post: post,
-        bookmarkCreator: bookmarkSpy,
-      );
+      final (sut, bookmarkSpy, post) = makeSUT();
 
       sut.bookmark();
 
