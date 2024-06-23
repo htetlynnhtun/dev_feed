@@ -20,32 +20,38 @@ mixin _$ReceivedMessages {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Post post) createWith,
+    required TResult Function(Post post) deleteFor,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Post post)? createWith,
+    TResult? Function(Post post)? deleteFor,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Post post)? createWith,
+    TResult Function(Post post)? deleteFor,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CreateWith value) createWith,
+    required TResult Function(DeleteFor value) deleteFor,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CreateWith value)? createWith,
+    TResult? Function(DeleteFor value)? deleteFor,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CreateWith value)? createWith,
+    TResult Function(DeleteFor value)? deleteFor,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -176,6 +182,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(Post post) createWith,
+    required TResult Function(Post post) deleteFor,
   }) {
     return createWith(post);
   }
@@ -184,6 +191,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(Post post)? createWith,
+    TResult? Function(Post post)? deleteFor,
   }) {
     return createWith?.call(post);
   }
@@ -192,6 +200,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(Post post)? createWith,
+    TResult Function(Post post)? deleteFor,
     required TResult orElse(),
   }) {
     if (createWith != null) {
@@ -204,6 +213,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CreateWith value) createWith,
+    required TResult Function(DeleteFor value) deleteFor,
   }) {
     return createWith(this);
   }
@@ -212,6 +222,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CreateWith value)? createWith,
+    TResult? Function(DeleteFor value)? deleteFor,
   }) {
     return createWith?.call(this);
   }
@@ -220,6 +231,7 @@ class _$CreateWithImpl with DiagnosticableTreeMixin implements CreateWith {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CreateWith value)? createWith,
+    TResult Function(DeleteFor value)? deleteFor,
     required TResult orElse(),
   }) {
     if (createWith != null) {
@@ -237,6 +249,154 @@ abstract class CreateWith implements _ReceivedMessages {
   @override
   @JsonKey(ignore: true)
   _$$CreateWithImplCopyWith<_$CreateWithImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DeleteForImplCopyWith<$Res>
+    implements _$ReceivedMessagesCopyWith<$Res> {
+  factory _$$DeleteForImplCopyWith(
+          _$DeleteForImpl value, $Res Function(_$DeleteForImpl) then) =
+      __$$DeleteForImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Post post});
+
+  @override
+  $PostCopyWith<$Res> get post;
+}
+
+/// @nodoc
+class __$$DeleteForImplCopyWithImpl<$Res>
+    extends __$ReceivedMessagesCopyWithImpl<$Res, _$DeleteForImpl>
+    implements _$$DeleteForImplCopyWith<$Res> {
+  __$$DeleteForImplCopyWithImpl(
+      _$DeleteForImpl _value, $Res Function(_$DeleteForImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? post = null,
+  }) {
+    return _then(_$DeleteForImpl(
+      null == post
+          ? _value.post
+          : post // ignore: cast_nullable_to_non_nullable
+              as Post,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DeleteForImpl with DiagnosticableTreeMixin implements DeleteFor {
+  const _$DeleteForImpl(this.post);
+
+  @override
+  final Post post;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return '_ReceivedMessages.deleteFor(post: $post)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', '_ReceivedMessages.deleteFor'))
+      ..add(DiagnosticsProperty('post', post));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DeleteForImpl &&
+            (identical(other.post, post) || other.post == post));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, post);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DeleteForImplCopyWith<_$DeleteForImpl> get copyWith =>
+      __$$DeleteForImplCopyWithImpl<_$DeleteForImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Post post) createWith,
+    required TResult Function(Post post) deleteFor,
+  }) {
+    return deleteFor(post);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Post post)? createWith,
+    TResult? Function(Post post)? deleteFor,
+  }) {
+    return deleteFor?.call(post);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Post post)? createWith,
+    TResult Function(Post post)? deleteFor,
+    required TResult orElse(),
+  }) {
+    if (deleteFor != null) {
+      return deleteFor(post);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CreateWith value) createWith,
+    required TResult Function(DeleteFor value) deleteFor,
+  }) {
+    return deleteFor(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CreateWith value)? createWith,
+    TResult? Function(DeleteFor value)? deleteFor,
+  }) {
+    return deleteFor?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CreateWith value)? createWith,
+    TResult Function(DeleteFor value)? deleteFor,
+    required TResult orElse(),
+  }) {
+    if (deleteFor != null) {
+      return deleteFor(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DeleteFor implements _ReceivedMessages {
+  const factory DeleteFor(final Post post) = _$DeleteForImpl;
+
+  @override
+  Post get post;
+  @override
+  @JsonKey(ignore: true)
+  _$$DeleteForImplCopyWith<_$DeleteForImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

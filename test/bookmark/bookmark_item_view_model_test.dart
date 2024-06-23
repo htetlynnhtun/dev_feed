@@ -16,6 +16,7 @@ void main() {
     final sut = BookmarkItemVeiwModel(
       post: post,
       bookmarkCreator: bookmarkSpy,
+      bookmarkDeleter: bookmarkSpy,
     );
     return (sut, bookmarkSpy, post);
   }
@@ -39,34 +40,64 @@ void main() {
       ]);
     },
   );
+
+  test(
+    'BookmarkItemViewModel .unbookmark() requests '
+    'deletion of a bookmark for the post',
+    () {
+      final (sut, bookmarkSpy, post) = makeSUT();
+
+      sut.unbookmark();
+
+      expect(bookmarkSpy.messages, [
+        _ReceivedMessages.deleteFor(post),
+      ]);
+    },
+  );
 }
 
 @freezed
 class _ReceivedMessages with _$ReceivedMessages {
   const factory _ReceivedMessages.createWith(Post post) = CreateWith;
+  const factory _ReceivedMessages.deleteFor(Post post) = DeleteFor;
 }
 
-class BookmarkSpy implements BookmarkCreator {
+class BookmarkSpy implements BookmarkCreator, BookmarkDeleter {
   final messages = <_ReceivedMessages>[];
 
   @override
   Future<void> createWith(Post post) async {
     messages.add(_ReceivedMessages.createWith(post));
   }
+
+  @override
+  Future<void> deleteFor(Post post) async {
+    messages.add(_ReceivedMessages.deleteFor(post));
+  }
 }
 
 class BookmarkItemVeiwModel extends ValueNotifier<BookmarkItemViewState> {
   final BookmarkCreator bookmarkCreator;
+  final BookmarkDeleter bookmarkDeleter;
   final Post post;
 
-  BookmarkItemVeiwModel({
-    required this.post,
-    required this.bookmarkCreator,
-  }) : super(const BookmarkItemViewState.pending());
+  BookmarkItemVeiwModel(
+      {required this.post,
+      required this.bookmarkCreator,
+      required this.bookmarkDeleter})
+      : super(const BookmarkItemViewState.pending());
 
   void bookmark() {
     bookmarkCreator.createWith(post);
   }
+
+  void unbookmark() {
+    bookmarkDeleter.deleteFor(post);
+  }
+}
+
+abstract class BookmarkDeleter {
+  Future<void> deleteFor(Post post);
 }
 
 @freezed
