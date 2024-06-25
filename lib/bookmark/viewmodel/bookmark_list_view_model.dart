@@ -14,13 +14,7 @@ class BookmarkListViewModel extends ValueNotifier<BookmarkListViewState> {
 
   BookmarkListViewModel(this.loader) : super(const Pending()) {
     _subscription = loader().listen((bookmarks) {
-      print('======================================');
-      print(bookmarks);
-      print('previousValue: $value');
-
-      print('sameState: ${value == Loaded(bookmarks)}');
-      value = Loaded(bookmarks);
-      print('updatedValue: $value');
+      value = BookmarkListViewState.loaded(bookmarks);
     });
   }
 

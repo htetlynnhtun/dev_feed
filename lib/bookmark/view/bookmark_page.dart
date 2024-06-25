@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:dev_feed/bookmark/model/bookmark_loader.dart';
 import 'package:dev_feed/bookmark/viewmodel/bookmark_list_view_model.dart';
 import 'package:dev_feed/posts_feed/model/post.dart';
 
@@ -64,7 +65,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
 
 abstract class BookmarkPageComposer {
   static BookmarkPage compose({
-    required bookmarkLoader,
+    required BookmarkLoader  bookmarkLoader,
     required Widget Function(BuildContext, List<Post>) postListView,
   }) =>
       BookmarkPage(

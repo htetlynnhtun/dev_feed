@@ -6,11 +6,12 @@ import 'package:rxdart/rxdart.dart';
 import 'bookmark_store.dart';
 
 class InMemoryBookmarkSotre implements BookmarkStore {
-  final _bookmarksSubject = BehaviorSubject<List<Bookmark>>.seeded([]);
+  final _bookmarksSubject = BehaviorSubject<List<Bookmark>>();
 
   @override
   Future<void> insert(Bookmark bookmark) async {
-    _bookmarksSubject.add([..._bookmarksSubject.value, bookmark]);
+    final currentBookmarks = _bookmarksSubject.valueOrNull ?? [];
+    _bookmarksSubject.add([...currentBookmarks, bookmark]);
   }
 
   @override
@@ -22,7 +23,7 @@ class InMemoryBookmarkSotre implements BookmarkStore {
 
   @override
   Future<void> deleteById(String id) async {
-    final currentBookmarks = _bookmarksSubject.value;
+    final currentBookmarks = [..._bookmarksSubject.value];
     currentBookmarks.removeWhere((e) => e.post.id == int.parse(id));
     _bookmarksSubject.add(currentBookmarks);
   }
