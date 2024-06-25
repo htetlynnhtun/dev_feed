@@ -4,6 +4,7 @@ import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/posts_feed/view/posts_failure_view.dart';
 import 'package:dev_feed/posts_feed/view/posts_loading_view.dart';
 import 'package:dev_feed/posts_feed/viewmodel/posts_view_model.dart';
+import 'package:go_router/go_router.dart';
 
 class PostsPage extends StatefulWidget {
   final PostsViewModel Function() viewModelFactory;
@@ -38,6 +39,14 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: () => context.go('/bookmarks'),
+            child: const Text('Bookmarks'),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ValueListenableBuilder(
           valueListenable: viewModel,

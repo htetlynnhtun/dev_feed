@@ -21,6 +21,7 @@ void valueNotifierTest<Notifier extends ValueNotifier<Value>, Value>(
     });
 
     await act?.call(sut);
+    await Future.delayed(Duration.zero);
     sut.dispose();
 
     test.expect(notifiedValues, expectedValues);

@@ -19,6 +19,7 @@ dependencies:
   json_annotation: ^4.9.0
   realm: ^3.0.0
   rxdart: ^0.28.0
+  uuid: ^4.4.0
 
 dev_dependencies:
   flutter_test:
