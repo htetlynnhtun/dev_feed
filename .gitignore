@@ -29,7 +29,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+**/build/
 
 # Symbolication related
 app.*.symbols
@@ -42,10 +42,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-coverage/
+coverage/*
+test_reports/*
+coverage_report/*
 
 test/play_test.dart
 
 default.realm.management
 default.realm.lock
 default.realm.note
+
+pubspec_overrides.yaml

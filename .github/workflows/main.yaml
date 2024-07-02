@@ -21,6 +21,9 @@ jobs:
 
       - run: flutter --version
 
+      - name: Setup Melos
+        uses: bluefireteam/melos-action@v3
+        
       - name: Install lcov
         run: sudo apt-get install lcov
 
@@ -30,17 +33,12 @@ jobs:
       - name: Setup Realm
         run: dart run realm install
 
-      - name: Run tests
-        run: flutter test --coverage
+      - name: Run tests with coverage
+        run: melos test:with-lcov-coverage
 
-      - name: Coverage
-        run: |
-          lcov --remove coverage/lcov.info '*.realm.dart' '*.g.dart' '*.freezed.dart' -o coverage/lcov.info
-          echo "Filter out coverage for generated codes."
-      
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
         with:
-          files: coverage/lcov.info
+          files: coverage_report/cleaned_combined_lcov.info
           token: ${{ secrets.CODECOV_TOKEN }}
 

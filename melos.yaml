@@ -1,0 +1,36 @@
+name: dev_feed
+
+repository: https://github.com/htetlynnhtun/dev_feed
+
+packages:
+  - apps/*
+  - packages/*
+
+scripts:
+  test:select:
+    run: melos exec flutter test
+    description: "Run `flutter test` for selected package"
+    packageFilters:
+      dirExists: test
+  
+  test:
+    run: melos run test:select --no-select
+    description: "Run all flutter test in this project"
+
+  test:with-lcov-coverage:select:
+    run: MELOS_ROOT_PATH/scripts/test-with-coverage.sh MELOS_ROOT_PATH MELOS_PACKAGE_PATH MELOS_PACKAGE_NAME
+    exec:
+      concurrency: 5
+    packageFilters:
+      dirExists: test
+    description: Run Flutter tests and publish local lcov coverage for a specific package
+
+  test:combine-coverage:
+    run: MELOS_ROOT_PATH/scripts/combine-coverage.sh MELOS_ROOT_PATH
+    description: Combine individual lcov coverage into a single lcov coverage file
+    
+  test:with-lcov-coverage:
+    run: |
+      melos run test:with-lcov-coverage:select --no-select && \
+      melos run test:combine-coverage
+    description: Run Flutter tests for all packages and generate a combined lcov coverage report
