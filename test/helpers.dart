@@ -11,6 +11,7 @@ void valueNotifierTest<Notifier extends ValueNotifier<Value>, Value>(
   required Notifier Function() arrange,
   dynamic Function(Notifier notifier)? act,
   required List<Value> expectedValues,
+  Object? skip,
 }) {
   test.test(description, () async {
     final sut = arrange.call();
@@ -20,10 +21,13 @@ void valueNotifierTest<Notifier extends ValueNotifier<Value>, Value>(
     });
 
     await act?.call(sut);
+
+    await Future.delayed(Duration.zero);
+
     sut.dispose();
 
     test.expect(notifiedValues, expectedValues);
-  });
+  }, skip: skip);
 }
 
 Post makePost({

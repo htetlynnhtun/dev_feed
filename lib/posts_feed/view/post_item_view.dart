@@ -6,12 +6,14 @@ class PostItemView extends StatelessWidget {
   final PostItemViewModel postViewModel;
   final Function(int id) onTap;
   final Widget Function(BuildContext context, String url) asyncImageView;
+  final Widget Function(BuildContext context) bookmarkButtonView;
 
   const PostItemView({
     super.key,
     required this.postViewModel,
     required this.onTap,
     required this.asyncImageView,
+    required this.bookmarkButtonView,
   });
 
   @override
@@ -52,10 +54,7 @@ class PostItemView extends StatelessWidget {
                       const Spacer(),
                       Text(postViewModel.readingTime),
                       const SizedBox(width: 8),
-                      IconButton(
-                        icon: const Icon(Icons.bookmark_border),
-                        onPressed: () {},
-                      ),
+                      bookmarkButtonView(context),
                     ],
                   ),
                   Row(
