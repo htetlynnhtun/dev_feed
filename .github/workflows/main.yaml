@@ -27,9 +27,6 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
-      - name: Setup dependencies
-        run: flutter pub get
-
       - name: Setup Realm
         run: dart run realm install
 
