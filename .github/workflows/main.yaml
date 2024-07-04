@@ -27,9 +27,6 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
-      - name: Setup Realm
-        run: dart run realm install
-
       - name: Run tests with coverage
         run: melos test:with-lcov-coverage
 
