@@ -50,44 +50,62 @@ extension on App {
     return GoRouter(
       initialLocation: '/posts',
       routes: [
-        GoRoute(
-          path: '/posts',
-          builder: (context, state) => PostsPage(
-            loader: postLoader,
-            loadedView: (BuildContext context, List<Post> posts) {
-              return PostsListView(
-                key: const ValueKey('posts-list-view'),
-                posts: posts,
-                itemView: (context, post) => postItemView(context, post),
-              );
-            },
+        StatefulShellRoute.indexedStack(
+          builder: (_, __, navigationShell) => NavBarShell(
+            navigationShell: navigationShell,
           ),
-          routes: [
-            GoRoute(
-              path: ':postId',
-              builder: (context, state) {
-                final postId = int.parse(state.pathParameters['postId']!);
-                return PostDetailUIComposer.detailPage(
-                  postId,
-                  RemotePostDetailsLoader(dio: dio),
-                  imageDataLoaderComposite,
-                );
-              },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/posts',
+                  builder: (context, state) => PostsPage(
+                    loader: postLoader,
+                    loadedView: (BuildContext context, List<Post> posts) {
+                      return PostsListView(
+                        key: const ValueKey('posts-list-view'),
+                        posts: posts,
+                        itemView: (context, post) =>
+                            postItemView(context, post),
+                      );
+                    },
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: ':postId',
+                      builder: (context, state) {
+                        final postId =
+                            int.parse(state.pathParameters['postId']!);
+                        return PostDetailUIComposer.detailPage(
+                          postId,
+                          RemotePostDetailsLoader(dio: dio),
+                          imageDataLoaderComposite,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/bookmarks',
+                  builder: (context, state) => BookmarkPageComposer.compose(
+                    bookmarkLoader: bookmarkStore.retrieveAll,
+                    postListView: (BuildContext context, List<Post> posts) {
+                      return PostsListView(
+                        key: const ValueKey('bookmarked-posts-list-view'),
+                        posts: posts,
+                        itemView: (context, post) =>
+                            postItemView(context, post),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-        GoRoute(
-          path: '/bookmarks',
-          builder: (context, state) => BookmarkPageComposer.compose(
-            bookmarkLoader: bookmarkStore.retrieveAll,
-            postListView: (BuildContext context, List<Post> posts) {
-              return PostsListView(
-                key: const ValueKey('bookmarked-posts-list-view'),
-                posts: posts,
-                itemView: (context, post) => postItemView(context, post),
-              );
-            },
-          ),
         ),
       ],
       debugLogDiagnostics: kDebugMode,
@@ -169,5 +187,36 @@ extension on App {
       _bookmarkManager[this] = BookmarkManager(bookmarkStore);
     }
     return _bookmarkManager[this]!;
+  }
+}
+
+class NavBarShell extends StatelessWidget {
+  const NavBarShell({super.key, required this.navigationShell});
+
+  final StatefulNavigationShell navigationShell;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        ),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Feed',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Bookmarks',
+          ),
+        ],
+      ),
+    );
   }
 }
