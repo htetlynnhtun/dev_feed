@@ -4,6 +4,7 @@ import 'package:dev_feed/bookmark/view/bookmark_page.dart';
 import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
 import 'package:dev_feed/posts_feed/view/posts_page.dart';
+import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,6 @@ import 'package:dev_feed/posts_feed/view/posts_list_view.dart';
 import 'package:dev_feed/posts_feed/viewmodel/post_item_view_model.dart';
 import 'package:dev_feed/util/image_data_loader_cache_decorator.dart';
 import 'package:dev_feed/util/image_data_loader_with_fallback_composite.dart';
-import 'package:rxdart/rxdart.dart';
 
 class App extends StatelessWidget {
   final http.Client client;
@@ -224,26 +224,4 @@ class NavBarShell extends StatelessWidget {
       ),
     );
   }
-}
-
-extension PostLoaderPipeline on PostLoader {
-  Stream<List<Post>> loadStream() => Stream.fromFuture(load());
-}
-
-extension FallbackPipeline<T> on Stream<T> {
-  Stream<T> fallbackTo(Stream<T> fallbackEmitter) =>
-      onErrorResumeNext(fallbackEmitter);
-}
-
-extension on Stream<List<Post>> {
-  Stream<List<Post>> cacheTo(PostCache cache) => doOnData(cache.save);
-}
-
-extension ImageDataLoaderPipeline on ImageDataLoader {
-  Stream<Uint8List> loadStream(Uri url) => load(url).asStream();
-}
-
-extension on Stream<Uint8List> {
-  Stream<Uint8List> cacheTo(ImageDataCache cache, Uri url) =>
-      doOnData((data) => cache.save(data, url));
 }

@@ -1,5 +1,5 @@
 import 'package:async_image/async_image.dart';
-import 'package:dev_feed/app.dart';
+import 'package:dev_feed/util/pipelines.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
