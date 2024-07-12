@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:dev_feed/bookmark/model/bookmark_loader.dart';
 import 'package:dev_feed/bookmark/viewmodel/bookmark_list_view_model.dart';
@@ -37,12 +36,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.go('/posts'),
-          icon: const Icon(Icons.chevron_left),
-        ),
-      ),
       body: SafeArea(
         child: ValueListenableBuilder(
           valueListenable: _viewModel,

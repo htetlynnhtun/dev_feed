@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/posts_feed/view/posts_failure_view.dart';
@@ -57,14 +56,6 @@ class _PostsPageState extends State<PostsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-            onPressed: () => context.go('/bookmarks'),
-            child: const Text('Bookmarks'),
-          ),
-        ],
-      ),
       body: SafeArea(
         child: switch (state) {
           Idle() || Loading() => const Center(
