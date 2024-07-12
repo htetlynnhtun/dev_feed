@@ -57,21 +57,24 @@ class _PostsPageState extends State<PostsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: switch (state) {
-          Idle() || Loading() => const Center(
-              child: PostsLoadingView(
-                key: ValueKey('post-loading-view'),
+        child: RefreshIndicator(
+          onRefresh: load,
+          child: switch (state) {
+            Idle() || Loading() => const Center(
+                child: PostsLoadingView(
+                  key: ValueKey('post-loading-view'),
+                ),
               ),
-            ),
-          Loaded(posts: var posts) => widget.loadedView(context, posts),
-          failure(message: var message) => Center(
-              child: PostsFailureView(
-                key: const ValueKey('post-failure-view'),
-                message: message,
-                onTapRetry: load,
+            Loaded(posts: var posts) => widget.loadedView(context, posts),
+            failure(message: var message) => Center(
+                child: PostsFailureView(
+                  key: const ValueKey('post-failure-view'),
+                  message: message,
+                  onTapRetry: load,
+                ),
               ),
-            ),
-        },
+          },
+        ),
       ),
     );
   }
