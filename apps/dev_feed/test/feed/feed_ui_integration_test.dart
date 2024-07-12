@@ -6,13 +6,12 @@ import 'dart:ui' as ui;
 
 import 'package:async/async.dart';
 import 'package:async_image/async_image.dart';
+import 'package:dev_feed/bookmark/model/bookmark_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:dev_feed/bookmark/cache/in_memory_bookmark_sotre.dart';
-import 'package:dev_feed/bookmark/model/bookmark_creator.dart';
-import 'package:dev_feed/bookmark/model/bookmark_deleter.dart';
 import 'package:dev_feed/bookmark/view/bookmark_button_view.dart';
 import 'package:dev_feed/bookmark/viewmodel/bookmark_item_view_model.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
@@ -37,6 +36,7 @@ void main() async {
       final postLoader = PostLoaderSpy();
       final dataLoader = ImageDataLoaderSpy();
       final inMemoryBookmarkSotre = InMemoryBookmarkSotre();
+      final bookmarkManager = BookmarkManager(inMemoryBookmarkSotre);
 
       final sut = PostsPage(
         loader: postLoader,
@@ -56,9 +56,9 @@ void main() async {
               bookmarkButtonView: (context) => BookmarkButtonView(
                 viewModelFactory: () => BookmarkItemViewModel(
                   post: post,
-                  loader: inMemoryBookmarkSotre.retrieveAll,
-                  creator: BookmarkCreatorImpl(inMemoryBookmarkSotre),
-                  deleter: BookmarkDeleterImpl(inMemoryBookmarkSotre),
+                  loader: bookmarkManager.loadAll,
+                  creator: bookmarkManager,
+                  deleter: bookmarkManager,
                 ),
               ),
             ),

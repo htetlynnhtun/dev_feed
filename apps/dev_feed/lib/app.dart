@@ -1,4 +1,5 @@
 import 'package:async_image/async_image.dart';
+import 'package:dev_feed/bookmark/model/bookmark_manager.dart';
 import 'package:dev_feed/bookmark/view/bookmark_page.dart';
 import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
@@ -12,8 +13,6 @@ import 'package:realm/realm.dart';
 
 import 'package:dev_feed/bookmark/cache/bookmark_store.dart';
 import 'package:dev_feed/bookmark/cache/in_memory_bookmark_sotre.dart';
-import 'package:dev_feed/bookmark/model/bookmark_creator.dart';
-import 'package:dev_feed/bookmark/model/bookmark_deleter.dart';
 import 'package:dev_feed/bookmark/view/bookmark_button_view.dart';
 import 'package:dev_feed/bookmark/viewmodel/bookmark_item_view_model.dart';
 import 'package:dev_feed/posts_feed/api/remote_post_loader.dart';
@@ -111,9 +110,9 @@ extension on App {
       bookmarkButtonView: (context) => BookmarkButtonView(
         viewModelFactory: () => BookmarkItemViewModel(
           post: post,
-          loader: bookmarkStore.retrieveAll,
-          creator: bookmarkCreator,
-          deleter: bookmarkDeleter,
+          loader: bookmarkManager.loadAll,
+          creator: bookmarkManager,
+          deleter: bookmarkManager,
         ),
       ),
     );
@@ -167,19 +166,11 @@ extension on App {
     return _bookmarkStore[this]!;
   }
 
-  static final _bookmarkCreator = Expando<BookmarkCreator>('BookmarkCreator');
-  BookmarkCreator get bookmarkCreator {
-    if (_bookmarkCreator[this] == null) {
-      _bookmarkCreator[this] = BookmarkCreatorImpl(bookmarkStore);
+  static final _bookmarkManager = Expando<BookmarkManager>('BookmarkManager');
+  BookmarkManager get bookmarkManager {
+    if (_bookmarkManager[this] == null) {
+      _bookmarkManager[this] = BookmarkManager(bookmarkStore);
     }
-    return _bookmarkCreator[this]!;
-  }
-
-  static final _bookmarkDeleter = Expando<BookmarkDeleter>('BookmarkDeleter');
-  BookmarkDeleter get bookmarkDeleter {
-    if (_bookmarkDeleter[this] == null) {
-      _bookmarkDeleter[this] = BookmarkDeleterImpl(bookmarkStore);
-    }
-    return _bookmarkDeleter[this]!;
+    return _bookmarkManager[this]!;
   }
 }
