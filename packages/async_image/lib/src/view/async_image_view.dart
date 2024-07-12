@@ -44,7 +44,7 @@ class AsyncImageViewState extends State<AsyncImageView> {
       });
     } catch (e) {
       setState(() {
-        value = AsyncImageViewStateValue.failure(e.toString());
+        value = const AsyncImageViewStateValue.failure('Failed to load image');
       });
     }
   }
