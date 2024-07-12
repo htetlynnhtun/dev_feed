@@ -22,8 +22,7 @@ import 'package:dev_feed/posts_feed/view/posts_list_view.dart';
 import 'package:dev_feed/posts_feed/viewmodel/post_item_view_model.dart';
 import 'package:dev_feed/util/image_data_loader_cache_decorator.dart';
 import 'package:dev_feed/util/image_data_loader_with_fallback_composite.dart';
-import 'package:dev_feed/util/post_loader_cache_decorator.dart';
-import 'package:dev_feed/util/post_loader_with_fallback_composite.dart';
+import 'package:rxdart/rxdart.dart';
 
 class App extends StatelessWidget {
   final http.Client client;
@@ -60,7 +59,7 @@ extension on App {
                 GoRoute(
                   path: '/posts',
                   builder: (context, state) => PostsPage(
-                    loader: postLoader,
+                    postsStream: makeRemotePostLoaderWithLocalFallback,
                     loadedView: (BuildContext context, List<Post> posts) {
                       return PostsListView(
                         key: const ValueKey('posts-list-view'),
@@ -135,21 +134,15 @@ extension on App {
 }
 
 extension on App {
-  static final _postLoader = Expando<PostLoader>('PostLoader');
-  PostLoader get postLoader {
-    if (_postLoader[this] == null) {
-      var localPostLoader = LocalPostLoader(
-        postStore: RealmPostStore(realm: realm),
-      );
-      _postLoader[this] = PostLoaderWithFallbackComposite(
-        primary: PostLoaderCacheDecorator(
-          decoratee: RemotePostLoader(client: client),
-          cache: localPostLoader,
-        ),
-        fallback: localPostLoader,
-      );
-    }
-    return _postLoader[this]!;
+  Stream<List<Post>> makeRemotePostLoaderWithLocalFallback() {
+    var localPostLoader = LocalPostLoader(
+      postStore: RealmPostStore(realm: realm),
+    );
+    final remotePostLoader = RemotePostLoader(client: client);
+    return remotePostLoader
+        .loadStream()
+        .cacheTo(localPostLoader)
+        .fallbackTo(localPostLoader.loadStream());
   }
 }
 
@@ -219,4 +212,14 @@ class NavBarShell extends StatelessWidget {
       ),
     );
   }
+}
+
+extension PostLoaderPipeline on PostLoader {
+  Stream<List<Post>> loadStream() => Stream.fromFuture(load());
+}
+
+extension on Stream<List<Post>> {
+  Stream<List<Post>> cacheTo(PostCache cache) => doOnData(cache.save);
+  Stream<List<Post>> fallbackTo(Stream<List<Post>> fallbackEmitter) =>
+      onErrorResumeNext(fallbackEmitter);
 }

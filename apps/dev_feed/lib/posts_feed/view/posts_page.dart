@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,12 +10,12 @@ import 'package:dev_feed/posts_feed/view/posts_loading_view.dart';
 part 'posts_page.freezed.dart';
 
 class PostsPage extends StatefulWidget {
-  final PostLoader loader;
+  final Stream<List<Post>> Function() postsStream;
   final Widget Function(BuildContext context, List<Post> posts) loadedView;
 
   const PostsPage({
     super.key,
-    required this.loader,
+    required this.postsStream,
     required this.loadedView,
   });
 
@@ -23,6 +25,7 @@ class PostsPage extends StatefulWidget {
 
 class _PostsPageState extends State<PostsPage> {
   var state = const PostsPageState.idle();
+  StreamSubscription? _subscription;
 
   @override
   void initState() {
@@ -34,22 +37,25 @@ class _PostsPageState extends State<PostsPage> {
     setState(() {
       state = const PostsPageState.loading();
     });
-    try {
-      final loadedPosts = await widget.loader.load();
-      setState(() {
-        state = PostsPageState.loaded(loadedPosts);
-      });
-    } on Exception catch (_) {
-      setState(() {
-        state = const PostsPageState.failure(
-          'Please check your connection and try again',
-        );
-      });
-    }
+    _subscription = widget.postsStream().listen(
+      (posts) {
+        setState(() {
+          state = PostsPageState.loaded(posts);
+        });
+      },
+      onError: (e) {
+        setState(() {
+          state = const PostsPageState.failure(
+            'Please check your connection and try again',
+          );
+        });
+      },
+    );
   }
 
   @override
   void dispose() {
+    _subscription?.cancel();
     super.dispose();
   }
 

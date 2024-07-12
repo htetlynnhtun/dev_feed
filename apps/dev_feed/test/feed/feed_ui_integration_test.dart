@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 
 import 'package:async/async.dart';
 import 'package:async_image/async_image.dart';
+import 'package:dev_feed/app.dart';
 import 'package:dev_feed/bookmark/model/bookmark_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -38,7 +39,7 @@ void main() async {
       final bookmarkManager = BookmarkManager(inMemoryBookmarkSotre);
 
       final sut = PostsPage(
-        loader: postLoader,
+        postsStream: () => postLoader.loadStream(),
         loadedView: (BuildContext context, List<Post> posts) {
           return PostsListView(
             key: const ValueKey('posts-list-view'),
