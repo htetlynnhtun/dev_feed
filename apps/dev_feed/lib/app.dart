@@ -14,7 +14,6 @@ import 'package:realm/realm.dart';
 import 'package:dev_feed/bookmark/cache/bookmark_store.dart';
 import 'package:dev_feed/bookmark/cache/in_memory_bookmark_sotre.dart';
 import 'package:dev_feed/bookmark/view/bookmark_button_view.dart';
-import 'package:dev_feed/bookmark/viewmodel/bookmark_item_view_model.dart';
 import 'package:dev_feed/posts_feed/api/remote_post_loader.dart';
 import 'package:dev_feed/posts_feed/cache/cache.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
@@ -108,12 +107,10 @@ extension on App {
         dataLoader: imageDataLoaderComposite,
       ),
       bookmarkButtonView: (context) => BookmarkButtonView(
-        viewModelFactory: () => BookmarkItemViewModel(
-          post: post,
-          loader: bookmarkManager.loadAll,
-          creator: bookmarkManager,
-          deleter: bookmarkManager,
-        ),
+        post: post,
+        bookmarkLoader: bookmarkManager.loadAll,
+        bookmarkCreator: bookmarkManager,
+        bookmarkDeleter: bookmarkManager,
       ),
     );
   }
