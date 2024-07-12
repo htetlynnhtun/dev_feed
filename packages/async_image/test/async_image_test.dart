@@ -14,7 +14,7 @@ void main() {
     final dataLoaderSpy = ImageDataLoaderSpy();
     final sut = AsyncImageView(
       imageUrl: imageUrl,
-      dataLoader: dataLoaderSpy,
+      dataLoader: (url) => dataLoaderSpy.load(url).asStream(),
     );
     return (sut, dataLoaderSpy);
   }

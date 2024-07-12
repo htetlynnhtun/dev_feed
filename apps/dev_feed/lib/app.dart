@@ -121,7 +121,7 @@ extension on App {
       asyncImageView: (context, url) => AsyncImageView(
         key: ValueKey(url),
         imageUrl: url,
-        dataLoader: imageDataLoaderComposite,
+        dataLoader: makeLocalImageDataLoaderWithRemoteFallback,
       ),
       bookmarkButtonView: (context) => BookmarkButtonView(
         post: post,
@@ -162,6 +162,18 @@ extension on App {
       );
     }
     return _imageDataLoader[this]!;
+  }
+
+  Stream<Uint8List> makeLocalImageDataLoaderWithRemoteFallback(Uri url) {
+    final localImageDataLoader = LocalImageDataLoader(
+      RealmImageDataStore(realm),
+    );
+    final remoteImageDataLoader = RemoteImageDataLoader(dio);
+    return localImageDataLoader.loadStream(url).fallbackTo(
+          remoteImageDataLoader
+              .loadStream(url)
+              .cacheTo(localImageDataLoader, url),
+        );
   }
 }
 
@@ -218,8 +230,20 @@ extension PostLoaderPipeline on PostLoader {
   Stream<List<Post>> loadStream() => Stream.fromFuture(load());
 }
 
+extension FallbackPipeline<T> on Stream<T> {
+  Stream<T> fallbackTo(Stream<T> fallbackEmitter) =>
+      onErrorResumeNext(fallbackEmitter);
+}
+
 extension on Stream<List<Post>> {
   Stream<List<Post>> cacheTo(PostCache cache) => doOnData(cache.save);
-  Stream<List<Post>> fallbackTo(Stream<List<Post>> fallbackEmitter) =>
-      onErrorResumeNext(fallbackEmitter);
+}
+
+extension ImageDataLoaderPipeline on ImageDataLoader {
+  Stream<Uint8List> loadStream(Uri url) => load(url).asStream();
+}
+
+extension on Stream<Uint8List> {
+  Stream<Uint8List> cacheTo(ImageDataCache cache, Uri url) =>
+      doOnData((data) => cache.save(data, url));
 }

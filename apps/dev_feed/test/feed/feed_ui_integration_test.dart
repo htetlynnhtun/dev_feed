@@ -51,7 +51,7 @@ void main() async {
               asyncImageView: (context, url) => AsyncImageView(
                 key: ValueKey(url),
                 imageUrl: url,
-                dataLoader: dataLoader,
+                dataLoader: (url) => dataLoader.loadStream(url),
               ),
               bookmarkButtonView: (context) => BookmarkButtonView(
                   post: post,

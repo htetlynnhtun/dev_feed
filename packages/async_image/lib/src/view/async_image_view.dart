@@ -1,7 +1,6 @@
+import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:async/async.dart';
-import 'package:async_image/src/model/image_data_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -9,7 +8,7 @@ part 'async_image_view.freezed.dart';
 
 class AsyncImageView extends StatefulWidget {
   final String imageUrl;
-  final ImageDataLoader dataLoader;
+  final Stream<Uint8List> Function(Uri) dataLoader;
 
   const AsyncImageView({
     super.key,
@@ -23,7 +22,7 @@ class AsyncImageView extends StatefulWidget {
 
 class AsyncImageViewState extends State<AsyncImageView> {
   var value = const AsyncImageViewStateValue.loading();
-  CancelableOperation<Uint8List>? _dataLoadingOperation;
+  StreamSubscription<Uint8List>? _subscription;
 
   @override
   void initState() {
@@ -35,23 +34,25 @@ class AsyncImageViewState extends State<AsyncImageView> {
     setState(() {
       value = const AsyncImageViewStateValue.loading();
     });
-    try {
-      _dataLoadingOperation =
-          widget.dataLoader.load(Uri.parse(widget.imageUrl));
-      final imageData = await _dataLoadingOperation!.value;
-      setState(() {
-        value = AsyncImageViewStateValue.loaded(imageData);
-      });
-    } catch (e) {
-      setState(() {
-        value = const AsyncImageViewStateValue.failure('Failed to load image');
-      });
-    }
+    final imageUri = Uri.parse(widget.imageUrl);
+    _subscription = widget.dataLoader(imageUri).listen(
+      (data) {
+        setState(() {
+          value = AsyncImageViewStateValue.loaded(data);
+        });
+      },
+      onError: (e) {
+        setState(() {
+          value =
+              const AsyncImageViewStateValue.failure('Failed to load image');
+        });
+      },
+    );
   }
 
   @override
   void dispose() {
-    _dataLoadingOperation?.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -63,7 +64,7 @@ class AsyncImageViewState extends State<AsyncImageView> {
       :onErrorContainer,
     ) = Theme.of(context).colorScheme;
     return switch (value) {
-      Loading()  => Center(
+      Loading() => Center(
           child: CircularProgressIndicator(
             key: const ValueKey('async-image-loading-indicator'),
             color: secondary,
