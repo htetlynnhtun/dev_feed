@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dev_feed/posts_feed/api/posts_mapper.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
@@ -18,8 +19,9 @@ void main() {
     final mockClient = MockClient();
     return (
       RemotePostLoader(
-        client: mockClient,
         url: url ?? Uri.parse("https://default.com"),
+        client: mockClient,
+        mapper: PostsMapper.map,
       ),
       mockClient
     );

@@ -4,6 +4,7 @@ import 'package:dev_feed/bookmark/view/bookmark_page.dart';
 import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
 import 'package:dev_feed/posts_feed/api/posts_endpoint.dart';
+import 'package:dev_feed/posts_feed/api/posts_mapper.dart';
 import 'package:dev_feed/posts_feed/view/posts_page.dart';
 import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
@@ -140,8 +141,9 @@ extension on App {
       postStore: RealmPostStore(realm: realm),
     );
     final remotePostLoader = RemotePostLoader(
-      client: client,
       url: const PostsEndpoint.get(1).url('https://dev.to/api'),
+      client: client,
+      mapper: PostsMapper.map,
     );
     return remotePostLoader
         .loadStream()
