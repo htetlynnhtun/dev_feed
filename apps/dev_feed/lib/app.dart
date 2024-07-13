@@ -5,6 +5,7 @@ import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
 import 'package:dev_feed/posts_feed/api/posts_endpoint.dart';
 import 'package:dev_feed/posts_feed/api/posts_mapper.dart';
+import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
 import 'package:dev_feed/posts_feed/view/posts_page.dart';
 import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
@@ -24,6 +25,7 @@ import 'package:dev_feed/posts_feed/view/posts_list_view.dart';
 import 'package:dev_feed/posts_feed/viewmodel/post_item_view_model.dart';
 import 'package:dev_feed/util/image_data_loader_cache_decorator.dart';
 import 'package:dev_feed/util/image_data_loader_with_fallback_composite.dart';
+import 'package:rxdart/rxdart.dart';
 
 class App extends StatelessWidget {
   final http.Client client;
@@ -61,12 +63,14 @@ extension on App {
                   path: '/posts',
                   builder: (context, state) => PostsPage(
                     postsStream: makeRemotePostLoaderWithLocalFallback,
-                    loadedView: (BuildContext context, List<Post> posts) {
+                    loadedView:
+                        (BuildContext context, List<Post> posts, loadMore) {
                       return PostsListView(
                         key: const ValueKey('posts-list-view'),
                         posts: posts,
                         itemView: (context, post) =>
                             postItemView(context, post),
+                        loadNextPage: loadMore,
                       );
                     },
                   ),
@@ -135,18 +139,60 @@ extension on App {
 }
 
 extension on App {
-  Stream<List<Post>> makeRemotePostLoaderWithLocalFallback() {
-    var localPostLoader = LocalPostLoader(
-      postStore: RealmPostStore(realm: realm),
-    );
-    return makeRemotePostsLoader(page: 1)
-        .cacheTo(localPostLoader)
-        .fallbackTo(localPostLoader.loadStream());
+  static final _localPostLoader = Expando<LocalPostLoader>('LocalPostLoader');
+  LocalPostLoader get localPostLoader {
+    if (_localPostLoader[this] == null) {
+      _localPostLoader[this] = LocalPostLoader(
+        postStore: RealmPostStore(realm: realm),
+      );
+    }
+    return _localPostLoader[this]!;
   }
 
   Stream<List<Post>> makeRemotePostsLoader({required int page}) {
     var url = PostsEndpoint.get(page).url('https://dev.to/api');
-    return client.get(url).asStream().map(PostsMapper.map);
+    return client
+        .get(url) //
+        .asStream()
+        .map(PostsMapper.map);
+  }
+
+  Stream<PaginatedPosts> makeRemotePostLoaderWithLocalFallback() {
+    return makeRemotePostsLoader(page: 1)
+        .cacheTo(localPostLoader)
+        .fallbackTo(localPostLoader.loadStream())
+        .map((posts) => makePage(
+              page: 1,
+              mergedPosts: posts,
+              newPosts: posts,
+            ));
+  }
+
+  Stream<PaginatedPosts> makeRemoteMorePostsLoader({required int page}) {
+    return makeRemotePostsLoader(page: page)
+        .zipWith(
+          localPostLoader.loadStream(),
+          (posts, cachedPosts) => (cachedPosts + posts, posts),
+        )
+        .map((posts) => makePage(
+              page: page,
+              mergedPosts: posts.$1,
+              newPosts: posts.$2,
+            ))
+        .cacheTo(localPostLoader);
+  }
+
+  PaginatedPosts makePage({
+    required int page,
+    required List<Post> mergedPosts,
+    required List<Post> newPosts,
+  }) {
+    return PaginatedPosts(
+      posts: mergedPosts,
+      loadMore: newPosts.isNotEmpty
+          ? () => makeRemoteMorePostsLoader(page: page + 1)
+          : null,
+    );
   }
 }
 

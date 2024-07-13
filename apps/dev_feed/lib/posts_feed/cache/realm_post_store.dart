@@ -89,7 +89,7 @@ extension on RealmPost {
         title: title,
         description: description,
         coverImage: coverImage,
-        tagList: tagList,
+        tagList: tagList.toList(),
         readingTimeMinutes: readingTimeMinutes,
         publishedAt: publishedAt.toLocal(),
         likeCount: likeCount,

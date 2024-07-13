@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -10,8 +11,12 @@ import 'package:dev_feed/posts_feed/view/posts_loading_view.dart';
 part 'posts_page.freezed.dart';
 
 class PostsPage extends StatefulWidget {
-  final Stream<List<Post>> Function() postsStream;
-  final Widget Function(BuildContext context, List<Post> posts) loadedView;
+  final Stream<PaginatedPosts> Function() postsStream;
+  final Widget Function(
+    BuildContext context,
+    List<Post> posts,
+    void Function()? loadMore,
+  ) loadedView;
 
   const PostsPage({
     super.key,
@@ -26,6 +31,7 @@ class PostsPage extends StatefulWidget {
 class _PostsPageState extends State<PostsPage> {
   var state = const PostsPageState.idle();
   StreamSubscription? _subscription;
+  Stream<PaginatedPosts> Function()? morePostsPipeline;
 
   @override
   void initState() {
@@ -37,16 +43,42 @@ class _PostsPageState extends State<PostsPage> {
     setState(() {
       state = const PostsPageState.loading();
     });
+    _subscription?.cancel();
     _subscription = widget.postsStream().listen(
-      (posts) {
+      (paginatedPosts) {
         setState(() {
-          state = PostsPageState.loaded(posts);
+          state = PostsPageState.loaded(paginatedPosts.posts);
+          morePostsPipeline = paginatedPosts.loadMore;
         });
       },
       onError: (e) {
         setState(() {
           state = const PostsPageState.failure(
             'Please check your connection and try again',
+          );
+        });
+      },
+    );
+  }
+
+  void loadMorePosts() {
+    assert(
+      morePostsPipeline != null,
+      "Don't request to load more posts when "
+      "there is no morePostsPipeline",
+    );
+    _subscription?.cancel();
+    _subscription = morePostsPipeline!().listen(
+      (paginatedPosts) {
+        setState(() {
+          state = PostsPageState.loaded(paginatedPosts.posts);
+          morePostsPipeline = paginatedPosts.loadMore;
+        });
+      },
+      onError: (e) {
+        setState(() {
+          state = const PostsPageState.failure(
+            'Failed to load more posts',
           );
         });
       },
@@ -71,7 +103,11 @@ class _PostsPageState extends State<PostsPage> {
                   key: ValueKey('post-loading-view'),
                 ),
               ),
-            Loaded(posts: var posts) => widget.loadedView(context, posts),
+            Loaded(posts: var posts) => widget.loadedView(
+                context,
+                posts,
+                morePostsPipeline == null ? null : loadMorePosts,
+              ),
             failure(message: var message) => Center(
                 child: PostsFailureView(
                   key: const ValueKey('post-failure-view'),

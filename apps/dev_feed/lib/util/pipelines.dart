@@ -1,5 +1,6 @@
 import 'package:async_image/async_image.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
+import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,6 +15,11 @@ extension FallbackPipeline<T> on Stream<T> {
 
 extension PostsCachePipeline on Stream<List<Post>> {
   Stream<List<Post>> cacheTo(PostCache cache) => doOnData(cache.save);
+}
+
+extension PaginatedPostsCachePipeline on Stream<PaginatedPosts> {
+  Stream<PaginatedPosts> cacheTo(PostCache cache) =>
+      doOnData((paginated) => cache.save(paginated.posts));
 }
 
 extension ImageDataLoaderPipeline on ImageDataLoader {
