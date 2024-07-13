@@ -17,7 +17,6 @@ import 'package:realm/realm.dart';
 import 'package:dev_feed/bookmark/cache/bookmark_store.dart';
 import 'package:dev_feed/bookmark/cache/in_memory_bookmark_sotre.dart';
 import 'package:dev_feed/bookmark/view/bookmark_button_view.dart';
-import 'package:dev_feed/posts_feed/api/remote_post_loader.dart';
 import 'package:dev_feed/posts_feed/cache/cache.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/posts_feed/view/post_item_view.dart';
@@ -140,15 +139,14 @@ extension on App {
     var localPostLoader = LocalPostLoader(
       postStore: RealmPostStore(realm: realm),
     );
-    final remotePostLoader = RemotePostLoader(
-      url: const PostsEndpoint.get(1).url('https://dev.to/api'),
-      client: client,
-      mapper: PostsMapper.map,
-    );
-    return remotePostLoader
-        .loadStream()
+    return makeRemotePostsLoader(page: 1)
         .cacheTo(localPostLoader)
         .fallbackTo(localPostLoader.loadStream());
+  }
+
+  Stream<List<Post>> makeRemotePostsLoader({required int page}) {
+    var url = PostsEndpoint.get(page).url('https://dev.to/api');
+    return client.get(url).asStream().map(PostsMapper.map);
   }
 }
 
