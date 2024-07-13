@@ -14,20 +14,27 @@ import 'load_posts_from_api_use_case_test.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
-  (RemotePostLoader, MockClient) makeSUT() {
+  (RemotePostLoader, MockClient) makeSUT({Uri? url}) {
     final mockClient = MockClient();
-    return (RemotePostLoader(client: mockClient), mockClient);
+    return (
+      RemotePostLoader(
+        client: mockClient,
+        url: url ?? Uri.parse("https://default.com"),
+      ),
+      mockClient
+    );
   }
 
   group('RemotePostLoader', () {
     test('load makes a GET request with correct url to http client', () {
-      final (sut, mockClient) = makeSUT();
+      final url = Uri.parse('https://a-url.com');
+      final (sut, mockClient) = makeSUT(url: url);
 
       when(mockClient.get(any))
           .thenAnswer((_) async => http.Response('[]', 200));
       sut.load();
 
-      verify(mockClient.get(RemotePostLoader.url)).called(1);
+      verify(mockClient.get(url)).called(1);
     });
 
     test('load throws a SocketException on network error', () {

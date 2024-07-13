@@ -138,7 +138,10 @@ extension on App {
     var localPostLoader = LocalPostLoader(
       postStore: RealmPostStore(realm: realm),
     );
-    final remotePostLoader = RemotePostLoader(client: client);
+    final remotePostLoader = RemotePostLoader(
+      client: client,
+      url: Uri.parse('https://dev.to/api/articles?per_page=20'),
+    );
     return remotePostLoader
         .loadStream()
         .cacheTo(localPostLoader)

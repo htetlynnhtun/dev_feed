@@ -5,10 +5,12 @@ import 'package:http/http.dart' as http;
 
 final class RemotePostLoader implements PostLoader {
   final http.Client _client;
+  final Uri url;
 
-  RemotePostLoader({required http.Client client}) : _client = client;
-
-  static final url = Uri.parse('https://dev.to/api/articles?per_page=20');
+  RemotePostLoader({
+    required http.Client client,
+    required this.url,
+  }) : _client = client;
 
   /// May throw [SocketException] or [FormatException]
   @override
