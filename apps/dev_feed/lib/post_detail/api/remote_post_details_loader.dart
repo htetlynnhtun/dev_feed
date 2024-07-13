@@ -1,4 +1,5 @@
 import 'package:async/async.dart';
+import 'package:dev_feed/posts_feed/api/posts_endpoint.dart';
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -14,15 +15,13 @@ final class RemotePostDetailsLoader implements PostDetailsLoader {
 
   RemotePostDetailsLoader({required Dio dio}) : _dio = dio;
 
-  static const _url = 'https://dev.to/api/articles';
-
   @override
   CancelableOperation<PostDetails> load(int postId) {
     final cancelToken = CancelToken();
     return CancelableOperation.fromFuture(
       () async {
         final response = await _dio.get(
-          '$_url/$postId',
+          PostsEndpoint.getOne(postId).url('https://dev.to/api').toString(),
           cancelToken: cancelToken,
         );
         final dto = PostDetailsDto.fromJson(response.data);

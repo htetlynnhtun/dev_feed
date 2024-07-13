@@ -3,6 +3,7 @@ import 'package:dev_feed/bookmark/model/bookmark_manager.dart';
 import 'package:dev_feed/bookmark/view/bookmark_page.dart';
 import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
+import 'package:dev_feed/posts_feed/api/posts_endpoint.dart';
 import 'package:dev_feed/posts_feed/view/posts_page.dart';
 import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
@@ -140,7 +141,7 @@ extension on App {
     );
     final remotePostLoader = RemotePostLoader(
       client: client,
-      url: Uri.parse('https://dev.to/api/articles?per_page=20'),
+      url: const PostsEndpoint.get(1).url('https://dev.to/api'),
     );
     return remotePostLoader
         .loadStream()
