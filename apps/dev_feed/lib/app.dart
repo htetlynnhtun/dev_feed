@@ -161,36 +161,38 @@ extension on App {
     return makeRemotePostsLoader(page: 1)
         .cacheTo(localPostLoader)
         .fallbackTo(localPostLoader.loadStream())
-        .map((posts) => makePage(
+        .map((posts) => (
               page: 1,
               mergedPosts: posts,
               newPosts: posts,
-            ));
+            ))
+        .map(makePage);
   }
 
   Stream<PaginatedPosts> makeRemoteMorePostsLoader({required int page}) {
     return makeRemotePostsLoader(page: page)
         .zipWith(
           localPostLoader.loadStream(),
-          (posts, cachedPosts) => (cachedPosts + posts, posts),
+          (posts, cachedPosts) => (
+            page: page,
+            mergedPosts: cachedPosts + posts,
+            newPosts: posts,
+          ),
         )
-        .map((posts) => makePage(
-              page: page,
-              mergedPosts: posts.$1,
-              newPosts: posts.$2,
-            ))
+        .map(makePage)
         .cacheTo(localPostLoader);
   }
 
-  PaginatedPosts makePage({
-    required int page,
-    required List<Post> mergedPosts,
-    required List<Post> newPosts,
-  }) {
+  PaginatedPosts makePage(
+      ({
+        int page,
+        List<Post> mergedPosts,
+        List<Post> newPosts,
+      }) data) {
     return PaginatedPosts(
-      posts: mergedPosts,
-      loadMore: newPosts.isNotEmpty
-          ? () => makeRemoteMorePostsLoader(page: page + 1)
+      posts: data.mergedPosts,
+      loadMore: data.newPosts.isNotEmpty
+          ? () => makeRemoteMorePostsLoader(page: data.page + 1)
           : null,
     );
   }

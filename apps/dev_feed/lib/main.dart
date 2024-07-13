@@ -18,21 +18,21 @@ void main() {
   final httpClient = http.Client();
 
   final dio = Dio();
-  // dio.interceptors.add(InterceptorsWrapper(
-  //   onRequest: (options, handler) {
-  //     debugPrint('❔❔❔ Received reqeust for ${options.uri}');
-  //     handler.next(options);
-  //   },
-  //   onResponse: (response, handler) {
-  //     debugPrint('✅✅✅ Received response for ${response.realUri}');
-  //     handler.next(response);
-  //   },
-  //   onError: (error, handler) {
-  //     debugPrint(
-  //         '❗️❗️❗️ Error for ${error.requestOptions.uri}: ${error.message}');
-  //     handler.next(error);
-  //   },
-  // ));
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      debugPrint('❔❔❔ Received reqeust for ${options.uri}');
+      handler.next(options);
+    },
+    onResponse: (response, handler) {
+      debugPrint('✅✅✅ Received response for ${response.realUri}');
+      handler.next(response);
+    },
+    onError: (error, handler) {
+      debugPrint(
+          '❗️❗️❗️ Error for ${error.requestOptions.uri}: ${error.message}');
+      handler.next(error);
+    },
+  ));
 
   final app = App(
     client: httpClient,
