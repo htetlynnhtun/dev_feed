@@ -7,10 +7,10 @@ import 'dart:ui' as ui;
 import 'package:async/async.dart';
 import 'package:async_image/async_image.dart';
 import 'package:dev_feed/bookmark/model/bookmark_manager.dart';
+import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
 import 'package:dev_feed/util/pipelines.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:dev_feed/bookmark/cache/in_memory_bookmark_sotre.dart';
 import 'package:dev_feed/bookmark/view/bookmark_button_view.dart';
@@ -40,26 +40,27 @@ void main() async {
 
       final sut = PostsPage(
         postsStream: () => postLoader.loadStream(),
-        loadedView: (BuildContext context, List<Post> posts) {
+        loadedView: (BuildContext context, List<Post> posts, loadMore) {
           return PostsListView(
             key: const ValueKey('posts-list-view'),
             posts: posts,
             itemView: (context, post) => PostItemView(
               key: ValueKey(post.id),
               postViewModel: PostItemViewModel(post),
-              onTap: (id) => context.go('/posts/$id'),
+              onTap: handler ?? (_) {},
               asyncImageView: (context, url) => AsyncImageView(
                 key: ValueKey(url),
                 imageUrl: url,
                 dataLoader: (url) => dataLoader.loadStream(url),
               ),
               bookmarkButtonView: (context) => BookmarkButtonView(
-                  post: post,
-                  bookmarkLoader: bookmarkManager.loadAll,
-                  bookmarkCreator: bookmarkManager,
-                  bookmarkDeleter: bookmarkManager,
+                post: post,
+                bookmarkLoader: bookmarkManager.loadAll,
+                bookmarkCreator: bookmarkManager,
+                bookmarkDeleter: bookmarkManager,
               ),
             ),
+            loadNextPage: loadMore,
           );
         },
       );
@@ -175,7 +176,7 @@ void main() async {
         [post2.id, post1.id],
         reason: 'Expected post selection for post id: ${post2.id}, ${post1.id}',
       );
-    }, skip: true);
+    });
 
     testWidgets(
         'loading completion renders failure message on failure until next reload',
@@ -212,6 +213,7 @@ void main() async {
     testWidgets('post item view loads image urls when rendered',
         (tester) async {
       tester.view.physicalSize = const Size(1500, 1);
+      addTearDown(tester.view.resetPhysicalSize);
       final (sut, loaderSpy, imageDataLoaderSpy) = makeSUT();
       final post1 = makePost(
         id: 1,
@@ -245,7 +247,7 @@ void main() async {
         ],
         reason: 'Expected image url requests for second posts',
       );
-    }, skip: true);
+    });
 
     testWidgets(
         'post item view cancel loading images when not being rendered anymore',
@@ -284,7 +286,7 @@ void main() async {
         ],
         reason: 'Expected cancel image url requests for first 2 posts',
       );
-    }, skip: true);
+    });
 
     testWidgets(
         'post item cover image loading indicator is visible while loading image data',
@@ -487,24 +489,23 @@ class ImageDataLoaderSpy implements ImageDataLoader {
   }
 }
 
-class PostLoaderSpy implements PostLoader {
-  final List<Completer<List<Post>>> _messages = [];
+class PostLoaderSpy {
+  final List<StreamController<PaginatedPosts>> _messages = [];
 
   int get loadCallCount => _messages.length;
 
-  @override
-  Future<List<Post>> load() {
-    final completer = Completer<List<Post>>();
-    _messages.add(completer);
-    return completer.future;
+  Stream<PaginatedPosts> loadStream() {
+    final controller = StreamController<PaginatedPosts>();
+    _messages.add(controller);
+    return controller.stream;
   }
 
   void completeLoading({List<Post> result = const [], int at = 0}) {
-    _messages[at].complete(result);
+    _messages[at].add(PaginatedPosts(posts: result));
   }
 
   void completeLoadingWithException({int at = 0}) {
-    _messages[at].completeError(Exception('any'));
+    _messages[at].addError(Exception('any'));
   }
 }
 
