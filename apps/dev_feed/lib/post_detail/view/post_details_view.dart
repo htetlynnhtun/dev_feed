@@ -1,5 +1,4 @@
 import 'package:async_image/async_image.dart';
-import 'package:dev_feed/util/pipelines.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
@@ -21,7 +20,6 @@ class PostDetailsView extends StatelessWidget {
           height: 200,
           child: AsyncImageView(
             imageUrl: viewData.coverImage,
-            dataLoader: (url) => viewData.dataLoader.loadStream(url),
           ),
         ),
         Padding(
@@ -36,7 +34,6 @@ class PostDetailsView extends StatelessWidget {
                     child: ClipOval(
                       child: AsyncImageView(
                         imageUrl: viewData.userProfileImage,
-                        dataLoader: (url) => viewData.dataLoader.loadStream(url),
                       ),
                     ),
                   ),

@@ -11,5 +11,6 @@
     "**/*.freezed.dart": true,
     "**/*.mocks.dart": true
   },
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "cmake.configureOnOpen": false
 }

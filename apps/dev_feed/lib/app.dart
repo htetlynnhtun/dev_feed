@@ -11,6 +11,7 @@ import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
@@ -41,8 +42,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: router,
+    return ProviderScope(
+      child: MaterialApp.router(
+        routerConfig: router,
+      ),
     );
   }
 }
@@ -126,7 +129,6 @@ extension on App {
       asyncImageView: (context, url) => AsyncImageView(
         key: ValueKey(url),
         imageUrl: url,
-        dataLoader: makeLocalImageDataLoaderWithRemoteFallback,
       ),
       bookmarkButtonView: (context) => BookmarkButtonView(
         post: post,
