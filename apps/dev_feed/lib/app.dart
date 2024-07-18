@@ -65,7 +65,6 @@ extension on App {
                 GoRoute(
                   path: '/posts',
                   builder: (context, state) => PostsPage(
-                    postsStream: makeRemotePostLoaderWithLocalFallback,
                     loadedView:
                         (BuildContext context, List<Post> posts, loadMore) {
                       return PostsListView(
