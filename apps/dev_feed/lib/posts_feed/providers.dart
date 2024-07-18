@@ -97,16 +97,22 @@ class PaginatedPostsNotifier extends StateNotifier<AsyncValue<PaginatedPosts>> {
     return loadOperation.future;
   }
 
-  void loadMorePosts() {
-    _subscription?.cancel();
-    _subscription = state.value?.loadMore?.call().listen(
-      _onData,
-      onError: _onError
-    );
-  }
+  void Function()? loadMorePosts;
 
   void _onData(PaginatedPosts data) {
     state = AsyncData(data);
+    final loadMore = data.loadMore;
+    if (loadMore != null) {
+      loadMorePosts = () {
+        _subscription?.cancel();
+        _subscription = loadMore().listen(
+              _onData,
+              onError: _onError,
+            );
+      };
+    } else {
+      loadMorePosts = null;
+    }
   }
 
   void _onError(Object e, StackTrace s) {
