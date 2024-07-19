@@ -129,10 +129,14 @@ extension on App {
       key: ValueKey(post.id),
       postViewModel: PostItemViewModel(post),
       onTap: (id) => context.go('/posts/$id'),
-      asyncImageView: (context, url) => AsyncImageView(
-        key: ValueKey(url),
-        imageUrl: url,
-        dataLoader: makeLocalImageDataLoaderWithRemoteFallback,
+      asyncImageView: (context, url) => BlocProvider(
+        create: (context) => AsyncImageCubit(
+          makeLocalImageDataLoaderWithRemoteFallback,
+          Uri.parse(url),
+        )..load(),
+        child: AsyncImageView(
+          key: ValueKey(url),
+        ),
       ),
       bookmarkButtonView: (context) => BookmarkButtonView(
         post: post,

@@ -11,6 +11,7 @@ dependencies:
   dio: ^5.4.3+1
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
   freezed_annotation: ^2.4.1
   realm: ^3.0.0
 

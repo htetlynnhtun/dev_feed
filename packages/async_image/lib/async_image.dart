@@ -10,3 +10,5 @@ export 'src/model/image_data_cache.dart';
 export 'src/model/image_data_loader.dart';
 
 export 'src/view/async_image_view.dart';
+
+export 'src/bloc/async_image_cubit.dart';

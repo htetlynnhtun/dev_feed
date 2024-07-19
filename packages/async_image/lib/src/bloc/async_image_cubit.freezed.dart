@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'async_image_view.dart';
+part of 'async_image_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$AsyncImageViewStateValue {
+mixin _$AsyncImageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -63,17 +63,16 @@ mixin _$AsyncImageViewStateValue {
 }
 
 /// @nodoc
-abstract class $AsyncImageViewStateValueCopyWith<$Res> {
-  factory $AsyncImageViewStateValueCopyWith(AsyncImageViewStateValue value,
-          $Res Function(AsyncImageViewStateValue) then) =
-      _$AsyncImageViewStateValueCopyWithImpl<$Res, AsyncImageViewStateValue>;
+abstract class $AsyncImageStateCopyWith<$Res> {
+  factory $AsyncImageStateCopyWith(
+          AsyncImageState value, $Res Function(AsyncImageState) then) =
+      _$AsyncImageStateCopyWithImpl<$Res, AsyncImageState>;
 }
 
 /// @nodoc
-class _$AsyncImageViewStateValueCopyWithImpl<$Res,
-        $Val extends AsyncImageViewStateValue>
-    implements $AsyncImageViewStateValueCopyWith<$Res> {
-  _$AsyncImageViewStateValueCopyWithImpl(this._value, this._then);
+class _$AsyncImageStateCopyWithImpl<$Res, $Val extends AsyncImageState>
+    implements $AsyncImageStateCopyWith<$Res> {
+  _$AsyncImageStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -90,7 +89,7 @@ abstract class _$$LoadingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$AsyncImageViewStateValueCopyWithImpl<$Res, _$LoadingImpl>
+    extends _$AsyncImageStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
@@ -104,7 +103,7 @@ class _$LoadingImpl implements Loading {
 
   @override
   String toString() {
-    return 'AsyncImageViewStateValue.loading()';
+    return 'AsyncImageState.loading()';
   }
 
   @override
@@ -185,7 +184,7 @@ class _$LoadingImpl implements Loading {
   }
 }
 
-abstract class Loading implements AsyncImageViewStateValue {
+abstract class Loading implements AsyncImageState {
   const factory Loading() = _$LoadingImpl;
 }
 
@@ -200,7 +199,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$AsyncImageViewStateValueCopyWithImpl<$Res, _$LoadedImpl>
+    extends _$AsyncImageStateCopyWithImpl<$Res, _$LoadedImpl>
     implements _$$LoadedImplCopyWith<$Res> {
   __$$LoadedImplCopyWithImpl(
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
@@ -230,7 +229,7 @@ class _$LoadedImpl implements Loaded {
 
   @override
   String toString() {
-    return 'AsyncImageViewStateValue.loaded(data: $data)';
+    return 'AsyncImageState.loaded(data: $data)';
   }
 
   @override
@@ -320,7 +319,7 @@ class _$LoadedImpl implements Loaded {
   }
 }
 
-abstract class Loaded implements AsyncImageViewStateValue {
+abstract class Loaded implements AsyncImageState {
   const factory Loaded(final Uint8List data) = _$LoadedImpl;
 
   Uint8List get data;
@@ -340,7 +339,7 @@ abstract class _$$FailureImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$FailureImplCopyWithImpl<$Res>
-    extends _$AsyncImageViewStateValueCopyWithImpl<$Res, _$FailureImpl>
+    extends _$AsyncImageStateCopyWithImpl<$Res, _$FailureImpl>
     implements _$$FailureImplCopyWith<$Res> {
   __$$FailureImplCopyWithImpl(
       _$FailureImpl _value, $Res Function(_$FailureImpl) _then)
@@ -370,7 +369,7 @@ class _$FailureImpl implements Failure {
 
   @override
   String toString() {
-    return 'AsyncImageViewStateValue.failure(message: $message)';
+    return 'AsyncImageState.failure(message: $message)';
   }
 
   @override
@@ -459,7 +458,7 @@ class _$FailureImpl implements Failure {
   }
 }
 
-abstract class Failure implements AsyncImageViewStateValue {
+abstract class Failure implements AsyncImageState {
   const factory Failure(final String message) = _$FailureImpl;
 
   String get message;

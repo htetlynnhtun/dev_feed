@@ -1,5 +1,4 @@
 import 'package:async_image/async_image.dart';
-import 'package:dev_feed/util/pipelines.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dev_feed/post_detail/viewmodel/post_detail_view_model.dart';
@@ -16,13 +15,10 @@ class PostDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           width: double.infinity,
           height: 200,
-          child: AsyncImageView(
-            imageUrl: viewData.coverImage,
-            dataLoader: (url) => viewData.dataLoader.loadStream(url),
-          ),
+          child: AsyncImageView(),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -31,13 +27,10 @@ class PostDetailsView extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                     child: ClipOval(
-                      child: AsyncImageView(
-                        imageUrl: viewData.userProfileImage,
-                        dataLoader: (url) => viewData.dataLoader.loadStream(url),
-                      ),
+                      child: AsyncImageView(),
                     ),
                   ),
                   const SizedBox(width: 8),
