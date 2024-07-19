@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:async_image/async_image.dart';
 import 'package:dev_feed/posts_feed/model/model.dart';
 import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
@@ -23,7 +25,18 @@ extension PaginatedPostsCachePipeline on Stream<PaginatedPosts> {
 }
 
 extension ImageDataLoaderPipeline on ImageDataLoader {
-  Stream<Uint8List> loadStream(Uri url) => load(url).asStream();
+  Stream<Uint8List> loadStream(Uri url) {
+    StreamSubscription? subscription;
+    final controller = StreamController<Uint8List>();
+    controller.onListen = () {
+      subscription = load(url).asStream().listen(
+            controller.add,
+            onError: controller.addError,
+          );
+    };  
+    controller.onCancel = subscription?.cancel;
+    return controller.stream;
+  }
 }
 
 extension ImageDataCachePipeline on Stream<Uint8List> {
