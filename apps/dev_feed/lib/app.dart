@@ -5,12 +5,14 @@ import 'package:dev_feed/post_detail/api/remote_post_details_loader.dart';
 import 'package:dev_feed/post_detail/post_detail_ui_composer.dart';
 import 'package:dev_feed/posts_feed/api/posts_endpoint.dart';
 import 'package:dev_feed/posts_feed/api/posts_mapper.dart';
+import 'package:dev_feed/posts_feed/cubit/posts_feed_cubit.dart';
 import 'package:dev_feed/posts_feed/model/paginated_posts.dart';
 import 'package:dev_feed/posts_feed/view/posts_page.dart';
 import 'package:dev_feed/util/pipelines.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:realm/realm.dart';
@@ -61,18 +63,22 @@ extension on App {
               routes: [
                 GoRoute(
                   path: '/posts',
-                  builder: (context, state) => PostsPage(
-                    postsStream: makeRemotePostLoaderWithLocalFallback,
-                    loadedView:
-                        (BuildContext context, List<Post> posts, loadMore) {
-                      return PostsListView(
-                        key: const ValueKey('posts-list-view'),
-                        posts: posts,
-                        itemView: (context, post) =>
-                            postItemView(context, post),
-                        loadNextPage: loadMore,
-                      );
-                    },
+                  builder: (context, state) => BlocProvider(
+                    create: (context) => PostsFeedCubit(
+                      makeRemotePostLoaderWithLocalFallback,
+                    )..load(),
+                    child: PostsPage(
+                      loadedView:
+                          (BuildContext context, List<Post> posts, loadMore) {
+                        return PostsListView(
+                          key: const ValueKey('posts-list-view'),
+                          posts: posts,
+                          itemView: (context, post) =>
+                              postItemView(context, post),
+                          loadNextPage: loadMore,
+                        );
+                      },
+                    ),
                   ),
                   routes: [
                     GoRoute(

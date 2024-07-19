@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'posts_page.dart';
+part of 'posts_feed_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$PostsPageState {
+mixin _$PostsFeedState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() idle,
@@ -46,7 +46,7 @@ mixin _$PostsPageState {
     required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
-    required TResult Function(failure value) failure,
+    required TResult Function(Failure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,7 +54,7 @@ mixin _$PostsPageState {
     TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
-    TResult? Function(failure value)? failure,
+    TResult? Function(Failure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -62,23 +62,23 @@ mixin _$PostsPageState {
     TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
-    TResult Function(failure value)? failure,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PostsPageStateCopyWith<$Res> {
-  factory $PostsPageStateCopyWith(
-          PostsPageState value, $Res Function(PostsPageState) then) =
-      _$PostsPageStateCopyWithImpl<$Res, PostsPageState>;
+abstract class $PostsFeedStateCopyWith<$Res> {
+  factory $PostsFeedStateCopyWith(
+          PostsFeedState value, $Res Function(PostsFeedState) then) =
+      _$PostsFeedStateCopyWithImpl<$Res, PostsFeedState>;
 }
 
 /// @nodoc
-class _$PostsPageStateCopyWithImpl<$Res, $Val extends PostsPageState>
-    implements $PostsPageStateCopyWith<$Res> {
-  _$PostsPageStateCopyWithImpl(this._value, this._then);
+class _$PostsFeedStateCopyWithImpl<$Res, $Val extends PostsFeedState>
+    implements $PostsFeedStateCopyWith<$Res> {
+  _$PostsFeedStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -95,7 +95,7 @@ abstract class _$$IdleImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$IdleImplCopyWithImpl<$Res>
-    extends _$PostsPageStateCopyWithImpl<$Res, _$IdleImpl>
+    extends _$PostsFeedStateCopyWithImpl<$Res, _$IdleImpl>
     implements _$$IdleImplCopyWith<$Res> {
   __$$IdleImplCopyWithImpl(_$IdleImpl _value, $Res Function(_$IdleImpl) _then)
       : super(_value, _then);
@@ -108,7 +108,7 @@ class _$IdleImpl implements Idle {
 
   @override
   String toString() {
-    return 'PostsPageState.idle()';
+    return 'PostsFeedState.idle()';
   }
 
   @override
@@ -163,7 +163,7 @@ class _$IdleImpl implements Idle {
     required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
-    required TResult Function(failure value) failure,
+    required TResult Function(Failure value) failure,
   }) {
     return idle(this);
   }
@@ -174,7 +174,7 @@ class _$IdleImpl implements Idle {
     TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
-    TResult? Function(failure value)? failure,
+    TResult? Function(Failure value)? failure,
   }) {
     return idle?.call(this);
   }
@@ -185,7 +185,7 @@ class _$IdleImpl implements Idle {
     TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
-    TResult Function(failure value)? failure,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (idle != null) {
@@ -195,7 +195,7 @@ class _$IdleImpl implements Idle {
   }
 }
 
-abstract class Idle implements PostsPageState {
+abstract class Idle implements PostsFeedState {
   const factory Idle() = _$IdleImpl;
 }
 
@@ -208,7 +208,7 @@ abstract class _$$LoadingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$PostsPageStateCopyWithImpl<$Res, _$LoadingImpl>
+    extends _$PostsFeedStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
@@ -222,7 +222,7 @@ class _$LoadingImpl implements Loading {
 
   @override
   String toString() {
-    return 'PostsPageState.loading()';
+    return 'PostsFeedState.loading()';
   }
 
   @override
@@ -277,7 +277,7 @@ class _$LoadingImpl implements Loading {
     required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
-    required TResult Function(failure value) failure,
+    required TResult Function(Failure value) failure,
   }) {
     return loading(this);
   }
@@ -288,7 +288,7 @@ class _$LoadingImpl implements Loading {
     TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
-    TResult? Function(failure value)? failure,
+    TResult? Function(Failure value)? failure,
   }) {
     return loading?.call(this);
   }
@@ -299,7 +299,7 @@ class _$LoadingImpl implements Loading {
     TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
-    TResult Function(failure value)? failure,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -309,7 +309,7 @@ class _$LoadingImpl implements Loading {
   }
 }
 
-abstract class Loading implements PostsPageState {
+abstract class Loading implements PostsFeedState {
   const factory Loading() = _$LoadingImpl;
 }
 
@@ -324,7 +324,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$PostsPageStateCopyWithImpl<$Res, _$LoadedImpl>
+    extends _$PostsFeedStateCopyWithImpl<$Res, _$LoadedImpl>
     implements _$$LoadedImplCopyWith<$Res> {
   __$$LoadedImplCopyWithImpl(
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
@@ -359,7 +359,7 @@ class _$LoadedImpl implements Loaded {
 
   @override
   String toString() {
-    return 'PostsPageState.loaded(posts: $posts)';
+    return 'PostsFeedState.loaded(posts: $posts)';
   }
 
   @override
@@ -423,7 +423,7 @@ class _$LoadedImpl implements Loaded {
     required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
-    required TResult Function(failure value) failure,
+    required TResult Function(Failure value) failure,
   }) {
     return loaded(this);
   }
@@ -434,7 +434,7 @@ class _$LoadedImpl implements Loaded {
     TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
-    TResult? Function(failure value)? failure,
+    TResult? Function(Failure value)? failure,
   }) {
     return loaded?.call(this);
   }
@@ -445,7 +445,7 @@ class _$LoadedImpl implements Loaded {
     TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
-    TResult Function(failure value)? failure,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -455,7 +455,7 @@ class _$LoadedImpl implements Loaded {
   }
 }
 
-abstract class Loaded implements PostsPageState {
+abstract class Loaded implements PostsFeedState {
   const factory Loaded(final List<Post> posts) = _$LoadedImpl;
 
   List<Post> get posts;
@@ -465,20 +465,20 @@ abstract class Loaded implements PostsPageState {
 }
 
 /// @nodoc
-abstract class _$$failureImplCopyWith<$Res> {
-  factory _$$failureImplCopyWith(
-          _$failureImpl value, $Res Function(_$failureImpl) then) =
-      __$$failureImplCopyWithImpl<$Res>;
+abstract class _$$FailureImplCopyWith<$Res> {
+  factory _$$FailureImplCopyWith(
+          _$FailureImpl value, $Res Function(_$FailureImpl) then) =
+      __$$FailureImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$failureImplCopyWithImpl<$Res>
-    extends _$PostsPageStateCopyWithImpl<$Res, _$failureImpl>
-    implements _$$failureImplCopyWith<$Res> {
-  __$$failureImplCopyWithImpl(
-      _$failureImpl _value, $Res Function(_$failureImpl) _then)
+class __$$FailureImplCopyWithImpl<$Res>
+    extends _$PostsFeedStateCopyWithImpl<$Res, _$FailureImpl>
+    implements _$$FailureImplCopyWith<$Res> {
+  __$$FailureImplCopyWithImpl(
+      _$FailureImpl _value, $Res Function(_$FailureImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -486,7 +486,7 @@ class __$$failureImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$failureImpl(
+    return _then(_$FailureImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -497,22 +497,22 @@ class __$$failureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$failureImpl implements failure {
-  const _$failureImpl(this.message);
+class _$FailureImpl implements Failure {
+  const _$FailureImpl(this.message);
 
   @override
   final String message;
 
   @override
   String toString() {
-    return 'PostsPageState.failure(message: $message)';
+    return 'PostsFeedState.failure(message: $message)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$failureImpl &&
+            other is _$FailureImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -522,8 +522,8 @@ class _$failureImpl implements failure {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$failureImplCopyWith<_$failureImpl> get copyWith =>
-      __$$failureImplCopyWithImpl<_$failureImpl>(this, _$identity);
+  _$$FailureImplCopyWith<_$FailureImpl> get copyWith =>
+      __$$FailureImplCopyWithImpl<_$FailureImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -568,7 +568,7 @@ class _$failureImpl implements failure {
     required TResult Function(Idle value) idle,
     required TResult Function(Loading value) loading,
     required TResult Function(Loaded value) loaded,
-    required TResult Function(failure value) failure,
+    required TResult Function(Failure value) failure,
   }) {
     return failure(this);
   }
@@ -579,7 +579,7 @@ class _$failureImpl implements failure {
     TResult? Function(Idle value)? idle,
     TResult? Function(Loading value)? loading,
     TResult? Function(Loaded value)? loaded,
-    TResult? Function(failure value)? failure,
+    TResult? Function(Failure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -590,7 +590,7 @@ class _$failureImpl implements failure {
     TResult Function(Idle value)? idle,
     TResult Function(Loading value)? loading,
     TResult Function(Loaded value)? loaded,
-    TResult Function(failure value)? failure,
+    TResult Function(Failure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -600,11 +600,11 @@ class _$failureImpl implements failure {
   }
 }
 
-abstract class failure implements PostsPageState {
-  const factory failure(final String message) = _$failureImpl;
+abstract class Failure implements PostsFeedState {
+  const factory Failure(final String message) = _$FailureImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$failureImplCopyWith<_$failureImpl> get copyWith =>
+  _$$FailureImplCopyWith<_$FailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
